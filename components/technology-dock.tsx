@@ -1,0 +1,5 @@
+"use client";
+import {useState} from "react";
+import {motion,useReducedMotion} from "motion/react";
+import technologyAssets from "@/lib/technology-assets.json";
+export function TechnologyDock({technologies}:{technologies:readonly string[]}){const [active,setActive]=useState<number|null>(null);const reduced=useReducedMotion();return <div className="technology-dock" onMouseLeave={()=>setActive(null)}>{technologies.map((label,i)=>{const asset=technologyAssets.entries.find(a=>a.label===label||a.aliases.some(alias=>alias===label));if(!asset)return null;const d=active===null?99:Math.abs(i-active);return <motion.a className="technology-key" key={label} href={asset.docsUrl} target="_blank" rel="noopener noreferrer" aria-label={`${label} documentation`} onMouseEnter={()=>setActive(i)} onFocus={()=>setActive(i)} onBlur={()=>setActive(null)} animate={{y:reduced?0:d===0?-10:d===1?-4:0,scale:reduced?1:d===0?1.1:1}} transition={{type:"spring",stiffness:350,damping:24}}><img src={asset.publicPath} width={44} height={44} alt="" loading="lazy"/><span>{label}</span></motion.a>;})}</div>;}

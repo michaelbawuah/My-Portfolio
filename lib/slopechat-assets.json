@@ -1,0 +1,21 @@
+{
+  "project": "SlopeChat",
+  "role": "UI/UX and frontend developer",
+  "contributionCommit": "4195583705d16424823d41d8916ccd674dc62cb9",
+  "contributionDate": "2026-10-02",
+  "repositoryVisibilityAtReview": "private",
+  "assets": [
+    {
+      "path": "/logos/slopechat.png",
+      "source": "https://slopechat.com/brand/slopechat-logo-transparent.png",
+      "description": "Supplied SlopeChat brand identity; reproduced to identify the collaborative project."
+    },
+    {
+      "path": "/projects/slopechat-video-call.webp",
+      "source": "https://slopechat.com/photos/video-call.webp",
+      "credit": "Vitaly Gariev / Unsplash",
+      "creditUrl": "https://unsplash.com/photos/young-woman-waving-hello-while-video-chatting-on-laptop-qn7smNyVz64",
+      "description": "Licensed illustrative stock photography used in the contributed landing page; not a member photo or product screenshot."
+    }
+  ]
+}

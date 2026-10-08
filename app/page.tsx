@@ -1,0 +1,9 @@
+import { PageFrame } from "@/components/portfolio-layout";
+import { HeroExperience } from "@/components/hero-experience";
+import { socialProfiles } from "@/lib/personal";
+import { person } from "@/lib/portfolio";
+import { ActivityHighlights } from "@/components/activity-highlights";
+export default function Home(){
+ const schema={"@context":"https://schema.org","@type":"ProfilePage",mainEntity:{"@type":"Person","@id":`${person.origin}/#person`,name:person.name,alternateName:"MBA~Steins",url:person.origin,image:`${person.origin}/personal/michael-landing-atrium.webp`,description:"Electrical & Computer Engineering undergraduate at Cornell University building software, AI, and distributed systems.",affiliation:{"@type":"CollegeOrUniversity",name:"Cornell University"},sameAs:[person.github,person.linkedin,socialProfiles.tiktok,socialProfiles.instagram],knowsAbout:["Software engineering","Machine learning","Distributed systems","Computer engineering"]}};
+ return <><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema).replace(/</g,"\\u003c")}}/><PageFrame className="home-shell"><HeroExperience/><section className="cp-home-feature"><div><span className="mono">ALGORITHMS / C++</span><h2>835 problems.<br/><em>My solutions, shared.</em></h2><p>I worked through problems from CSES, Codeforces, and AtCoder and published my C++ solutions, explanations, and tests to help other students learn and prepare.</p><a href="/projects/pro-competitive-programming" className="button-primary">Explore Pro Competitive Programming</a></div><a href="/projects/pro-competitive-programming" aria-label="Explore the visual algorithm guide"><img src="/projects/pro-cp/fenwick.svg" width={980} height={600} alt="Fenwick tree diagram showing a prefix sum as three smaller ranges" loading="lazy"/></a></section><ActivityHighlights/></PageFrame></>;
+}

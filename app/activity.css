@@ -1,0 +1,50 @@
+.activity-highlights,.impact-entry,.impact-current-research{background:var(--scene-panel);border:1px solid var(--scene-stroke);border-radius:16px;backdrop-filter:blur(14px)}
+.activity-highlights{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:40px;padding:36px;margin:30px 0 55px}
+.activity-highlights-copy>.mono,.impact-chapter-heading .mono,.impact-current-research .mono{font-size:.875rem;color:var(--scene-muted)}
+.activity-highlights h2{font-size:clamp(1.8rem,3vw,2.6rem);line-height:1.15;letter-spacing:-.045em;margin:14px 0 18px}
+.activity-highlights-copy>p{font-size:1rem;line-height:1.8;color:var(--scene-muted);max-width:450px;margin-bottom:17px}
+.activity-highlight-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center;gap:24px;margin:0}
+.activity-highlight-metrics>div{border-left:1px solid var(--scene-stroke);padding-left:22px;min-width:0}
+.activity-highlight-metrics dt{font-family:var(--display);font-size:clamp(2rem,3.5vw,3.35rem);line-height:1.2;letter-spacing:-.05em;color:var(--foreground)}
+.activity-highlight-metrics dd{font-size:.9375rem;line-height:1.7;color:var(--scene-muted);margin:10px 0 0;max-width:170px}
+.activity-highlights-compact{margin:40px 0}
+.impact-index{display:flex;flex-wrap:wrap;gap:10px;padding-bottom:35px;border-bottom:1px solid var(--scene-stroke)}
+.impact-index a{display:flex;gap:10px;align-items:center;border:1px solid var(--scene-stroke);border-radius:8px;padding:12px 15px;font-size:.9375rem;background:var(--scene-panel);min-height:46px;transition:background .15s}
+.impact-index a:hover{background:var(--secondary)}
+.impact-index a>span{font-family:var(--mono);color:var(--scene-muted);font-size:.875rem}
+.impact-chapter{padding:48px 0;scroll-margin-top:110px;border-bottom:1px solid var(--scene-stroke)}
+.impact-chapter-heading{display:flex;gap:26px;align-items:flex-start;margin-bottom:26px}
+.impact-chapter-number{font-family:var(--mono);font-size:2.6rem;line-height:1.1;color:var(--scene-muted);opacity:.65;min-width:62px;padding-top:4px}
+.impact-chapter-heading h2{font-size:clamp(1.7rem,3vw,2.4rem);line-height:1.25;letter-spacing:-.04em;margin:10px 0 12px}
+.impact-chapter-heading p{font-size:1rem;line-height:1.8;color:var(--scene-muted);margin:0}
+.impact-entries{display:grid;grid-template-columns:1fr;gap:22px}
+.impact-research-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.impact-entry{display:flex;flex-direction:column;padding:28px;min-width:0;scroll-margin-top:110px}
+.impact-organization{color:var(--scene-muted);font-size:.875rem;line-height:1.8}
+.impact-entry h3{font-size:1.4rem;line-height:1.45;letter-spacing:-.03em;margin:13px 0 17px}
+.impact-summary{color:var(--scene-muted);font-size:1rem;line-height:1.85;margin:0 0 22px;max-width:950px}
+.impact-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding:20px 0;margin:0;border-top:1px solid var(--scene-stroke);border-bottom:1px solid var(--scene-stroke)}
+.impact-entries:not(.impact-research-grid) .impact-metrics{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.impact-metrics dt{font-family:var(--display);font-size:clamp(1.3rem,2.3vw,2rem);line-height:1.35;letter-spacing:-.04em;overflow-wrap:anywhere}
+.impact-metrics dd{font-size:.875rem;color:var(--scene-muted);line-height:1.7;margin:6px 0 0}
+.impact-technologies{display:flex;flex-wrap:wrap;list-style:none;padding:0;margin:20px 0 0;gap:8px}
+.impact-technologies li{font-size:.875rem;line-height:1.5;background:var(--secondary);color:var(--secondary-foreground);border-radius:6px;padding:6px 9px}
+.impact-details{margin-top:24px;padding-top:5px}
+.impact-details summary{display:flex;gap:12px;align-items:center;justify-content:space-between;list-style:none;font-size:.9375rem;font-weight:500;color:var(--foreground);cursor:pointer;min-height:46px;padding:8px 0}
+.impact-details summary::-webkit-details-marker{display:none}
+.impact-details summary:focus-visible{outline:3px solid var(--ring);outline-offset:4px;border-radius:4px}
+.impact-details summary svg{flex-shrink:0;transition:transform .15s}
+.impact-details[open] summary svg{transform:rotate(180deg)}
+.impact-details>div{border-top:1px solid var(--scene-stroke);padding-top:18px;margin-top:10px}
+.impact-details ul{padding-left:21px;margin:0;color:var(--scene-muted);font-size:1rem;line-height:1.85}
+.impact-details li+li{margin-top:13px}
+.impact-paper-title{font-size:.9375rem;line-height:1.8;color:var(--scene-muted);margin:0 0 20px}
+.impact-paper-title strong{display:block;color:var(--foreground);font-weight:500;margin-bottom:5px}
+.impact-current-research{display:flex;gap:25px;padding:32px;margin:38px 0 55px;align-items:flex-start}
+.impact-current-research>svg{flex-shrink:0;color:var(--foreground);margin-top:3px}
+.impact-current-research h2{font-size:1.65rem;line-height:1.4;letter-spacing:-.03em;margin:12px 0}
+.impact-current-research p{font-size:1rem;line-height:1.8;color:var(--scene-muted);max-width:800px;margin-bottom:14px}
+@media(max-width:1100px){.impact-research-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.impact-research-grid .impact-entry:last-child{grid-column:1/-1}.activity-highlights{grid-template-columns:1fr;gap:25px}.activity-highlight-metrics>div:first-child{border-left:0;padding-left:0}}
+@media(max-width:700px){.impact-research-grid{grid-template-columns:1fr}.impact-research-grid .impact-entry:last-child{grid-column:auto}.impact-entry{padding:23px}.impact-chapter{padding:34px 0}.impact-chapter-heading{gap:15px}.impact-chapter-number{font-size:1.8rem;min-width:42px}.activity-highlights{padding:25px;gap:25px}.activity-highlight-metrics{gap:15px}.activity-highlight-metrics>div{padding-left:14px}.activity-highlight-metrics dt{font-size:2rem}.activity-highlight-metrics dd{font-size:.875rem}.impact-current-research{padding:25px;gap:17px}.impact-index{gap:8px}.impact-index a{padding:10px 12px}}
+@media(max-width:400px){.activity-highlight-metrics{grid-template-columns:1fr;gap:18px}.activity-highlight-metrics>div{display:grid;grid-template-columns:95px 1fr;gap:12px;border-left:0;padding-left:0;align-items:center}.activity-highlight-metrics dd{margin:0;max-width:none}.impact-metrics{grid-template-columns:1fr}.impact-entries:not(.impact-research-grid) .impact-metrics{grid-template-columns:1fr}.impact-current-research>svg{display:none}}
+@media(prefers-reduced-motion:reduce){.impact-index a,.impact-details summary svg{transition:none}}

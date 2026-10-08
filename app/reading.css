@@ -1,0 +1,23 @@
+.reading-sections{--chapter-top:106px;--chapter-offset:192px;position:relative;min-width:0}
+.chapter-tabs{position:sticky;top:var(--chapter-top);z-index:20;display:flex;gap:5px;width:100%;padding:6px;margin-bottom:18px;overflow-x:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;border:1px solid var(--border);border-radius:12px;background:var(--tone-bg-edf2ff,#edf2ff);box-shadow:0 8px 22px #1124490b;isolation:isolate}
+.chapter-tabs>a{flex:1 0 auto;display:flex;align-items:center;justify-content:center;gap:10px;padding:15px 19px;min-height:52px;color:var(--foreground);font-size:.9375rem;font-weight:500;white-space:nowrap;border-radius:8px;transition:background .18s,color .18s}
+.chapter-tabs>a>span{font: .75rem var(--mono);opacity:.65}
+.chapter-tabs>a:hover{background:var(--tone-bg-fff,#fff)}
+.chapter-tabs>a[aria-current=location]{color:var(--project-accent,var(--primary));background:var(--tone-bg-fff,#fff);box-shadow:0 2px 9px #1020440c}
+.chapter-tabs>a:focus-visible{outline:2px solid var(--primary);outline-offset:-3px}
+.reading-section{scroll-margin-top:var(--chapter-offset);padding-top:32px;padding-bottom:46px;margin-bottom:28px;min-width:0;border-bottom:1px solid var(--border)}
+.reading-section:focus{outline:none}
+.reading-section:focus-visible{outline:2px solid var(--primary);outline-offset:4px}
+.reading-section:last-child{margin-bottom:0;border-bottom:0}
+.reading-section>.notebook-heading{margin-top:0}
+.reading-sections.story-notebook{margin-top:40px}
+.reading-sections.story-notebook>.reading-section{background:transparent;backdrop-filter:none}
+.project-detail-tabs.reading-sections{margin-top:25px}
+.project-detail-tabs .reading-section{padding:24px 0 32px;background:transparent;backdrop-filter:none}
+.project-detail-tabs .chapter-tabs{z-index:3}
+.preview-dialog-header{z-index:4}
+.dark .chapter-tabs{background:#101b2d;border-color:#324863}
+.dark .chapter-tabs>a:hover,.dark .chapter-tabs>a[aria-current=location]{background:#263d61}
+.dark .chapter-tabs>a[aria-current=location]{color:#dce8ff}
+@media(max-width:680px){.reading-sections{--chapter-top:90px;--chapter-offset:173px}.chapter-tabs{gap:3px;border-radius:10px}.chapter-tabs>a{font-size:.875rem;min-height:45px;padding:12px 15px;gap:7px}.reading-section{padding-top:25px;padding-bottom:30px;margin-bottom:20px}.project-detail-tabs .chapter-tabs>a{padding:10px 12px}}
+@media(prefers-reduced-motion:reduce){.chapter-tabs>a{transition:none}}

@@ -1,0 +1,67 @@
+export const person = {
+  name: "Michael Baffour Awuah",
+  email: "michaelbaffourawuah708@gmail.com",
+  github: "https://github.com/michaelbawuah",
+  linkedin: "https://www.linkedin.com/in/michaelbaffourawuah",
+  origin: "https://michaelbaffourawuah.com",
+};
+
+export const projects = [
+  {
+    slug: "navox", name: "NavoX", type: "Personal AI assistant", category: "AI & ML", number: "01", accent: "blue",
+    summary: "One assistant. The context of your day.",
+    description: "Email, calendar, coursework, and subscriptions—connected through a conversational assistant with voice, approvals, and durable workflows.",
+    image: "/projects/navox.jpg", imageAlt: "NavoX assistant interface from its documented sample-data walkthrough", stack: ["TypeScript", "Next.js", "Python", "Temporal", "PostgreSQL"],
+    repo: "https://github.com/michaelbawuah/NavoX", live: "https://navox.net", evidence: "2,820 API tests", evidenceLabel: "Recorded API validation checkpoint",
+    challenge: "A useful assistant needs more than a chat box. It must reconcile information across accounts, preserve ownership boundaries, and make consequential actions reviewable.",
+    approach: ["Connected Gmail, Google Calendar, Canvas, and subscription records to daily priorities and conversational retrieval.", "Implemented OpenAI, Claude, and Gemini gateway adapters with qualification, sensitivity rules, account isolation, and token/cost budgets.", "Built a Manifest V3 Chrome extension and a voice interface with persistent conversations and multi-intent planning.", "Used Temporal for durable workflows, approval-gated actions, audit trails, and provider verification."],
+    outcome: "A deployed personal assistant backed by documented API, web, and extension checks. Provider adapters and runtime qualification are separate: an available adapter is not permission to route every task to it.",
+    note: "The interface image and video use authored sample data from the repository walkthrough.",
+  },
+  {
+    slug: "fluxion", name: "Fluxion", type: "Deep learning systems", category: "AI & ML", number: "02", accent: "violet",
+    summary: "From a tensor to a Transformer.",
+    description: "A deep learning engine built from first principles, with its own gradients, trainable layers, GPT model, and native execution experiments.",
+    image: "/projects/fluxion.png", imageAlt: "Measured Fluxion GPT CPU training-step latency and throughput across sequence lengths", stack: ["Python", "NumPy", "C++", "BLAS", "CUDA"],
+    repo: "https://github.com/michaelbawuah/Fluxion", live: "", evidence: "72 tests passed", evidenceLabel: "Linux CPU/native checkpoint; 2 CUDA skips",
+    challenge: "Understanding model training means understanding the machinery underneath it: the computation graph, local derivatives, broadcasting rules, and the costs that remain after moving an operator into native code.",
+    approach: ["Implemented NumPy-backed tensors, a dynamic DAG, reverse-mode autograd, and shared-input gradient accumulation.", "Composed neural-network layers, losses, SGD/Adam, causal attention, and a small GPT model.", "Checked both outputs and gradients against independent PyTorch implementations.", "Built a portable C++/BLAS Linear operator and experimental standalone CUDA kernels; retained full-workload timing samples."],
+    outcome: "72 CPU/native tests passed and all five PyTorch reference reports passed. Fresh measurements retain 2,000 timed samples. Native Linear was slower on the measured Linux host; different BLAS libraries and framework costs matter. CUDA was not exercised in that checkpoint.",
+    note: "The chart is generated from the recorded October 4, 2026 Linux CPU run, not a GPU benchmark.",
+  },
+  {
+    slug: "marketlab", name: "MarketLab", type: "Portfolio research platform", category: "Systems", number: "03", accent: "green",
+    summary: "Every result has a paper trail.",
+    description: "Portfolio planning and historical research with validated prices, exact accounting, immutable inputs, and independent calculation checks.",
+    image: "/projects/marketlab.png", imageAlt: "MarketLab saved IBM stock-price history with date coverage and on-demand data controls", stack: ["TypeScript", "React", "MongoDB", "C++", "Python"],
+    repo: "https://github.com/michaelbawuah/MarketLab", live: "https://marketlab-portfolio.michaelbaffour240306.chatgpt.site", evidence: "3,000 verified jobs", evidenceLabel: "Three local service-workload runs",
+    challenge: "A backtest is only useful when its data, accounting, execution assumptions, and saved result can be inspected. Background retries must not allow stale workers to overwrite a final result.",
+    approach: ["Validated Alpha Vantage and CSV imports into owner-scoped immutable price snapshots with source provenance.", "Used exact cash/share arithmetic, causal next-close execution, frozen input identities, and inspectable saved backtests.", "Implemented authenticated, bounded Node/MongoDB workers with lease-token fencing and C++ risk checks.", "Added independent Python replay, report-bound receipts, and explicitly reviewed redacted sharing."],
+    outcome: "Three local runs completed 3,000 verified jobs at a combined 39.96 jobs/s and 319.77 ms client-observed p99. These describe one local workload, not production capacity. The hosted Workers/D1 application and separate research service retain distinct responsibilities.",
+    note: "The stock-price image is a saved historical view, not a live quote. Backtests are research results, not forecasts.",
+  },
+  {
+    slug: "modelforge", name: "ModelForge", type: "ML deployment infrastructure", category: "Systems", number: "04", accent: "orange",
+    summary: "A safer path from model to service.",
+    description: "A model registry and deployment control plane with immutable artifacts, weighted canaries, promotion, rollback, and runtime boundaries.",
+    image: "", imageAlt: "", stack: ["Go", "Python", "Docker", "Terraform", "PyTorch"],
+    repo: "https://github.com/michaelbawuah/ModelForge", live: "", evidence: "164 tests passed", evidenceLabel: "Recorded CI checkpoint; 3 skips",
+    challenge: "Shipping an ML model is a release-management problem as much as an inference problem. A failed new version needs to preserve the stable service and its verifiable artifacts.",
+    approach: ["Bound immutable model artifacts to SHA-256 identities and workspace-scoped access.", "Separated control-plane behavior from pluggable Python/Go and PyTorch/ONNX runtime execution.", "Implemented weighted canaries, promotion, rollback, health checks, and stable fallback.", "Verified the containerized deployment lifecycle, including a deliberate regression that aborted a canary while preserving the stable version."],
+    outcome: "The recorded CI run passed 164 tests and exercised promotion, rollback, and failed-canary recovery. The repository includes AWS/Terraform reference configuration; no public ModelForge service is claimed.",
+    note: "ModelForge is a source and deployment-lifecycle project. Public hosting has not been launched.",
+  },
+  {
+    slug: "toolret", name: "ToolRet", type: "Independent retrieval research", category: "Research", number: "05", accent: "blue",
+    summary: "When does reranking earn its cost?",
+    description: "An empirical study of conditional tool reranking across a 37,292-tool catalog, with untouched confirmation queries and explicit quality tolerances.",
+    image: "", imageAlt: "", stack: ["Python", "PyTorch", "MiniLM", "BM25", "scikit-learn"],
+    repo: "https://github.com/michaelbawuah/toolret-hybrid-retrieval", live: "", evidence: "23.4% fewer calls", evidenceLabel: "Cross-encoder calls on 1,500 confirmation queries",
+    challenge: "Reranking can improve retrieval, but always running a cross-encoder adds cost. The research question is whether a learned router can skip enough calls while staying within a quality tolerance fixed before confirmation.",
+    approach: ["Combined BM25 and MiniLM dense retrieval with reciprocal-rank fusion over 37,292 tools.", "Built a seven-feature ridge router for conditional cross-encoder reranking.", "Separated development, calibration, and confirmation by relevant-tool components and froze parameters before confirmation.", "Compared 20-seed global and source-matched random controls and retained a repository-hosted study report and independent audit."],
+    outcome: "On 1,500 untouched confirmation queries, the router used 23.4% fewer cross-encoder calls while meeting a predeclared 0.01 nDCG@10 loss tolerance. Quality superiority was not established. This is independent undergraduate empirical research, not a peer-reviewed publication.",
+    note: "The study report, confirmation results, and independent audit are retained in the public repository.",
+  },
+] as const;
+
+export type Project = (typeof projects)[number];

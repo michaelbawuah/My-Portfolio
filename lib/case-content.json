@@ -1,0 +1,178 @@
+{
+  "navox": {
+    "name": "NavoX",
+    "label": "Personal AI assistant",
+    "tagline": "Make sense of your day, across the tools you already use.",
+    "overview": "NavoX brings email, meetings, coursework and recurring costs into one daily view and a persistent conversation. A person can find a commitment, prepare for a meeting, locate a source or draft a reply without manually reconstructing context across separate applications.",
+    "problem": "A useful assistant needs trustworthy context and a clear boundary between suggesting an action and taking it. Information belongs to different accounts, source evidence can be incomplete, and retrying an ambiguous email send can produce a real mistake.",
+    "features": [
+      {"title":"A daily view with sources","text":"Priorities, upcoming meetings and follow-ups retain references to the information behind them. Attention preferences stay under the user's control."},
+      {"title":"A conversation that persists","text":"Saved sessions support source-linked retrieval, bounded multi-intent plans and clarification when available evidence is ambiguous."},
+      {"title":"Voice and a Chrome side panel","text":"Recorded microphone input, speech-to-text, text-to-speech and read-aloud controls accompany a Manifest V3 side panel. Page-note capture is explicitly initiated."},
+      {"title":"Actions you can review","text":"Email approval shows the exact recipient, subject and body. Material changes invalidate that approval before execution."}
+    ],
+    "stages":[
+      {"title":"Connect","text":"Authorize Gmail, Calendar or institution-configured Canvas; permissions remain scoped to the connected account."},
+      {"title":"Retrieve","text":"Resolve owned source references and assemble relevant context rather than trusting client-supplied resource identifiers."},
+      {"title":"Plan","text":"A qualified AI gateway and conversation runtime form a bounded plan or ask for clarification."},
+      {"title":"Approve and verify","text":"Consequential actions require exact-action approval, worker rechecks and provider verification. Ambiguous send failures enter manual review."}
+    ],
+    "decisions":[
+      {"title":"One provider boundary","text":"OpenAI, Anthropic Claude and Google Gemini adapters sit behind model/task/prompt/schema qualification, sensitivity grants, token budgets and circuit breakers. An adapter alone does not enable a serving route."},
+      {"title":"Durable work, explicit authority","text":"Temporal coordinates source processing, timers and bounded workflows. The assistant goal worker receives an opaque goal ID and rechecks saved state; it cannot approve or execute an action."},
+      {"title":"Owned state in PostgreSQL","text":"Sessions, plans, source references, approval versions and audit events share clear ownership boundaries. Retrieval and action services revalidate access."}
+    ],
+    "evidence":"The reviewed hosted CI checkpoint df9397d recorded 2,820 API tests, 437 web tests with 14 skipped, and 8 extension tests. These are regression results for one source checkpoint, not a claim about production accuracy or availability.",
+    "scope":"The portfolio walkthrough uses authored example data. It demonstrates the interface, not authenticated account retrieval or sending. Live connectors, AI routes and voice acceptance depend on workspace configuration and separate qualification.",
+    "technologies":["TypeScript","Next.js","React","Python","FastAPI","PostgreSQL","Temporal","Docker","OpenAI","Anthropic","Google Gemini","Google Chrome"],
+    "resources":[
+      {"label":"Open NavoX","href":"https://navox.net","kind":"live"},
+      {"label":"Source code and local setup","href":"https://github.com/michaelbawuah/NavoX","kind":"source"},
+      {"label":"Approval and execution design","href":"https://github.com/michaelbawuah/NavoX/blob/main/docs/architecture/milestone-6-approval-execution.md","kind":"architecture"},
+      {"label":"Gateway qualification","href":"https://github.com/michaelbawuah/NavoX/blob/main/docs/architecture/spec-005-live-acceptance.md","kind":"architecture"},
+      {"label":"Recorded CI checkpoint","href":"https://github.com/michaelbawuah/NavoX/actions/runs/37160769439","kind":"evidence"},
+      {"label":"Engineering brief PDF","href":"/documents/navox-engineering-brief.pdf","kind":"pdf"}
+    ]
+  },
+  "fluxion": {
+    "name":"Fluxion",
+    "label":"Deep learning systems",
+    "tagline":"Build the machinery behind a neural network, then measure it.",
+    "overview":"Fluxion is a readable deep learning engine built from first principles. It owns its tensors, dynamic computation graph, backward rules, trainable layers and optimizers, then composes those pieces into a small GPT-style model. PyTorch is an independent numerical reference rather than the training engine underneath Fluxion.",
+    "problem":"Understanding a model's training behavior requires seeing how gradients accumulate, how shapes broadcast and where complete training steps spend time. Moving an operator into native code is only useful if the actual workload improves.",
+    "features":[
+      {"title":"Tensors and reverse-mode autograd","text":"Array operations build a dynamic graph. Backward traversal accumulates all contributions to a shared input and reduces broadcast gradients to their original shapes."},
+      {"title":"Trainable modules","text":"Linear, activation, normalization and embedding layers compose with losses, recursive parameter discovery, SGD and Adam."},
+      {"title":"A small causal Transformer","text":"Multi-head causal attention, learned positions and pre-norm residual blocks produce GPT logits for next-token training and generation."},
+      {"title":"Explicit backend experiments","text":"NumPy is the default path. An opt-in C++/BLAS Linear operator and experimental standalone CUDA Linear kernels expose native boundaries."}
+    ],
+    "stages":[
+      {"title":"Forward","text":"Tensor operations record parent inputs and local backward rules while producing a model output and loss."},
+      {"title":"Differentiate","text":"A topological reverse traversal computes local derivatives and accumulates each parent contribution."},
+      {"title":"Update","text":"SGD or Adam changes the trainable arrays; the same loop supports the toy network and GPT example."},
+      {"title":"Check and measure","text":"Independent PyTorch implementations check outputs and gradients; full training-step benchmarks retain raw samples."}
+    ],
+    "decisions":[
+      {"title":"Readable correctness first","text":"The graph and derivatives remain inspectable. For y = x*x + x at x = 3, the shared x receives 3 + 3 + 1, producing gradient 7."},
+      {"title":"Reference both directions","text":"Validation copies the same inputs and parameters into independent PyTorch models and checks both forward values and backward gradients."},
+      {"title":"Measure the whole step","text":"Benchmarks include forward, loss, backward and update. Operator-level work does not automatically translate into a faster model."}
+    ],
+    "evidence":"The October 4 Linux CPU/native checkpoint passed 72 tests with 2 CUDA skips. All five PyTorch reference reports passed. The retained workload measurements include 2,000 timed samples. The seeded tiny network's loss fell from 0.256 to 7.81e-13 after 1,000 updates.",
+    "scope":"Native Linear was slower on the measured Linux host. CUDA was not exercised in that checkpoint; device-resident GPT training is future work. The tiny repeated-text GPT example is a learning exercise, not evidence of broad language understanding.",
+    "technologies":["Python","NumPy","C++","BLAS","CUDA","PyTorch"],
+    "resources":[
+      {"label":"Source code and runnable examples","href":"https://github.com/michaelbawuah/Fluxion","kind":"source"},
+      {"label":"Autograd implementation","href":"https://github.com/michaelbawuah/Fluxion/blob/main/src/fluxion/autograd.py","kind":"architecture"},
+      {"label":"Small GPT model","href":"https://github.com/michaelbawuah/Fluxion/blob/main/src/fluxion/transformer/gpt.py","kind":"source"},
+      {"label":"Independent PyTorch validation","href":"https://github.com/michaelbawuah/Fluxion/blob/main/validation/validate_pytorch.py","kind":"evidence"},
+      {"label":"Benchmark methodology and results","href":"https://github.com/michaelbawuah/Fluxion/blob/main/docs/benchmarks/results.md","kind":"evidence"},
+      {"label":"Engineering brief PDF","href":"/documents/fluxion-engineering-brief.pdf","kind":"pdf"}
+    ]
+  },
+  "marketlab": {
+    "name":"MarketLab",
+    "label":"Portfolio research platform",
+    "tagline":"Every historical result has inspectable inputs and accounting.",
+    "overview":"MarketLab combines portfolio planning with saved historical experiments. A person can aggregate manually entered accounts and debts, validate stock-price history, compare a next-close trend rule with buying and holding, inspect costs and assumptions, and save an experiment that can be independently replayed.",
+    "problem":"A chart is not enough to trust a backtest. Imported prices, cash arithmetic, timing assumptions and saved inputs need to remain inspectable. In a background service, a crashed or stale worker must not overwrite the authoritative result.",
+    "features":[
+      {"title":"Planning before complexity","text":"A fictional first-run example shows how trading costs change the same investment. Private workspaces support goals, fee projections and contribution or stress scenarios."},
+      {"title":"Historical stock pipelines","text":"Server Alpha Vantage, browser Alpha Vantage and CSV imports converge on validation and immutable owner-scoped snapshots with explicit provenance."},
+      {"title":"Saved, exact backtests","text":"BigInt money and share arithmetic, declared events and causal next-close execution preserve the inputs behind each report."},
+      {"title":"Verification and reviewed sharing","text":"An owner may request C++ checks or independent Python replay. Separate reviewed sharing publishes an allowlisted, expiring, revocable summary."}
+    ],
+    "stages":[
+      {"title":"Import","text":"Fetch daily closes on demand or import one symbol's historical CSV with source, currency and adjustment declarations."},
+      {"title":"Validate and freeze","text":"Reject malformed observations; save a provenance-bound, owner-scoped D1 snapshot with a SHA-256 identity."},
+      {"title":"Calculate and save","text":"Bind the snapshot and event records to exact accounting and next-close execution; freeze the settings, inputs and result fingerprint."},
+      {"title":"Verify or share","text":"Separate owner-triggered branches submit fenced Node/MongoDB jobs, request Python replay or publish a reviewed redacted summary."}
+    ],
+    "decisions":[
+      {"title":"Exact money, explicit execution","text":"Cash uses BigInt cents and holdings use millionths of shares. Signals execute at the next supplied close, with defined fees, slippage, splits and dividends."},
+      {"title":"Separate runtime responsibilities","text":"The hosted React/TypeScript application stores authoritative workspaces and reports in Workers/D1. A separate Node/MongoDB service owns copied research inputs and background jobs."},
+      {"title":"Fence stale workers","text":"MongoDB-clock leases and tokens govern heartbeats and finalization. A crashed calculation can be retried without allowing an older worker to replace the current durable result."}
+    ],
+    "evidence":"Three local service-workload runs completed 3,000 verified jobs with zero failures, combined throughput 39.96 jobs/s and client-observed p99 319.77 ms. The workload used two calculation workers, eight closed-loop clients and 500 observations per instrument.",
+    "scope":"These are local workload measurements, not production capacity or live-site latency. Data imports are user-triggered historical paths, not a streaming feed. Browser-imported provider data retains distinct provenance. Backtests are research comparisons, not forecasts.",
+    "technologies":["TypeScript","React","Cloudflare Workers","Cloudflare D1","Node.js","MongoDB","C++","Python"],
+    "resources":[
+      {"label":"Open MarketLab","href":"https://marketlab-portfolio.michaelbaffour240306.chatgpt.site","kind":"live"},
+      {"label":"Try the fictional report","href":"https://marketlab-portfolio.michaelbaffour240306.chatgpt.site/example","kind":"live"},
+      {"label":"Source code","href":"https://github.com/michaelbawuah/MarketLab","kind":"source"},
+      {"label":"Stock pipeline diagram","href":"https://github.com/michaelbawuah/MarketLab/blob/main/docs/media/stock-data-pipeline.svg","kind":"architecture"},
+      {"label":"Independent replay design","href":"https://github.com/michaelbawuah/MarketLab/blob/main/docs/independent-replay.md","kind":"evidence"},
+      {"label":"Service measurement methodology","href":"https://github.com/michaelbawuah/MarketLab/blob/main/docs/service-performance.md","kind":"evidence"},
+      {"label":"Engineering brief PDF","href":"/documents/marketlab-engineering-brief.pdf","kind":"pdf"}
+    ]
+  },
+  "modelforge": {
+    "name":"ModelForge",
+    "label":"ML deployment infrastructure",
+    "tagline":"Version a model. Release progressively. Preserve the stable service.",
+    "overview":"ModelForge is a model registry, deployment control plane and inference platform. Browser, CLI and API clients use the same operations to register immutable model versions, select a runtime, send a weighted share of requests to a canary and promote, abort or roll back a release.",
+    "problem":"Shipping a model is a release-management problem as well as an inference problem. An artifact must retain a verifiable identity, a candidate needs bounded exposure, and a failed new version must preserve the stable target.",
+    "features":[
+      {"title":"Immutable model versions","text":"Registered artifacts have SHA-256 identities, verified before execution, with local or S3-compatible storage behind one contract."},
+      {"title":"Progressive release controls","text":"Weighted canaries receive controlled traffic. Promotion, abort and rollback preserve validated lifecycle transitions and environment targets."},
+      {"title":"Framework-independent execution","text":"Built-in, PyTorch and ONNX runtimes share an interface. An external HTTP contract supports the reference Go runtime and future plugins."},
+      {"title":"Runtime failure containment","text":"Health inspection, bounded retries, circuit breakers, metrics and stable fallback govern execution at the runtime boundary."}
+    ],
+    "stages":[
+      {"title":"Register","text":"Create a workspace-scoped model and immutable version, then upload and verify its artifact."},
+      {"title":"Deploy","text":"An environment resolves its authoritative stable target through the selected runtime."},
+      {"title":"Canary","text":"A candidate receives a weighted lane while stable continues serving; responses identify deployment, version and lane."},
+      {"title":"Promote or recover","text":"Promote a healthy candidate, roll back a release or abort a failed canary while preserving stable."}
+    ],
+    "decisions":[
+      {"title":"Control plane and execution are separate","text":"The Python/FastAPI control plane owns identity, state, traffic and tenancy. Runtimes own framework-specific loading and prediction, so a new framework does not require serving-path branches."},
+      {"title":"Atomic release invariants","text":"A canary does not become stable until promotion succeeds. Promotion and rollback update release state and environment targets transactionally."},
+      {"title":"Workspace boundaries throughout","text":"Models, artifacts, deployments, canaries and keys are workspace-scoped. Browser sessions use OIDC/PKCE; automation uses hashed workspace API keys."}
+    ],
+    "evidence":"The recorded CI checkpoint passed 164 tests with 3 skips. The deployment validation scenario serves a baseline, observes weighted canary traffic, promotes v2, restores v1, detects an intentionally regressed v3 and aborts it while v1 remains authoritative.",
+    "scope":"ModelForge is not publicly hosted. The console preview uses example data and is illustrative. AWS/Terraform configuration is a deployment reference, not proof of live AWS operation. Model caches and runtime client state are currently process-local.",
+    "technologies":["Python","FastAPI","SQLAlchemy","MySQL","Go","PyTorch","ONNX","Docker","Terraform","Prometheus","Amazon Web Services"],
+    "resources":[
+      {"label":"Source code and local setup","href":"https://github.com/michaelbawuah/ModelForge","kind":"source"},
+      {"label":"Architecture and invariants","href":"https://github.com/michaelbawuah/ModelForge/blob/main/docs/architecture.md","kind":"architecture"},
+      {"label":"Deployment validation scenario","href":"https://github.com/michaelbawuah/ModelForge/blob/main/docs/demo-proof.md","kind":"evidence"},
+      {"label":"External runtime protocol","href":"https://github.com/michaelbawuah/ModelForge/blob/main/docs/runtime-protocol.md","kind":"architecture"},
+      {"label":"Engineering guide","href":"https://github.com/michaelbawuah/ModelForge/blob/main/docs/engineering-guide.md","kind":"evidence"},
+      {"label":"Engineering brief PDF","href":"/documents/modelforge-engineering-brief.pdf","kind":"pdf"}
+    ]
+  },
+  "toolret": {
+    "name":"ToolRet",
+    "label":"Independent undergraduate retrieval research",
+    "tagline":"When is reranking worth its cost?",
+    "overview":"This empirical study asks whether a learned router can skip cross-encoder reranking while preserving retrieval quality within a tolerance fixed before confirmation. It searches a 37,292-tool catalog and separates development, calibration and untouched confirmation queries by relevant-tool components.",
+    "problem":"Always reranking adds compute and latency, and can even worsen rankings for some query sources. A cost-aware decision must be evaluated on fresh queries, against simple gates and matched-budget controls, rather than selected after seeing the holdout.",
+    "features":[
+      {"title":"Hybrid first-stage retrieval","text":"BM25 and MiniLM dense search each retrieve 100 tools; equal-weight reciprocal-rank fusion combines their rankings."},
+      {"title":"A cheap conditional decision","text":"A seven-feature ridge router uses first-stage disagreement, overlap, coherence, query length and score margin to decide whether to rerank the first 20 candidates."},
+      {"title":"Frozen confirmation design","text":"300 development, 300 calibration and 1,500 confirmation queries have disjoint relevant-tool components; fitted parameters and criteria were frozen before confirmation."},
+      {"title":"Evidence you can inspect","text":"The public report, source-stratified intervals, random controls, failure cases, real conditional execution, raw timing and 317-check independent audit are retained."}
+    ],
+    "stages":[
+      {"title":"Retrieve","text":"BM25 and all-MiniLM-L6-v2 search the same complete tool catalog."},
+      {"title":"Fuse","text":"Reciprocal-rank fusion creates a shared candidate ordering without requiring expensive reranker scores."},
+      {"title":"Route","text":"A frozen threshold on a seven-feature ridge prediction decides whether the cross-encoder should run."},
+      {"title":"Return and evaluate","text":"Reranked queries score 20 fused tools; skipped queries retain hybrid rankings. Confirmation evaluates quality, calls and actual CPU timing separately."}
+    ],
+    "decisions":[
+      {"title":"Protect the holdout","text":"Relevant-tool components separate supervised exposure. The primary policy and 0.01 nDCG@10 loss tolerance were retained even when a simpler gate had a stronger observed tradeoff."},
+      {"title":"Compare allocation, not just volume","text":"Global and source-count-matched random controls test whether router allocation adds value beyond simply reducing the number of reranker calls."},
+      {"title":"Measure real conditional execution","text":"Every confirmation decision was replayed with actual conditional inference. Warm sequential CPU timing includes retrieval, query encoding, exact search, fusion, routing and reranking."}
+    ],
+    "evidence":"On 1,500 untouched confirmation queries, the primary policy made 1,149 cross-encoder calls rather than 1,500: 351 skipped calls, or 23.4% fewer. nDCG@10 was 0.5273 versus 0.5241 for always reranking, and both paired interval lower bounds met the declared -0.01 tolerance. Quality superiority was not established.",
+    "scope":"This is independent undergraduate empirical research, not a peer-reviewed publication or a newly invented gating algorithm. The simple disagreement gate had a stronger observed quality/compute tradeoff. The benchmark cohort and warm CPU setting are not production traffic or downstream agent execution.",
+    "technologies":["Python","PyTorch","scikit-learn","NumPy","MiniLM","BM25"],
+    "resources":[
+      {"label":"Research study PDF","href":"/documents/toolret-research-study.pdf","kind":"pdf"},
+      {"label":"Public source and evidence","href":"https://github.com/michaelbawuah/toolret-hybrid-retrieval","kind":"source"},
+      {"label":"Original study PDF","href":"https://github.com/michaelbawuah/toolret-hybrid-retrieval/blob/main/paper/tool_disjoint_reranking_study_20261003.pdf","kind":"pdf"},
+      {"label":"Reproduction instructions","href":"https://github.com/michaelbawuah/toolret-hybrid-retrieval/blob/main/docs/confirmation_reproduction.md","kind":"evidence"},
+      {"label":"Independent audit: 317 checks","href":"https://github.com/michaelbawuah/toolret-hybrid-retrieval/blob/main/results/research_confirmation_20261003/independent_audit.json","kind":"evidence"},
+      {"label":"Failure analysis","href":"https://github.com/michaelbawuah/toolret-hybrid-retrieval/blob/main/results/research_confirmation_20261003/confirmation_failure_analysis.md","kind":"evidence"}
+    ]
+  }
+}

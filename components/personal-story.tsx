@@ -1,0 +1,3 @@
+import { Camera, Clapperboard, ExternalLink } from "lucide-react";
+import { socialProfiles } from "@/lib/personal";
+export function SocialProfileLinks({compact=false}:{compact?:boolean}){return <div className={`creator-socials ${compact?"compact":""}`}><a href={socialProfiles.tiktok} target="_blank" rel="noopener noreferrer"><Clapperboard size={21}/><span>TikTok<small>@mbasteins560</small></span><ExternalLink size={17}/></a><a href={socialProfiles.instagram} target="_blank" rel="noopener noreferrer"><Camera size={21}/><span>Instagram<small>@mba_steins</small></span><ExternalLink size={17}/></a></div>;}

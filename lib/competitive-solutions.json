@@ -1,0 +1,74 @@
+[
+  {
+    "title": "Shortest Routes I",
+    "platform": "CSES \u00b7 1671",
+    "technique": "Dijkstra",
+    "path": "solutions/cses/graphs/1671_shortest_routes_i.cpp",
+    "notes": "notes/cses/1671_shortest_routes_i.md",
+    "description": "Start at city 1, always expand the cheapest unsettled route, and skip stale queue entries.",
+    "time": "O((n + m) log(n + m))",
+    "space": "O(n + m)",
+    "visual": "graph",
+    "code": "// Shortest Routes I | https://cses.fi/problemset/task/1671/\n// Time: O((n + m) log(n + m)); extra space: O(n + m).\n#include <iostream>\n#include <vector>\n#include <queue>\n#include <functional>\n#include <utility>\n#include <limits>\n\n\n\nvoid solve() {\n    int n, m;\n    std::cin >> n >> m;\n    std::vector<std::vector<std::pair<int, long long>>> graph(n);\n    for (int i = 0; i < m; ++i) {\n        int a, b;\n        long long cost;\n        std::cin >> a >> b >> cost;\n        graph[a - 1].emplace_back(b - 1, cost);\n    }\n    constexpr long long infinity = std::numeric_limits<long long>::max() / 4;\n    std::vector<long long> distance(n, infinity);\n    using State = std::pair<long long, int>;\n    std::priority_queue<State, std::vector<State>, std::greater<State>> queue;\n    distance[0] = 0;\n    queue.emplace(0, 0);\n    while (!queue.empty()) {\n        auto [cost, u] = queue.top(); queue.pop();\n        if (cost != distance[u]) continue;\n        for (auto [v, weight] : graph[u]) {\n            if (cost + weight < distance[v]) {\n                distance[v] = cost + weight;\n                queue.emplace(distance[v], v);\n            }\n        }\n    }\n    for (int i = 0; i < n; ++i) std::cout << distance[i] << (i + 1 == n ? '\\n' : ' ');\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    solve();\n}"
+  },
+  {
+    "title": "Frog 1",
+    "platform": "AtCoder \u00b7 DP A",
+    "technique": "Dynamic programming",
+    "path": "solutions/atcoder/educational_dp/dp_a_frog_1.cpp",
+    "notes": "notes/atcoder/dp_a_frog_1.md",
+    "description": "At each stone, compare the cost of jumping from one or two stones back.",
+    "time": "O(n)",
+    "space": "O(n)",
+    "visual": "dp",
+    "code": "// Frog 1 | https://atcoder.jp/contests/dp/tasks/dp_a\n// Time: O(n); extra space: O(n).\n#include <iostream>\n#include <vector>\n#include <algorithm>\n#include <cstdlib>\n#include <limits>\n\n\n\nvoid solve() {\n    int n; std::cin >> n;\n    std::vector<long long> height(n), best(n, std::numeric_limits<long long>::max() / 4);\n    for (auto& value : height) std::cin >> value;\n    best[0] = 0;\n    for (int i = 1; i < n; ++i) {\n        best[i] = best[i - 1] + std::abs(height[i] - height[i - 1]);\n        if (i >= 2) best[i] = std::min(best[i], best[i - 2] + std::abs(height[i] - height[i - 2]));\n    }\n    std::cout << best.back() << '\\n';\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    solve();\n}"
+  },
+  {
+    "title": "Dynamic Range Sum Queries",
+    "platform": "CSES \u00b7 1648",
+    "technique": "Fenwick tree",
+    "path": "solutions/cses/range_queries/1648_dynamic_range_sum_queries.cpp",
+    "notes": "notes/cses/1648_dynamic_range_sum_queries.md",
+    "description": "Keep partial sums in a Fenwick tree; updates and prefix queries follow the lowest set bit.",
+    "time": "O(log n) per query",
+    "space": "O(n)",
+    "visual": "fenwick",
+    "code": "// Dynamic Range Sum Queries | https://cses.fi/problemset/task/1648/\n// Time: O((n + q) log n); extra space: O(n).\n#include <iostream>\n#include <vector>\n\n\n\nvoid solve() {\n    int n, q;\n    std::cin >> n >> q;\n    std::vector<long long> values(n + 1), tree(n + 1);\n    auto add = [&](int index, long long delta) {\n        for (; index <= n; index += index & -index) tree[index] += delta;\n    };\n    auto prefix = [&](int index) {\n        long long answer = 0;\n        for (; index > 0; index -= index & -index) answer += tree[index];\n        return answer;\n    };\n    for (int i = 1; i <= n; ++i) { std::cin >> values[i]; add(i, values[i]); }\n    while (q--) {\n        int type, a; long long b;\n        std::cin >> type >> a >> b;\n        if (type == 1) { add(a, b - values[a]); values[a] = b; }\n        else std::cout << prefix(static_cast<int>(b)) - prefix(a - 1) << '\\n';\n    }\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    solve();\n}"
+  },
+  {
+    "title": "Book Shop",
+    "platform": "CSES \u00b7 1158",
+    "technique": "0/1 knapsack",
+    "path": "solutions/cses/dynamic_programming/1158_book_shop.cpp",
+    "notes": "notes/cses/1158_book_shop.md",
+    "description": "Process budgets backwards so each book can contribute at most once.",
+    "time": "O(n \u00d7 budget)",
+    "space": "O(n + budget)",
+    "visual": "knapsack",
+    "code": "// Book Shop | https://cses.fi/problemset/task/1158/\n// Time: O(n * x); extra space: O(n + x).\n#include <iostream>\n#include <vector>\n#include <algorithm>\n\n\n\nvoid solve() {\n    int n, budget;\n    std::cin >> n >> budget;\n    std::vector<int> price(n), pages(n), best(budget + 1);\n    for (auto& value : price) std::cin >> value;\n    for (auto& value : pages) std::cin >> value;\n    for (int book = 0; book < n; ++book) {\n        for (int money = budget; money >= price[book]; --money) {\n            best[money] = std::max(best[money], best[money - price[book]] + pages[book]);\n        }\n    }\n    std::cout << best[budget] << '\\n';\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    solve();\n}"
+  },
+  {
+    "title": "Factory Machines",
+    "platform": "CSES \u00b7 1620",
+    "technique": "Binary search",
+    "path": "solutions/cses/sorting_searching/1620_factory_machines.cpp",
+    "notes": "notes/cses/1620_factory_machines.md",
+    "description": "Search for the first time at which the machines can produce the target quantity.",
+    "time": "O(n log(min(k) \u00d7 target))",
+    "space": "O(n)",
+    "visual": "binary",
+    "code": "// Factory Machines | https://cses.fi/problemset/task/1620/\n// Time: O(n log(min(k) * t)); extra space: O(n).\n#include <iostream>\n#include <vector>\n#include <algorithm>\n\n\n\nvoid solve() {\n    int n;\n    long long target;\n    std::cin >> n >> target;\n    std::vector<long long> times(n);\n    for (auto& time : times) std::cin >> time;\n    long long low = 0;\n    long long high = *std::min_element(times.begin(), times.end()) * target;\n    auto enough = [&](long long duration) {\n        long long made = 0;\n        for (long long time : times) {\n            long long produced = duration / time;\n            if (produced >= target - made) return true;\n            made += produced;\n        }\n        return false;\n    };\n    while (low < high) {\n        long long middle = low + (high - low) / 2;\n        if (enough(middle)) high = middle;\n        else low = middle + 1;\n    }\n    std::cout << low << '\\n';\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    solve();\n}"
+  },
+  {
+    "title": "Same Differences",
+    "platform": "Codeforces \u00b7 1520D",
+    "technique": "Counting",
+    "path": "solutions/codeforces/counting/1520D_same_differences.cpp",
+    "notes": "notes/codeforces/1520D_same_differences.md",
+    "description": "Rearrange a[j] \u2212 a[i] = j \u2212 i into equal values of a[i] \u2212 i, then count previous matches.",
+    "time": "O(n log n)",
+    "space": "O(n)",
+    "visual": "counting",
+    "code": "// Same Differences | https://codeforces.com/problemset/problem/1520/D\n// Time: O(n log n) per case; extra space: O(n).\n#include <iostream>\n#include <map>\n\n\n\nvoid solve() {\n    int tests; std::cin >> tests;\n    while (tests-- > 0) {\n        int n; std::cin >> n; std::map<long long,long long> frequency; long long answer=0;\n        for (int i=0;i<n;++i) { long long value; std::cin >> value; answer+=frequency[value-i]++; }\n        std::cout << answer << '\\n';\n    }\n}\n\nint main() {\n    std::ios::sync_with_stdio(false);\n    std::cin.tie(nullptr);\n    solve();\n}"
+  }
+]
