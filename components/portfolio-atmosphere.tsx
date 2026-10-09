@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
 
 export function PortfolioAtmosphere(){
  const canvas=useRef<HTMLCanvasElement>(null),cursor=useRef<HTMLDivElement>(null);
- const path=usePathname();
  useEffect(()=>{
   const element=canvas.current,ring=cursor.current;if(!element||!ring)return;
   const reduced=matchMedia("(prefers-reduced-motion: reduce)");
@@ -29,15 +27,6 @@ export function PortfolioAtmosphere(){
   resize();frame=requestAnimationFrame(draw);window.addEventListener("resize",resize);window.addEventListener("pointermove",pointerMove,{passive:true});document.addEventListener("pointerleave",leave);document.addEventListener("visibilitychange",visibility);reduced.addEventListener("change",preference);
   return()=>{stopped=true;delete document.documentElement.dataset.customCursor;cancelAnimationFrame(frame);window.removeEventListener("resize",resize);window.removeEventListener("pointermove",pointerMove);document.removeEventListener("pointerleave",leave);document.removeEventListener("visibilitychange",visibility);reduced.removeEventListener("change",preference);};
  },[]);
- useEffect(()=>{
-  const media=matchMedia("(prefers-reduced-motion: reduce)");if(media.matches)return;
-  let disposed=false,cleanup=()=>{};
-  void import("lenis").then(({default:Lenis})=>{if(disposed||media.matches)return;const lenis=new Lenis({autoRaf:true,duration:.85,smoothWheel:true,anchors:false,prevent:node=>!!node.closest('[role="dialog"],[data-lenis-prevent]')});const syncLock=()=>{if(document.body.hasAttribute("data-scroll-locked")||getComputedStyle(document.body).overflow==="hidden")lenis.stop();else lenis.start();};const locks=new MutationObserver(syncLock);locks.observe(document.body,{attributes:true,attributeFilter:["data-scroll-locked","style"]});syncLock();const preference=()=>{if(media.matches)lenis.destroy();};media.addEventListener("change",preference);cleanup=()=>{locks.disconnect();media.removeEventListener("change",preference);lenis.destroy();};}).catch(()=>{});
-  const revealAnimations=new Set<Animation>();
-  const observer=new IntersectionObserver(entries=>{if(media.matches)return;for(const entry of entries)if(entry.isIntersecting){const animation=(entry.target as HTMLElement).animate([{opacity:.15,transform:"translateY(26px)",filter:"blur(5px)"},{opacity:1,transform:"translateY(0)",filter:"blur(0)"}],{duration:600,easing:"cubic-bezier(.22,1,.36,1)",fill:"none"});revealAnimations.add(animation);animation.addEventListener("finish",()=>revealAnimations.delete(animation),{once:true});observer.unobserve(entry.target);}},{threshold:.12});
-  document.querySelectorAll('.experience-grid>article,.story-chapter,.collaboration-card,.feature-grid>article,.decision-grid>article,.case-hero-visual,.research-crosslink').forEach(e=>observer.observe(e));
-  const stopReveals=()=>{if(media.matches){observer.disconnect();revealAnimations.forEach(a=>a.cancel());revealAnimations.clear();}};media.addEventListener("change",stopReveals);
-  return()=>{disposed=true;observer.disconnect();media.removeEventListener("change",stopReveals);revealAnimations.forEach(a=>a.cancel());cleanup();};
- },[path]);
+
  return <><canvas className="portfolio-particles" ref={canvas} aria-hidden="true"/><div className="elastic-pointer" ref={cursor} aria-hidden="true"/></>;
 }

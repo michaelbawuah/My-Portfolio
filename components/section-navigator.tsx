@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 
+import { scrollToPortfolioSection } from "@/lib/portfolio-scroll";
+
 type ReadingSection = { id: string; label: string; content: ReactNode };
 
 /** Tab-shaped chapter links: every chapter stays in the document. */
@@ -49,7 +51,7 @@ export function SectionNavigator({ sections, label = "Page sections", id, classN
       try { hash = decodeURIComponent(window.location.hash.slice(1)); } catch { return; }
       const legacyToolkit = initialSection && new URLSearchParams(window.location.search).get("view") === "toolkit" && (!hash || hash === "about-notebook");
       const panel = panels.find(panel => panel.id === (legacyToolkit ? initialSection : hash));
-      panel?.scrollIntoView({ block: "start", behavior: "instant" });
+      if (panel) scrollToPortfolioSection(panel, true);
       schedule();
     };
     measure();
@@ -78,7 +80,7 @@ export function SectionNavigator({ sections, label = "Page sections", id, classN
       window.history.pushState(null, "", `#${target}`);
     }
     panel.focus({ preventScroll: true });
-    panel.scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+    scrollToPortfolioSection(panel);
   }
 
   return <div ref={container} id={id} className={`reading-sections ${className}`}>

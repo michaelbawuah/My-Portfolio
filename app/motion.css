@@ -1,0 +1,27 @@
+/* One motion layer shared by every page; readable, functional HTML is the baseline. */
+.portfolio-reading-progress { position: fixed; inset: 0 0 auto; height: 3px; z-index: 95; pointer-events: none; }
+.portfolio-reading-progress > span { display: block; height: 100%; background: var(--primary); transform: scaleX(0); transform-origin: left center; box-shadow: 0 0 12px color-mix(in srgb, var(--primary) 45%, transparent); }
+
+.portfolio-shell[data-motion-ready] :is(.kinetic-heading > span, .page-heading, .personal-hero-copy, .case-hero-copy) { animation: none; }
+
+.showcase-card-inner.spotlight-card { padding: 0; border-radius: 16px; background: var(--card); }
+.showcase-card-inner.spotlight-card:focus-within { border-color: var(--primary); }
+.showcase-card-inner.spotlight-card > .spotlight-card__edge { z-index: 4; }
+.work-together-panel.spotlight-card { background: var(--card); }
+
+.magnet { position: relative; display: inline-flex; max-width: 100%; }
+.magnet-content { display: inline-flex; max-width: 100%; transform: translate3d(var(--magnet-x, 0px), var(--magnet-y, 0px), 0); transition: transform .22s ease-out, scale .16s ease-out; }
+.magnet-content > a { width: 100%; }
+.magnet:active .magnet-content { scale: .98; }
+.magnet:focus-within .magnet-content { transform: none; }
+
+@media (max-width: 520px) {
+  .hero-actions > .magnet { flex: 1 1 150px; }
+  .hero-actions > .magnet > .magnet-content { width: 100%; }
+  .hero-actions > .magnet a { justify-content: center; text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-reading-progress { display: none; }
+  .magnet-content { transform: none !important; scale: 1 !important; transition: none; }
+}

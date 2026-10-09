@@ -6,6 +6,8 @@ import "./themes.css";
 import "./activity.css";
 import "./reading.css";
 import "./competitive-programming.css";
+import "lenis/dist/lenis.css";
+import "./motion.css";
 import {PortfolioTheme} from "@/components/portfolio-theme";
 import {GlobalKeyboardScene} from "@/components/global-keyboard-scene";
 
