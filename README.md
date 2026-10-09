@@ -52,6 +52,10 @@ React, TypeScript, Vinext/Vite, Tailwind CSS, Motion, GSAP, Lenis, Spline, and C
 | `scripts/` | Development and build helpers |
 | `docs/` | Visual references and interaction-source credits |
 
+## Updating the portfolio
+
+See the [content maintenance guide](docs/CONTENT-GUIDE.md) for the files behind project cards, case studies, personal photos, social links, and page metadata, plus the checks to make before publishing an update.
+
 ## Hosting and assets
 
 The live portfolio is published through Sites at [michaelbaffourawuah.com](https://michaelbaffourawuah.com). This repository contains its source; production builds target Cloudflare Workers.
