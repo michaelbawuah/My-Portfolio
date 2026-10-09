@@ -1,0 +1,61 @@
+/* Keep the Work introduction readable as the shared 3D scene moves behind it. */
+.heading:global(.showcase-heading) {
+  padding-top: 2rem;
+}
+
+.copy {
+  position: relative;
+  z-index: 1;
+  width: fit-content;
+  max-width: min(100%, 64rem);
+  margin-inline: auto;
+  padding: 1.5rem clamp(1rem, 3vw, 2.5rem);
+  border-radius: 1.25rem;
+  background: var(--background);
+  box-shadow: 0 0 2rem 1rem var(--background);
+}
+
+.copy .kicker {
+  margin: 0 0 1rem;
+  color: var(--primary);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  letter-spacing: 0.1em;
+}
+
+.copy .title {
+  color: var(--foreground);
+  line-height: 1.12;
+  letter-spacing: -0.045em;
+  text-shadow: none;
+}
+
+.copy .title em {
+  color: var(--primary);
+}
+
+.copy .description {
+  max-width: 38rem;
+  margin: 1.25rem auto 0;
+  padding: 0;
+  color: var(--foreground);
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: normal;
+}
+
+@media (max-width: 520px) {
+  .heading:global(.showcase-heading) {
+    padding-top: 1rem;
+  }
+
+  .copy {
+    padding: 1.25rem 1rem;
+    border-radius: 1rem;
+  }
+
+  .copy .title {
+    letter-spacing: -0.035em;
+  }
+}
