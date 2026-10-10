@@ -4,7 +4,7 @@ import {LetsWorkTogether} from "@/components/lets-work-together";
 import {InteractiveProjects} from "@/components/interactive-projects";
 import styles from "./work-heading.module.css";
 
-export const metadata=pageMetadata("Projects","Explore NavoX, Fluxion, ModelForge, MarketLab, ToolRet, SlopeChat, and Pro Competitive Programming: Michael Baffour Awuah’s software, AI, research, and collaborative projects.","/work");
+export const metadata=pageMetadata("Projects","Explore NavoX, Fluxion, Gatehaven, ModelForge, MarketLab, ToolRet, SlopeChat, and Pro Competitive Programming: Michael Baffour Awuah’s software, AI, research, and collaborative projects.","/work");
 
 export default function Work(){
   return (
