@@ -1,0 +1,50 @@
+{
+  "purpose": "Platform and AI provider marks shown on portfolio project cards.",
+  "notice": "Brand names and marks belong to their respective owners.",
+  "assets": [
+    {
+      "label": "macOS",
+      "publicPath": "/tech/apple.svg",
+      "sourceUrl": "https://github.com/devicons/devicon/blob/7330accdbc47e2dc0c19789a48533c4a3c50fe58/icons/apple/apple-original.svg",
+      "sourceBlobSha": "e5f9c80b2a1437951e3dbdfb68dc8af7ab4558af",
+      "licenseFile": "/tech/DEVICON-LICENSE.txt",
+      "modification": "Original SVG; trailing newline normalized."
+    },
+    {
+      "label": "Linux",
+      "publicPath": "/tech/linux.svg",
+      "sourceUrl": "https://github.com/devicons/devicon/blob/7330accdbc47e2dc0c19789a48533c4a3c50fe58/icons/linux/linux-plain.svg",
+      "sourceBlobSha": "26ced8fd138caa307d27cfa4acecdf0a707defc3",
+      "licenseFile": "/tech/DEVICON-LICENSE.txt",
+      "modification": "Original SVG; trailing newline normalized."
+    },
+    {
+      "label": "Windows",
+      "publicPath": "/tech/windows.svg",
+      "sourceUrl": "https://github.com/devicons/devicon/blob/7330accdbc47e2dc0c19789a48533c4a3c50fe58/icons/windows11/windows11-original.svg",
+      "sourceBlobSha": "4fbbd4e7ed3caed7dddcac4c258d70f17a0d7992",
+      "licenseFile": "/tech/DEVICON-LICENSE.txt",
+      "modification": "Original SVG; trailing newline normalized."
+    },
+    {
+      "label": "Claude",
+      "publicPath": "/tech/claude.svg",
+      "sourceUrl": "https://github.com/simple-icons/simple-icons/blob/98820a4dc8c363ca72fa2c0d294ea4a0a9bba75d/icons/claude.svg",
+      "sourceBlobSha": "1beee8612185a8fb0a23bcfd8c3ce9b6d86785a8",
+      "licenseFile": "/tech/SIMPLE-ICONS-LICENSE.txt",
+      "modification": "Original SVG; trailing newline normalized."
+    }
+  ],
+  "reusedAssets": [
+    {
+      "label": "OpenAI",
+      "publicPath": "/tech/openai.png",
+      "sourceRecord": "/tech/manifest.json"
+    },
+    {
+      "label": "Gemini",
+      "publicPath": "/tech/googlegemini.svg",
+      "sourceRecord": "/tech/manifest.json"
+    }
+  ]
+}
