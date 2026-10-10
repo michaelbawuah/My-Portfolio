@@ -74,26 +74,6 @@ export function PortfolioMotion() {
         shell.dataset.motionReady = 'true';
 
         const context = gsap.context(() => {
-          const studio = shell.querySelector<HTMLElement>('.studio-hero');
-          if (studio) {
-            const opening = gsap.timeline({ defaults: { ease: 'power3.out' } });
-            opening.fromTo(studio.querySelectorAll('.hero-word'),
-              { yPercent: 115, rotate: 4 },
-              { yPercent: 0, rotate: 0, duration: 1.05, stagger: 0.13, clearProps: 'transform' }, 0);
-            opening.fromTo(studio.querySelector('.hero-underline path'),
-              { strokeDasharray: 1, strokeDashoffset: 1 },
-              { strokeDashoffset: 0, duration: 0.75 }, 0.8);
-            opening.fromTo(studio.querySelector('.studio-portrait'),
-              { y: 65, rotate: -8, scale: 0.86, opacity: 0 },
-              { y: 0, rotate: 5, scale: 1, opacity: 1, duration: 1.1, clearProps: 'transform,opacity' }, 0.12);
-            opening.fromTo(studio.querySelectorAll('.studio-note'),
-              { y: 40, opacity: 0 },
-              { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, clearProps: 'transform,opacity' }, 0.6);
-            gsap.to(studio.querySelector('.studio-photo img'), {
-              yPercent: -5, scale: 1.1, ease: 'none',
-              scrollTrigger: { trigger: studio, start: 'top top', end: 'bottom top', scrub: 0.7 },
-            });
-          }
           const intro = Array.from(shell.querySelectorAll<HTMLElement>(introSelector));
           if (intro.length) gsap.fromTo(intro,
             { y: 24, opacity: 0.25 },
