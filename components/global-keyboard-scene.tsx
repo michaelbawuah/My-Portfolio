@@ -42,8 +42,8 @@ export function GlobalKeyboardScene(){
    for(const section of document.querySelectorAll<HTMLElement>("[data-keyboard-scene]")){
     if(!section.getClientRects().length||section.closest('[data-state="inactive"]'))continue;
     const rect=section.getBoundingClientRect();
-    const mobileStage=section.classList.contains("mobile-keyboard-stage");
-    if(mobileStage?rect.top<height&&rect.bottom>80:rect.top<height*.64&&rect.bottom>height*.34){
+    const dedicatedStage=section.classList.contains("mobile-keyboard-stage")||section.hasAttribute("data-keyboard-stage");
+    if(dedicatedStage?rect.top<height&&rect.bottom>80:rect.top<height*.64&&rect.bottom>height*.34){
      const candidate=section.dataset.keyboardScene as KeyboardMode;
      if(modes.has(candidate)){
       const window=section.querySelector<HTMLElement>("[data-keyboard-window]");
