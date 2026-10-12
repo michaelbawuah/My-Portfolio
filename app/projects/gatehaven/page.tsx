@@ -2,7 +2,7 @@ import { Code2, Download, ExternalLink, Play } from "lucide-react";
 import { PageFrame } from "@/components/portfolio-layout";
 import { CaseNotebook, PipelineExplorer } from "@/components/portfolio-interactions";
 import { ProjectPlatforms } from "@/components/project-platforms";
-import { gatehavenProject as project, gatehavenRelease, gatehavenCI, gatehavenDemo } from "@/lib/gatehaven";
+import { gatehavenProject as project, gatehavenRelease, gatehavenCI, gatehavenDemo, gatehavenPoster, gatehavenComponents, gatehavenLessons } from "@/lib/gatehaven";
 import { pageMetadata } from "@/lib/seo";
 import styles from "./gatehaven.module.css";
 
@@ -20,7 +20,7 @@ export default function GatehavenPage() {
       <p>{project.overview}</p>
     </div>
     <figure id="gatehaven-demo" className={styles.demo}>
-      <video controls playsInline preload="none" poster="/projects/gatehaven/demo-poster.png" width={1920} height={1080} aria-label="Gatehaven gameplay: building and running a logic circuit" aria-describedby="gatehaven-demo-caption">
+      <video controls playsInline preload="none" poster={gatehavenPoster} width={1920} height={1080} aria-label="Gatehaven gameplay: building and running a logic circuit" aria-describedby="gatehaven-demo-caption">
         <source src={gatehavenDemo} type="video/mp4" />
         <a href={gatehavenDemo}>Open the Gatehaven gameplay demo</a>.
       </video>
@@ -44,7 +44,7 @@ export default function GatehavenPage() {
     </div>
     <PipelineExplorer steps={project.stages} name="Gatehaven" />
     <figure className={styles.screenshot}>
-      <a href="/projects/gatehaven/components.png" target="_blank" rel="noopener noreferrer" aria-label="Open the full-size Gatehaven component gallery"><img src="/projects/gatehaven/components.png" width={1280} height={800} loading="lazy" alt="Gatehaven’s component palette: wires, crossings, power, signals, logic gates, relays, screens, and file ports" /></a>
+      <a href={gatehavenComponents} target="_blank" rel="noopener noreferrer" aria-label="Open the full-size Gatehaven component gallery"><img src={gatehavenComponents} width={1280} height={800} loading="lazy" alt="Gatehaven’s component palette: wires, crossings, power, signals, logic gates, relays, screens, and file ports" /></a>
       <figcaption>The component palette, rendered by Gatehaven. Open the image to inspect it full size.</figcaption>
     </figure>
     <div className="section-heading decisions-heading"><span className="mono">ENGINEERING DECISIONS</span><h2>What sits underneath.</h2></div>
@@ -67,7 +67,7 @@ export default function GatehavenPage() {
       <article><h3>macOS, Linux & Windows</h3><p>The CI matrix builds and exercises the app on x64 and ARM64 across all three platforms. SDL workflows cover drawing, stepping, zooming, saving, and reopening; package checks verify installed execution and release contents.</p></article>
     </div>
     <figure className={styles.screenshot}>
-      <a href="/projects/gatehaven/lessons.png" target="_blank" rel="noopener noreferrer" aria-label="Open the full-size Gatehaven lessons screenshot"><img src="/projects/gatehaven/lessons.png" width={1280} height={800} loading="lazy" alt="Gatehaven’s built-in circuit lessons menu over the circuit editor" /></a>
+      <a href={gatehavenLessons} target="_blank" rel="noopener noreferrer" aria-label="Open the full-size Gatehaven lessons screenshot"><img src={gatehavenLessons} width={1280} height={800} loading="lazy" alt="Gatehaven’s built-in circuit lessons menu over the circuit editor" /></a>
       <figcaption>Built-in lessons give you circuits to inspect and change before starting from an empty canvas.</figcaption>
     </figure>
     <div className="scope-panel"><span className="mono">CURRENT RELEASE</span><p>Gatehaven 0.5 Preview 1 is an unsigned development preview; the macOS app is not notarized. Automated checks do not complete the remaining hands-on accessibility, physical-device, and clean-machine acceptance work.</p></div>

@@ -1,10 +1,13 @@
 import type { ShowcaseProject } from "@/lib/project-showcase";
 
 export const gatehavenRepo = "https://github.com/michaelbawuah/Gatehaven";
-export const gatehavenSource = `${gatehavenRepo}/blob/4f91d0f6e1af19b68e901042bf0677b4135c6608`;
+export const gatehavenSource = `${gatehavenRepo}/blob/48bea4f296a1b8e2bee3beda994e9e05ebe9243b`;
 export const gatehavenRelease = `${gatehavenRepo}/releases/tag/v0.5.0-preview.1`;
 export const gatehavenCI = `${gatehavenRepo}/actions/runs/38036451768`;
-export const gatehavenDemo = "/projects/gatehaven/gameplay-demo.mp4";
+export const gatehavenDemo = "/projects/gatehaven/gameplay-demo-clean.mp4";
+export const gatehavenPoster = "/projects/gatehaven/demo-poster-clean.png";
+export const gatehavenComponents = "/projects/gatehaven/components-clean.png";
+export const gatehavenLessons = "/projects/gatehaven/lessons-clean.png";
 
 export const gatehavenProject: ShowcaseProject = {
   slug: "gatehaven",
@@ -17,14 +20,14 @@ export const gatehavenProject: ShowcaseProject = {
   logo: "/logos/gatehaven.svg",
   summary: "Build circuits. Bring logic to life.",
   description: "I engineered Gatehaven, a cross-platform circuit simulator game in C++23 and SDL3, and shipped native x64 and ARM64 previews for macOS, Linux, and Windows. Build circuits, change inputs, and trace each signal one tick at a time.",
-  image: "/projects/gatehaven/desktop.png",
+  image: "/projects/gatehaven/desktop-clean.png",
   imageAlt: "Gatehaven’s circuit editor showing a powered AND gate and a wire crossing with independent horizontal and vertical signals",
   stack: ["C++", "Python"],
   repo: gatehavenRepo,
   live: "",
   evidence: "macOS · Linux · Windows",
   evidenceLabel: "x64 / ARM64 previews · 18-job CI pipeline",
-  note: "Actual Gatehaven screenshots and a scripted gameplay recording from the published development preview.",
+  note: "Actual Gatehaven screenshots and a scripted gameplay recording captured from the C++ editor.",
   overview: "I built Gatehaven to make digital logic something you can experiment with. Draw a wire, connect a gate, change an input, and follow the result one tick at a time. Underneath the editor, I wrote a simulation core that runs independently of the window, so the same circuit rules can be tested without opening the app.",
   features: [
     { title: "Build and experiment", text: "Connect gates, relays, crossings, and interactive screens. Start with a built-in lesson or draw a circuit of your own." },

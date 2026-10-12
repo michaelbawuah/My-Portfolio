@@ -1,0 +1,219 @@
+.stage {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  min-width: 0;
+  height: auto;
+  justify-self: center;
+  isolation: isolate;
+  container-type: inline-size;
+  color: var(--foreground);
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  height: 44px;
+  padding: 0 10px;
+  color: var(--muted-foreground);
+  font-family: var(--mono);
+  font-size: .64rem;
+  line-height: 1.5;
+  letter-spacing: .075em;
+}
+
+.heading > span:first-child { display: inline-flex; align-items: center; gap: 8px; color: var(--primary); }
+.projectCount { text-align: right; letter-spacing: 0; }
+
+.field {
+  --card-width: clamp(112px, 22cqw, 144px);
+  --radius-x: calc(50% - var(--card-width) / 2 - 10px);
+  --radius-y: 255px;
+  position: relative;
+  width: 100%;
+  height: 600px;
+}
+
+.halo {
+  position: absolute;
+  width: 80%;
+  height: 90%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, color-mix(in srgb, var(--primary) 13%, transparent), transparent 66%);
+  pointer-events: none;
+}
+
+.outerRing, .innerRing {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(var(--radius-x) * 2);
+  height: calc(var(--radius-y) * 2);
+  border: 1px solid color-mix(in srgb, var(--primary) 28%, transparent);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.outerRing::after {
+  content: "";
+  position: absolute;
+  inset: -17px;
+  border: 1px dashed color-mix(in srgb, var(--primary) 14%, transparent);
+  border-radius: inherit;
+}
+
+.innerRing {
+  width: calc(var(--radius-x) * 2 - 64px);
+  height: calc(var(--radius-y) * 2 - 74px);
+  border-color: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+.crosshair { position: absolute; inset: 66px 25px; pointer-events: none; opacity: .18; }
+.crosshair::before, .crosshair::after { content: ""; position: absolute; background: var(--primary); }
+.crosshair::before { height: 1px; left: 0; right: 0; top: 50%; }
+.crosshair::after { width: 1px; top: 0; bottom: 0; left: 50%; }
+.spark { position: absolute; width: 5px; height: 5px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 14px color-mix(in srgb, var(--primary) 65%, transparent); pointer-events: none; }
+.sparkOne { left: 26%; top: 22%; }
+.sparkTwo { right: 25%; bottom: 20%; width: 4px; height: 4px; }
+.sparkThree { right: 25%; top: 27%; width: 3px; height: 3px; opacity: .65; }
+
+.portrait {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(130px, 30cqw, 200px);
+  padding: 7px;
+  border: 1px solid color-mix(in srgb, var(--primary) 44%, var(--border));
+  border-radius: 18px;
+  background: var(--card);
+  box-shadow: 0 18px 54px color-mix(in srgb, var(--primary) 16%, transparent), 5px 5px 0 color-mix(in srgb, var(--primary) 12%, transparent);
+  transition: border-color .18s, box-shadow .18s;
+}
+
+.portrait:hover, .portrait:focus-visible { border-color: var(--primary); box-shadow: 0 20px 60px color-mix(in srgb, var(--primary) 25%, transparent), 5px 5px 0 color-mix(in srgb, var(--primary) 18%, transparent); }
+.portraitCorner { position: absolute; inset: -7px auto auto -7px; width: 28px; height: 28px; border: 2px solid var(--primary); border-right: 0; border-bottom: 0; border-radius: 13px 0 0 0; pointer-events: none; }
+.photo { aspect-ratio: 1147 / 1372; overflow: hidden; border-radius: 12px; background: var(--muted); }
+.photo > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.portraitCaption { display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 12px 3px 5px; }
+.portraitCaption strong { display: block; font-size: .85rem; line-height: 1.35; letter-spacing: -.01em; }
+.portraitCaption small { display: block; font-family: var(--mono); font-size: .46rem; line-height: 1.7; letter-spacing: .035em; color: var(--muted-foreground); }
+.story { display: inline-flex; align-items: center; gap: 1px; font-size: .62rem; line-height: 1.5; color: var(--primary); white-space: nowrap; }
+
+.projects { position: absolute; inset: 0; }
+.project {
+  --project-color: var(--primary);
+  position: absolute;
+  z-index: 4;
+  left: calc(50% + var(--radius-x) * var(--orbit-cos));
+  top: calc(50% + var(--radius-y) * var(--orbit-sin));
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: var(--card-width);
+  height: 70px;
+  min-height: 44px;
+  padding: 10px;
+  background: var(--card);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  box-shadow: 0 7px 22px color-mix(in srgb, var(--primary) 9%, transparent);
+  transition: background .18s, border-color .18s, box-shadow .18s;
+  text-decoration: none;
+  touch-action: manipulation;
+}
+
+.project[data-accent="green"] { --project-color: #259a81; }
+.project[data-accent="violet"] { --project-color: #9374e8; }
+.project[data-accent="orange"] { --project-color: #d68a4d; }
+.project[data-accent="red"] { --project-color: #cc526c; }
+.project::before { content: ""; position: absolute; top: -1px; left: 20%; right: 20%; height: 2px; border-radius: 3px; background: color-mix(in srgb, var(--project-color) 65%, transparent); }
+.project:hover, .project:focus-visible { z-index: 6; border-color: var(--primary); background: color-mix(in srgb, var(--card) 94%, var(--primary)); box-shadow: 0 9px 26px color-mix(in srgb, var(--primary) 20%, transparent); }
+.project:focus-visible, .portrait:focus-visible, .motionButton:focus-visible { outline: 3px solid var(--primary); outline-offset: 4px; }
+.projectLogo { display: grid; place-items: center; width: 31px; height: 31px; flex: 0 0 31px; border-radius: 8px; overflow: hidden; }
+.projectLogo > img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.projectCopy { display: block; min-width: 0; }
+.projectCopy strong { display: block; font-size: clamp(.7rem, 1.95cqw, .76rem); line-height: 1.4; font-weight: 600; letter-spacing: -.025em; overflow-wrap: normal; word-break: normal; white-space: nowrap; }
+.projectCopy small { display: block; font-size: .56rem; line-height: 1.65; color: var(--muted-foreground); white-space: nowrap; }
+.projectArrow { position: absolute; top: 6px; right: 6px; color: var(--muted-foreground); opacity: 0; transition: opacity .18s; }
+.project:hover .projectArrow, .project:focus-visible .projectArrow { opacity: 1; }
+
+.controls { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 44px; padding: 0 10px; }
+.hint { display: inline-flex; align-items: center; gap: 8px; color: var(--muted-foreground); font-size: .69rem; line-height: 1.6; }
+.statusDot { width: 5px; height: 5px; border-radius: 50%; background: var(--muted-foreground); flex: 0 0 5px; }
+.stage[data-orbit-moving="true"] .statusDot { background: var(--primary); box-shadow: 0 0 8px color-mix(in srgb, var(--primary) 50%, transparent); }
+.motionButton { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 9px 11px; border: 1px solid var(--border); border-radius: 9px; color: var(--foreground); background: var(--card); font-size: .69rem; line-height: 1.4; white-space: nowrap; transition: border-color .18s, background .18s; }
+.motionButton:hover:not(:disabled) { border-color: var(--primary); background: color-mix(in srgb, var(--card) 95%, var(--primary)); }
+.motionButton:disabled { color: var(--muted-foreground); }
+
+@container (max-width: 519px) {
+  .heading { padding-inline: 5px; font-size: .6rem; }
+  .projectCount { font-family: var(--display); font-size: .65rem; letter-spacing: 0; }
+  .field { --card-width: 64px; --radius-x: calc(50% - 42px); --radius-y: 224px; height: 550px; }
+  .project { flex-direction: column; justify-content: center; gap: 4px; height: 68px; padding: 7px 3px 6px; border-radius: 12px; }
+  .project::before { left: 22%; right: 22%; }
+  .projectLogo { width: 29px; height: 29px; flex-basis: 29px; border-radius: 7px; }
+  .projectCopy { text-align: center; }
+  .projectCopy strong { font-size: .63rem; letter-spacing: -.025em; line-height: 1.35; }
+  .projectCopy small { display: none; }
+  .projectArrow { display: none; }
+  .portrait { width: clamp(112px, 28cqw, 144px); padding: 6px; border-radius: 15px; }
+  .photo { border-radius: 9px; }
+  .portraitCaption { flex-wrap: wrap; justify-content: center; gap: 3px; text-align: center; padding-top: 9px; }
+  .portraitCaption strong { font-size: .8rem; }
+  .portraitCaption small { display: none; }
+  .story { font-size: .61rem; }
+  .controls { padding-inline: 5px; }
+  .hint { font-size: .63rem; gap: 5px; }
+  .motionButton { padding-inline: 8px; font-size: .64rem; }
+}
+
+@container (min-width: 520px) and (max-width: 579px) {
+  .project { padding-inline: 8px; gap: 6px; }
+  .projectLogo { width: 27px; height: 27px; flex-basis: 27px; }
+  .projectCopy strong { font-size: .7rem; }
+}
+
+@container (min-width: 400px) and (max-width: 519px) {
+  .field { --card-width: 90px; --radius-x: calc(50% - 55px); }
+  .project { height: 60px; gap: 4px; padding-block: 6px; }
+  .projectLogo { width: 26px; height: 26px; flex-basis: 26px; }
+  .projectCopy strong { font-size: .75rem; line-height: 1.25; }
+}
+
+@container (min-width: 280px) and (max-width: 319px) {
+  .field { --radius-x: calc(50% - 33px); }
+}
+
+@container (max-width: 359px) {
+  .heading { gap: 8px; font-size: .56rem; }
+  .heading > span:first-child { gap: 5px; }
+  .projectCount { font-size: .6rem; }
+  .controls { align-items: center; gap: 7px; }
+  .hint { max-width: 165px; font-size: .6rem; }
+}
+
+@container (max-width: 279px) {
+  .field { height: auto; display: flex; flex-direction: column; align-items: center; padding: 20px 0 12px; }
+  .outerRing, .innerRing, .crosshair, .spark { display: none; }
+  .halo { width: 100%; height: 280px; top: 140px; }
+  .portrait { position: relative; top: auto; left: auto; transform: none; width: 144px; }
+  .projects { position: relative; inset: auto; width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 28px; }
+  .project { position: relative; left: auto; top: auto; transform: none; width: 100%; height: 68px; }
+  .projectCopy strong { font-size: .68rem; }
+  .controls { padding-top: 7px; }
+  .hint { max-width: none; flex: 1; min-width: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portrait, .project, .projectArrow, .motionButton { transition: none; }
+}
