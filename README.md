@@ -6,7 +6,7 @@ The source for [michaelbaffourawuah.com](https://michaelbaffourawuah.com), my pe
 
 ## Explore
 
-- **Work:** NavoX, Fluxion, ModelForge, MarketLab, ToolRet, SlopeChat, and Pro Competitive Programming.
+- **Work:** Ledger, Gatehaven, NavoX, Fluxion, ModelForge, MarketLab, ToolRet, SlopeChat, and Pro Competitive Programming.
 - **Case studies:** project overviews, system explanations, evidence, source code, and supporting documents. Section tabs also navigate a continuous scrolling page.
 - **Research:** ToolRet selective reranking, Disclosure Drift quantitative ML research on SEC 10-K disclosures and point-in-time market data, and earlier engineering work.
 - **My Story:** Electrical & Computer Engineering at Cornell, AFROTC, Cornell Bowers, and MBA~Steins.
