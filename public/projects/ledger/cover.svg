@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Ledger — inside the matching engine</title>
+  <desc id="desc">C++23 order-book project cover. An illustrative buy for eight units fills A’s four units then four of B’s six at 100 ticks; B’s two and C’s three remain. Retained synthetic core replay: 18.74 million commands per second, 271 nanoseconds median run p99, and 2.27 times the reference throughput.</desc>
+  <defs>
+    <linearGradient id="background" x2="1" y2="1"><stop stop-color="#102233"/><stop offset=".6" stop-color="#0b1320"/><stop offset="1" stop-color="#080e17"/></linearGradient>
+    <linearGradient id="panel" x2="1" y2="1"><stop stop-color="#162738"/><stop offset="1" stop-color="#101b29"/></linearGradient>
+    <linearGradient id="cyan" x2="1"><stop stop-color="#8af0f2"/><stop offset="1" stop-color="#38b5d7"/></linearGradient>
+    <linearGradient id="lime" x2="1"><stop stop-color="#c5e797"/><stop offset="1" stop-color="#9ec75c"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#255d72" stop-opacity=".3"/><stop offset="1" stop-color="#255d72" stop-opacity="0"/></radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#83bed0" stroke-opacity=".05"/></pattern>
+    <marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0l7 3.5L0 7Z" fill="#69d4df"/></marker>
+  </defs>
+  <rect width="1200" height="800" fill="url(#background)"/>
+  <rect width="1200" height="800" fill="url(#grid)"/>
+  <ellipse cx="1000" cy="160" rx="460" ry="330" fill="url(#glow)"/>
+  <g font-family="Inter,Arial,sans-serif">
+    <g fill="#90b4c4" font-family="SFMono-Regular,Consolas,monospace" font-size="14" letter-spacing="2">
+      <text x="64" y="58">SYSTEMS ENGINEERING / 01</text>
+      <text x="966" y="58">C++23 ENGINE</text>
+    </g>
+    <text x="59" y="184" fill="#ecf6fc" font-size="116" font-weight="700" letter-spacing="-6">Ledger<tspan fill="#83e4e9">.</tspan></text>
+    <text x="64" y="226" fill="#a7bccb" font-size="27">Inside the matching engine.</text>
+    <path d="M704 132h58m20 0h27m20 0h167m20 0h56" stroke="#3f7288" stroke-width="2"/>
+    <g transform="translate(934 106)" stroke="#9dd273" stroke-width="6" stroke-linecap="round">
+      <path d="M0 0h64M0 22h47M0 44h31"/>
+    </g>
+    <g fill="#152332" stroke="#2d465a">
+      <rect x="64" y="274" width="440" height="353" rx="18" fill="url(#panel)"/>
+      <rect x="528" y="274" width="608" height="353" rx="18" fill="url(#panel)"/>
+    </g>
+    <g font-family="SFMono-Regular,Consolas,monospace" font-size="13" letter-spacing="1.2">
+      <text x="90" y="313" fill="#80d7de">RESTING ASK / 100 TICKS</text>
+      <text x="554" y="313" fill="#80d7de">PRICE-TIME PRIORITY</text>
+    </g>
+    <text x="90" y="355" fill="#ecf6fc" font-size="25" font-weight="600">One price. Three makers.</text>
+    <text x="90" y="387" fill="#92aaba" font-size="16">Earlier arrival gets matched first.</text>
+    <g transform="translate(90 414)">
+      <rect width="104" height="75" rx="8" fill="#21465a" stroke="#61cbd9"/>
+      <rect x="116" width="156" height="75" rx="8" fill="#233d49" stroke="#83aeba"/>
+      <rect x="284" width="104" height="75" rx="8" fill="#253b42" stroke="#87a5a4"/>
+      <g fill="#ebf6f8" font-size="25" font-weight="600" text-anchor="middle"><text x="52" y="36">A · 4</text><text x="194" y="36">B · 6</text><text x="336" y="36">C · 3</text></g>
+      <g fill="#9cb9c7" font-size="12" text-anchor="middle" font-family="SFMono-Regular,Consolas,monospace"><text x="52" y="58">FIRST</text><text x="194" y="58">SECOND</text><text x="336" y="58">THIRD</text></g>
+    </g>
+    <path d="M91 516h384" stroke="#466576" stroke-width="1" marker-end="url(#arrow)"/>
+    <text x="90" y="551" fill="#a7bfcc" font-size="16">FIFO links preserve arrival order.</text>
+    <text x="90" y="597" fill="#7894a7" font-size="13" font-family="SFMono-Regular,Consolas,monospace">ILLUSTRATIVE BOOK STATE</text>
+    <rect x="554" y="344" width="556" height="72" rx="10" fill="#16363e" stroke="#477d81"/>
+    <text x="575" y="371" fill="#9fcdbf" font-family="SFMono-Regular,Consolas,monospace" font-size="12" letter-spacing="1">INCOMING / LIMIT IOC</text>
+    <text x="575" y="398" fill="#ddf1e5" font-size="22" font-weight="600">Buy 8 units at 100 ticks</text>
+    <path d="M832 419v22" stroke="#69d4df" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="554" y="450" width="268" height="74" rx="10" fill="#152e39" stroke="#365c6c"/>
+    <rect x="842" y="450" width="268" height="74" rx="10" fill="#162f32" stroke="#466851"/>
+    <g font-size="20" font-weight="600"><text x="574" y="479" fill="#b6ecf0">01 / Fill A’s 4</text><text x="862" y="479" fill="#c7e3b1">02 / Fill B’s 4</text></g>
+    <g fill="#96b4bf" font-size="14"><text x="574" y="505">A is removed. B becomes head.</text><text x="862" y="505">B keeps its place in the queue.</text></g>
+    <path d="M822 487h13" stroke="#69d4df" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <text x="555" y="569" fill="#edf6ee" font-size="24" font-weight="600">Remaining: B · 2 → C · 3</text>
+    <text x="555" y="596" fill="#92aaba" font-size="15">2 trades · 5 resting units · 0 price levels emptied</text>
+    <g fill="#102031" stroke="#294454"><rect x="64" y="657" width="332" height="90" rx="12"/><rect x="420" y="657" width="332" height="90" rx="12"/><rect x="776" y="657" width="360" height="90" rx="12"/></g>
+    <g fill="#edf7fa" font-size="35" font-weight="600"><text x="85" y="701">18.74M<tspan font-size="18" fill="#88afbe"> / s</tspan></text><text x="441" y="701">271<tspan font-size="18" fill="#88afbe"> ns</tspan></text><text x="797" y="701">2.27<tspan font-size="22" fill="#b6d38a">×</tspan></text></g>
+    <g fill="#94afc0" font-size="13" font-family="SFMono-Regular,Consolas,monospace"><text x="85" y="726">CORE REPLAY THROUGHPUT</text><text x="441" y="726">MEDIAN RUN p99</text><text x="797" y="726">REFERENCE THROUGHPUT RATIO</text></g>
+    <text x="64" y="776" fill="#698da3" font-size="12">Retained synthetic capture · AMD EPYC 9V74 · GCC 13.3 · 1M commands · five repeats · CPU 0</text>
+  </g>
+</svg>

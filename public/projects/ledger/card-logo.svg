@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">Ledger</title>
+  <desc id="desc">A cyan L meets three lime order-book bars inside a dark square.</desc>
+  <defs>
+    <linearGradient id="background" x2="1" y2="1"><stop stop-color="#15263b"/><stop offset="1" stop-color="#080e18"/></linearGradient>
+    <linearGradient id="ledger" x2="1" y2="1"><stop stop-color="#7ce9f2"/><stop offset="1" stop-color="#35bad3"/></linearGradient>
+  </defs>
+  <rect x="2" y="2" width="124" height="124" rx="29" fill="url(#background)" stroke="#2a4358" stroke-width="2"/>
+  <path d="M32 33v62h63" fill="none" stroke="url(#ledger)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M56 37h35M56 56h27M56 75h16" fill="none" stroke="#bbdf82" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="96" cy="75" r="5" fill="#7ce9f2"/>
+</svg>

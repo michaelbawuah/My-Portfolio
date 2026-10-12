@@ -1,0 +1,157 @@
+.demo {
+  --demo-cyan: #22c7df;
+  --demo-lime: #a3d94c;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--card);
+  color: var(--foreground);
+}
+
+.header { display: flex; align-items: center; justify-content: space-between; gap: 22px; padding: 28px 28px 24px; }
+.eyebrow { margin: 0 0 9px; color: var(--muted-foreground); font-family: var(--mono, monospace); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; }
+.header h3 { margin: 0; max-width: 550px; font-size: clamp(1.35rem, 2.6vw, 1.9rem); line-height: 1.25; letter-spacing: -.035em; }
+.counter { flex-shrink: 0; color: var(--muted-foreground); font-family: var(--mono, monospace); font-size: .75rem; }
+.steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1px; padding: 1px 0; margin: 0; list-style: none; background: var(--border); border-block: 1px solid var(--border); }
+.steps li { min-width: 0; background: var(--card); }
+.steps button { width: 100%; height: 100%; min-height: 70px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 7px; border: 0; border-radius: 0; padding: 12px 18px; background: transparent; color: var(--muted-foreground); text-align: left; font: inherit; font-size: .77rem; line-height: 1.35; cursor: pointer; transition: background .18s, color .18s; }
+.steps button > span { font-family: var(--mono, monospace); font-size: .63rem; opacity: .7; }
+.steps .selectedStep { color: var(--foreground); background: color-mix(in srgb, var(--demo-cyan) 12%, var(--card)); box-shadow: inset 0 -2px 0 var(--demo-cyan); }
+.steps .completedStep { color: var(--foreground); }
+.steps button:hover { background: color-mix(in srgb, var(--primary) 7%, var(--card)); }
+.demo button:focus-visible { outline: 2px solid var(--primary); outline-offset: -4px; }
+.scene { display: grid; grid-template-columns: minmax(155px, .75fr) 62px minmax(0, 2.5fr); align-items: center; gap: 12px; padding: 28px; }
+.ticket { align-self: stretch; display: flex; flex-direction: column; padding: 18px; border: 1px solid var(--border); border-radius: 13px; background: color-mix(in srgb, var(--demo-cyan) 3%, var(--card)); transition: border-color .2s, background .2s; }
+.ticketActive { border-color: color-mix(in srgb, var(--demo-cyan) 48%, var(--border)); background: color-mix(in srgb, var(--demo-cyan) 6%, var(--card)); }
+.panelHeading { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.buyLabel { color: var(--foreground); font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.protocol { padding: 4px 6px; border: 1px solid color-mix(in srgb, var(--demo-cyan) 36%, var(--border)); border-radius: 4px; font-family: var(--mono, monospace); font-size: .65rem; }
+.ticketPrice { margin: 27px 0 7px; font-family: var(--mono, monospace); font-size: 2.5rem; line-height: 1; letter-spacing: -.07em; }
+.ticketPrice > span { font-family: inherit; font-size: .8rem; letter-spacing: 0; color: var(--muted-foreground); }
+.limit { margin: 0 0 27px; color: var(--muted-foreground); font-family: var(--mono, monospace); font-size: .75rem; line-height: 1.6; }
+.limit strong { color: var(--foreground); font-weight: 500; }
+.fillMeter { height: 4px; overflow: hidden; border-radius: 4px; background: var(--border); }
+.fillMeter span { display: block; height: 100%; background: var(--demo-cyan); transition: width .25s; }
+.ticketStats { margin: 16px 0 20px; }
+.ticketStats > div { display: flex; justify-content: space-between; gap: 10px; margin: 9px 0; font-size: .72rem; line-height: 1.5; }
+.ticketStats dt { color: var(--muted-foreground); }
+.ticketStats dd { margin: 0; font-family: var(--mono, monospace); }
+.status { margin-top: auto; align-self: flex-start; border: 1px solid var(--border); border-radius: 100px; padding: 6px 9px; font-size: .65rem; line-height: 1.4; }
+.direction { display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--muted-foreground); }
+.direction svg { width: 42px; height: 22px; }
+.direction span { max-width: 64px; font-family: var(--mono, monospace); font-size: .58rem; text-align: center; line-height: 1.6; }
+.directionActive { color: var(--foreground); }
+.directionActive svg { color: var(--demo-cyan); }
+.book { min-width: 0; }
+.bookHeading { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 13px; font-size: .72rem; line-height: 1.5; }
+.bookHeading > span:first-child { font-weight: 600; }
+.bookHeading > span:last-child { color: var(--muted-foreground); font-family: var(--mono, monospace); font-size: .62rem; text-align: right; }
+.priceLevel { display: grid; grid-template-columns: 75px minmax(0, 1fr); gap: 13px; padding: 16px; border: 1px solid var(--border); border-radius: 12px; }
+.priceTag { display: flex; flex-direction: column; gap: 4px; align-self: center; }
+.priceTag span { color: var(--muted-foreground); font-family: var(--mono, monospace); font-size: .61rem; line-height: 1.5; }
+.priceTag strong { font-family: var(--mono, monospace); font-size: 1.75rem; font-weight: 500; letter-spacing: -.07em; }
+.levelQueue { min-width: 0; }
+.queueHeading { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 10px; font-size: .61rem; line-height: 1.5; }
+.queueHeading > span { color: var(--muted-foreground); }
+.queueHeading strong { flex-shrink: 0; font-family: var(--mono, monospace); font-weight: 500; }
+.queue { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; margin: 0; padding: 0; list-style: none; }
+.maker { display: flex; flex-direction: column; gap: 7px; min-height: 114px; padding: 12px 10px; border: 1px solid var(--border); border-radius: 7px; background: color-mix(in srgb, var(--foreground) 2%, var(--card)); transition: background .2s, border-color .2s; }
+.activeMaker { border-color: color-mix(in srgb, var(--demo-lime) 68%, var(--border)); background: color-mix(in srgb, var(--demo-lime) 11%, var(--card)); }
+.queuePosition { color: var(--muted-foreground); font-family: var(--mono, monospace); font-size: .58rem; }
+.makerName { font-size: .72rem; font-weight: 600; white-space: nowrap; }
+.quantity { margin-top: auto; font-size: .62rem; color: var(--muted-foreground); }
+.quantity strong { margin-right: 2px; font-family: var(--mono, monospace); font-size: 1.05rem; font-weight: 500; color: var(--foreground); }
+.nextFill { font-family: var(--mono, monospace); font-size: .56rem; color: var(--foreground); }
+.spread { display: flex; align-items: center; gap: 10px; margin: 13px 0; font-family: var(--mono, monospace); font-size: .59rem; color: var(--muted-foreground); text-align: center; }
+.spread > span { height: 1px; background: var(--border); flex: 1; }
+.bidLevel { padding-block: 14px; background: color-mix(in srgb, var(--demo-cyan) 3%, var(--card)); }
+.bidQueue { display: flex; align-items: center; flex-wrap: wrap; column-gap: 15px; row-gap: 5px; font-size: .74rem; }
+.bidMaker { font-weight: 600; }
+.bidQueue > span:nth-child(2) { color: var(--muted-foreground); font-size: .67rem; }
+.bidQueue strong { font-family: var(--mono, monospace); color: var(--foreground); font-weight: 500; }
+.unchanged { margin-left: auto; color: var(--muted-foreground); font-family: var(--mono, monospace); font-size: .61rem; }
+.readout { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(180px, 1fr); gap: 26px; padding: 25px 28px; border-top: 1px solid var(--border); background: color-mix(in srgb, var(--foreground) 1.5%, var(--card)); }
+.explanation h4 { margin: 0 0 10px; font-size: 1rem; line-height: 1.5; letter-spacing: -.02em; }
+.explanation p { margin: 0; color: var(--muted-foreground); font-size: .82rem; line-height: 1.8; }
+.tape { border-left: 1px solid var(--border); padding-left: 24px; }
+.tapeHeading { display: flex; justify-content: space-between; gap: 10px; font-family: var(--mono, monospace); font-size: .65rem; }
+.tapeHeading > span:last-child { color: var(--muted-foreground); }
+.emptyTape { margin: 18px 0 23px; color: var(--muted-foreground); font-size: .77rem; }
+.tape ol { list-style: none; padding: 0; margin: 13px 0; }
+.tape li { display: flex; justify-content: space-between; gap: 15px; margin: 10px 0; font-family: var(--mono, monospace); font-size: .64rem; line-height: 1.5; }
+.tape li > span { color: var(--muted-foreground); }
+.tape li strong { flex-shrink: 0; font-weight: 500; }
+.tapeNote { margin: 10px 0 0; color: var(--muted-foreground); font-family: var(--mono, monospace); font-size: .56rem; line-height: 1.6; }
+.controls { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 28px; border-top: 1px solid var(--border); }
+.controls > div { display: flex; gap: 9px; }
+.controls button { border: 1px solid var(--border); border-radius: 7px; padding: 10px 14px; min-height: 41px; background: var(--card); color: var(--foreground); font: inherit; font-size: .74rem; line-height: 1.4; cursor: pointer; transition: background .18s, border-color .18s; }
+.controls button:not(:disabled):hover { background: color-mix(in srgb, var(--primary) 9%, var(--card)); border-color: color-mix(in srgb, var(--primary) 40%, var(--border)); }
+.controls .next { background: color-mix(in srgb, var(--demo-cyan) 10%, var(--card)); border-color: color-mix(in srgb, var(--demo-cyan) 42%, var(--border)); }
+.controls .reset { border-color: transparent; padding-inline: 0; color: var(--muted-foreground); }
+.controls button:disabled { opacity: .4; cursor: default; }
+
+@media (max-width: 900px) {
+  .scene { grid-template-columns: minmax(145px, .8fr) 35px minmax(0, 2fr); gap: 10px; padding: 22px; }
+  .direction svg { width: 32px; }
+  .priceLevel { grid-template-columns: 58px minmax(0, 1fr); gap: 10px; padding: 12px; }
+  .queue { gap: 5px; }
+  .maker { padding-inline: 8px; }
+  .queueHeading { flex-wrap: wrap; row-gap: 3px; }
+  .bookHeading { flex-wrap: wrap; }
+  .bookHeading > span:last-child { text-align: left; }
+}
+
+@media (max-width: 680px) {
+  .header { padding: 22px; align-items: flex-start; }
+  .counter { font-size: .65rem; padding-top: 4px; }
+  .steps button { padding: 10px 9px; min-height: 75px; font-size: .63rem; }
+  .steps button > span { font-size: .57rem; }
+  .scene { grid-template-columns: 1fr; gap: 14px; }
+  .ticket { display: grid; grid-template-columns: 1fr 1fr; column-gap: 18px; row-gap: 9px; padding: 16px; }
+  .panelHeading { grid-column: 1 / -1; }
+  .ticketPrice { margin: 6px 0 0; font-size: 2rem; }
+  .limit { grid-column: 1; margin: 0; }
+  .ticketStats { grid-column: 2; grid-row: 2 / 4; margin: 0; align-self: center; }
+  .ticketStats > div { margin: 6px 0; }
+  .fillMeter { grid-column: 1 / -1; margin-top: 5px; }
+  .status { grid-column: 1 / -1; font-size: .6rem; }
+  .direction { flex-direction: row; justify-content: center; gap: 11px; }
+  .direction svg { width: 28px; transform: rotate(90deg); }
+  .direction span { max-width: none; }
+  .bookHeading { flex-wrap: nowrap; }
+  .priceLevel { grid-template-columns: 62px minmax(0, 1fr); gap: 12px; padding: 14px; }
+  .readout { grid-template-columns: 1fr; gap: 20px; padding: 22px; }
+  .tape { border-left: 0; border-top: 1px solid var(--border); padding: 19px 0 0; }
+  .tape li { max-width: 340px; }
+  .emptyTape { margin-bottom: 14px; }
+  .controls { padding: 16px 22px; gap: 10px; }
+  .controls button { font-size: .68rem; padding-inline: 11px; }
+}
+
+@media (max-width: 390px) {
+  .header { padding: 18px; gap: 14px; }
+  .header h3 { font-size: 1.2rem; }
+  .eyebrow { font-size: .6rem; }
+  .counter { max-width: 39px; line-height: 1.5; }
+  .steps button { padding-inline: 6px; font-size: .58rem; }
+  .scene { padding: 16px; }
+  .priceLevel { grid-template-columns: 42px minmax(0, 1fr); gap: 9px; padding: 11px; }
+  .priceTag strong { font-size: 1.4rem; }
+  .priceTag span { font-size: .55rem; }
+  .queueHeading { font-size: .55rem; }
+  .maker { padding: 9px 6px; min-height: 107px; gap: 6px; }
+  .makerName { font-size: .59rem; }
+  .queuePosition { font-size: .48rem; }
+  .quantity { font-size: .52rem; }
+  .quantity strong { font-size: .88rem; }
+  .nextFill { font-size: .47rem; }
+  .bookHeading { font-size: .64rem; }
+  .bookHeading > span:last-child { font-size: .51rem; }
+  .readout { padding: 18px; }
+  .controls { flex-wrap: wrap; padding: 14px 18px; }
+  .controls > div { margin-left: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo *, .demo *::before, .demo *::after { transition: none !important; animation: none !important; }
+}
