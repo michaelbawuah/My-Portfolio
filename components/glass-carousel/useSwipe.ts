@@ -10,7 +10,7 @@ export default function useSwipe({ stepPx, onStep, disabled = false, reduced = f
   const gesture = useRef<Gesture | null>(null);
   const frame = useRef<number | null>(null);
   const pending = useRef(0);
-  const suppressUntil = useRef(0);
+  const dragged = useRef(false);
   const [offset, setOffset] = useState(0);
   const [dragging, setDragging] = useState(false);
 
@@ -22,8 +22,9 @@ export default function useSwipe({ stepPx, onStep, disabled = false, reduced = f
   }, []);
 
   const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    if (disabled || event.button !== 0 || !event.isPrimary) return;
-    suppressUntil.current = 0;
+    if (event.button !== 0 || !event.isPrimary) return;
+    dragged.current = false;
+    if (disabled) return;
     gesture.current = { id: event.pointerId, x: event.clientX, y: event.clientY, dx: 0, lastX: event.clientX, time: performance.now(), velocity: 0, spacing: stepPx(), axis: null };
   };
 
@@ -36,6 +37,7 @@ export default function useSwipe({ stepPx, onStep, disabled = false, reduced = f
       current.axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
       if (current.axis === "y") { gesture.current = null; return; }
       event.currentTarget.setPointerCapture(event.pointerId);
+      dragged.current = true;
       setDragging(true);
     }
     if (current.axis !== "x") return;
@@ -57,7 +59,6 @@ export default function useSwipe({ stepPx, onStep, disabled = false, reduced = f
     gesture.current = null;
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
     if (current.axis === "x") {
-      suppressUntil.current = performance.now() + 500;
       if (!cancelled) {
         const velocity = performance.now() - current.time < 100 ? current.velocity : 0;
         const steps = swipeSteps(current.dx, velocity, current.spacing);
@@ -69,8 +70,10 @@ export default function useSwipe({ stepPx, onStep, disabled = false, reduced = f
   };
 
   const onClickCapture = (event: MouseEvent<HTMLDivElement>) => {
-    if (event.detail > 0 && performance.now() < suppressUntil.current) {
-      event.preventDefault(); event.stopPropagation(); suppressUntil.current = 0;
+    // Keep the guard until the next pointerdown; delayed touch clicks must not open a link.
+    // Keyboard activation has detail === 0 and remains available after a drag.
+    if (event.detail > 0 && dragged.current) {
+      event.preventDefault(); event.stopPropagation();
     }
   };
 
@@ -90,5 +93,5 @@ export default function useSwipe({ stepPx, onStep, disabled = false, reduced = f
   }, [disabled, onStep]);
 
   useEffect(() => () => { if (frame.current !== null) cancelAnimationFrame(frame.current); }, []);
-  return { ref, offset, dragging, bind: { onPointerDown, onPointerMove, onPointerUp: (e: PointerEvent<HTMLDivElement>) => finish(e), onPointerCancel: (e: PointerEvent<HTMLDivElement>) => finish(e, true), onLostPointerCapture: (e: PointerEvent<HTMLDivElement>) => finish(e, true), onClickCapture } };
+  return { ref, offset, dragging, didDrag: () => dragged.current, bind: { onPointerDown, onPointerMove, onPointerUp: (e: PointerEvent<HTMLDivElement>) => finish(e), onPointerCancel: (e: PointerEvent<HTMLDivElement>) => finish(e, true), onLostPointerCapture: (e: PointerEvent<HTMLDivElement>) => finish(e, true), onClickCapture } };
 }

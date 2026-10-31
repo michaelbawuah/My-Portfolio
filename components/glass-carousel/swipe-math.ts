@@ -7,7 +7,7 @@ export function swipeSteps(distance: number, velocity: number, spacing: number) 
   } else if (Math.abs(velocity) > 0.9) {
     steps += velocity < 0 ? 1 : -1;
   }
-  return Math.max(-3, Math.min(3, steps)) || 0;
+  return Math.max(-2, Math.min(2, steps)) || 0;
 }
 
 export function circularDistance(index: number, active: number, count: number) {
