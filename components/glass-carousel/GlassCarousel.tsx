@@ -4,6 +4,9 @@ import { ArrowLeft, ArrowRight, Maximize2, Minimize2, Pause, Play } from "lucide
 import Orb, { orbFor, type OrbStyle } from "./Orb";
 import LiquidButton from "./LiquidButton";
 import useSwipe from "./useSwipe";
+import PourButton from "./PourButton";
+import usePour from "./usePour";
+import useAccent from "./useAccent";
 import { circularDistance } from "./swipe-math";
 
 export type CarouselItem = {
@@ -19,7 +22,8 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
   const id = useId();
   const root = useRef<HTMLElement>(null);
   const pointerFocus = useRef(false);
-  const pourAnimations = useRef<Animation[]>([]);
+  const activeOrbRef = useRef<HTMLSpanElement>(null);
+  const ctaRef = useRef<HTMLAnchorElement>(null);
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
   const n = items.length;
   const [index, setIndex] = useState(0);
@@ -41,7 +45,10 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
     return Number.isFinite(size) && size > 0 ? size : 320;
   }, []);
   const swipe = useSwipe({ stepPx, onStep: step, disabled: n < 2 || focused, reduced });
-  const running = !paused && !hovered && !swipe.dragging && !reduced && !focused && expandedSlug !== active?.slug && pageVisible && visible && n > 1;
+  const activeOrb = orbFor(active || { category: "AI & ML" });
+  useAccent(active ? activeOrb.color : undefined, activeOrb.on);
+  const pour = usePour({ rootRef: root, sourceRef: activeOrbRef, ctaRef, resetKey: `${active?.slug}-${focused}-${expandedSlug}`, disabled: swipe.dragging || !pageVisible, reduced });
+  const running = !pour.busy && !paused && !hovered && !swipe.dragging && !reduced && !focused && expandedSlug !== active?.slug && pageVisible && visible && n > 1;
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -71,28 +78,6 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
   }, [running, index, n, duration]);
 
 
-  useEffect(() => () => { pourAnimations.current.forEach(animation => animation.cancel()); }, [activeIndex]);
-
-  const pour = (target: HTMLElement) => {
-    if (reduced) return;
-    const card = target.closest<HTMLElement>(".gc-card.is-active");
-    const surface = card?.querySelector<HTMLElement>(".gc-card-surface");
-    const orb = card?.querySelector<HTMLElement>(".gc-orb");
-    const drop = card?.querySelector<HTMLElement>(".gc-pour-drop");
-    const button = target.querySelector<HTMLElement>(".lb");
-    if (!surface || !orb || !drop || !button) return;
-    pourAnimations.current.forEach(animation => animation.cancel());
-    const bounds = surface.getBoundingClientRect(), start = orb.getBoundingClientRect(), end = button.getBoundingClientRect();
-    const x = start.left + start.width * .72 - bounds.left;
-    const y = start.top + start.height * .72 - bounds.top;
-    drop.style.left = `${x}px`; drop.style.top = `${y}px`;
-    const dx = end.right - bounds.left - 16 - x, dy = end.top + end.height * .5 - bounds.top - y;
-    pourAnimations.current = [
-      orb.animate([{ scale: "1", rotate: "0deg" }, { scale: ".86 1.14", rotate: "-12deg", offset: .3 }, { scale: "1", rotate: "0deg" }], { duration: 800, easing: "cubic-bezier(.2,.85,.25,1)" }),
-      drop.animate([{ opacity: 0, transform: "translate(0,0) scale(.3)" }, { opacity: .9, transform: `translate(${dx * .1}px,${dy * .05}px) scale(.8,1.4)`, offset: .22 }, { opacity: .85, transform: `translate(${dx}px,${dy}px) scale(.65,1.5)`, offset: .82 }, { opacity: 0, transform: `translate(${dx}px,${dy}px) scale(2.2,.2)` }], { duration: 800, easing: "cubic-bezier(.35,0,.65,1)" }),
-    ];
-  };
-
   const keyboard = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
     if (event.key === "ArrowRight") step(1);
@@ -117,10 +102,9 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
   };
 
   if (!active) return null;
-  const activeOrb = orbFor(active);
   return <section ref={root} className={`gc ${running ? "" : "is-paused"} ${paused ? "is-user-paused" : ""}`} aria-roledescription="carousel" aria-label={label}
-    data-focused={focused} data-visible={visible} data-page-visible={pageVisible}
-    style={{ "--gc-accent": activeOrb.color, "--gc-dur": `${duration}ms` } as CSSProperties}
+    data-focused={focused} data-visible={visible} data-page-visible={pageVisible} data-pour-state={pour.phase}
+    style={{ "--gc-dur": `${duration}ms` } as CSSProperties}
     onPointerEnter={e => { if (e.pointerType === "mouse") setHovered(true); }}
     onPointerLeave={e => { if (e.pointerType === "mouse") setHovered(false); }}
     onPointerDownCapture={e => { pointerFocus.current = true; if (e.pointerType !== "mouse") setHovered(false); }}
@@ -151,7 +135,7 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
                   <span className="gc-shot"><img src={project.image} alt={project.imageAlt} width={1200} height={800} draggable={false} loading={absolute < 1.5 ? "eager" : "lazy"} decoding="async" /></span>
                   <span className="gc-image-hint" aria-hidden="true"><Maximize2 size={14} />A closer look</span>
                 </button>
-                <span className="gc-orb-anchor"><Orb variant={orb.variant} color={orb.color} size="var(--gc-orb-size)" /></span>
+                <span ref={isActive ? activeOrbRef : undefined} className="gc-orb-anchor"><Orb variant={orb.variant} color={orb.color} size="var(--gc-orb-size)" /></span>
               </div>
               <div className="gc-card-copy">
                 <div className="gc-eyebrow"><span>{project.category}</span><span className="gc-card-count">{pad(k + 1)} / {pad(n)}</span></div>
@@ -160,9 +144,8 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
                 <p id={`${id}-${project.slug}-description`} className={`gc-description ${isActive && expandedSlug === project.slug ? "is-expanded" : ""}`}>{project.description}</p>
                 <button type="button" className="gc-more" aria-controls={`${id}-${project.slug}-description`} aria-expanded={isActive && expandedSlug === project.slug} tabIndex={isActive ? 0 : -1} onClick={() => { setExpandedSlug(current => current === project.slug ? null : project.slug); }}>{isActive && expandedSlug === project.slug ? "Show less" : "Read more"}</button>
                 <ul className="gc-stack" aria-label="Technologies">{project.stack.map(tech => <li key={tech}>{tech}</li>)}</ul>
-                <div className="gc-actions" onPointerEnter={event => { if (event.pointerType === "mouse" && isActive) pour(event.currentTarget); }} onFocusCapture={event => { if (isActive) pour(event.currentTarget); }}><LiquidButton href={project.href} arrow color={orb.color} tabIndex={isActive ? 0 : -1} aria-label={`Explore ${project.name}`}>Open case study</LiquidButton>{onPreview && <LiquidButton variant="ghost" tabIndex={isActive ? 0 : -1} onClick={event => onPreview(project.slug, event.currentTarget)}>Quick preview</LiquidButton>}</div>
+                <div className="gc-actions"><PourButton ref={isActive ? ctaRef : undefined} href={project.href} {...(isActive ? pour.handlers : {})} style={{ "--pour-color": isActive ? "var(--acc)" : orb.color, "--pour-on": orb.on } as CSSProperties} tabIndex={isActive ? 0 : -1} aria-label={`Explore ${project.name}`} aria-describedby={isActive ? `${id}-pour-hint` : undefined}>Open case study</PourButton>{onPreview && <LiquidButton variant="ghost" tabIndex={isActive ? 0 : -1} onClick={event => onPreview(project.slug, event.currentTarget)}>Quick preview</LiquidButton>}</div>
               </div>
-              <span className="gc-pour-drop" aria-hidden="true" />
             </div>
             {!isActive && !hidden && <button className="gc-bring-forward" type="button" tabIndex={-1} aria-label={`Bring ${project.name} forward`} onClick={() => { select(k); swipe.ref.current?.focus({ preventScroll: true }); }} />}
           </article>;
@@ -170,6 +153,7 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
       </div>
     </div>
     <p className="gc-hint">{focused ? "A closer look · Escape returns to the deck" : "Swipe, drag, or use ← → to explore"}</p>
+    <p id={`${id}-pour-hint`} className="gc-touch-hint">Tap the button to pour · tap again to open</p>
     <span className="sr-only" aria-live={running ? "off" : "polite"} aria-atomic="true">{active.name}, project {activeIndex + 1} of {n}</span>
     <div className="gc-controls">
       <div className="gc-pagination"><LiquidButton variant="ghost" className="gc-round" aria-label="Previous project" disabled={n < 2} onClick={() => step(-1)}><ArrowLeft aria-hidden="true" /></LiquidButton>
@@ -182,5 +166,6 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
         <LiquidButton variant="ghost" size="sm" aria-label={focused ? "Exit focus view" : "Enlarge project visual"} aria-pressed={focused} onClick={() => { setFocused(current => !current); }} icon={focused ? <Minimize2 size={14} /> : <Maximize2 size={14} />}><span>{focused ? "Back to deck" : "Focus view"}</span></LiquidButton>
       </div>
     </div>
+    <span ref={pour.travRef} className="pour-traveler" aria-hidden="true">{pour.flying && <Orb variant={activeOrb.variant} color={activeOrb.color} size="var(--pour-size)" />}</span>
   </section>;
 }

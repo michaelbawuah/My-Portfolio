@@ -1,15 +1,15 @@
 import { memo, type CSSProperties } from "react";
 
 export type OrbVariant = "core" | "ring" | "twin" | "liquid" | "lattice";
-export type OrbStyle = { variant: OrbVariant; color: string };
+export type OrbStyle = { variant: OrbVariant; color: string; on: string };
 
 /* One orb family per category. Override per project with `project.orb`. */
 export const CATEGORY_ORBS: Record<string, OrbStyle> = {
-  "AI & ML":       { variant: "core",    color: "var(--gc-teal)" },
-  Systems:         { variant: "ring",    color: "var(--gc-amber)" },
-  Research:        { variant: "twin",    color: "var(--gc-cobalt)" },
-  Collaboration:   { variant: "liquid",  color: "var(--gc-coral)" },
-  Algorithms:      { variant: "lattice", color: "var(--gc-lime)" },
+  "AI & ML":       { variant: "core",    color: "var(--gc-teal)", on: "#04130f" },
+  Systems:         { variant: "ring",    color: "var(--gc-amber)", on: "#1d1203" },
+  Research:        { variant: "twin",    color: "var(--gc-cobalt)", on: "#060b22" },
+  Collaboration:   { variant: "liquid",  color: "var(--gc-coral)", on: "#22070b" },
+  Algorithms:      { variant: "lattice", color: "var(--gc-lime)", on: "#121a03" },
 };
 
 export function orbFor(project: { category: string; orb?: Partial<OrbStyle> }): OrbStyle {
