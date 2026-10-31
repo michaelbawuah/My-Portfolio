@@ -11,7 +11,7 @@ import {ThemeSwitch} from "@/components/portfolio-theme";
 
 const pages = [
   {name:"Home",href:"/",note:"An introduction",image:"/personal/michael-landing-atrium.webp",caption:"Michael Baffour Awuah · MBA~Steins",kind:"portrait"},
-  {name:"Work",href:"/work",note:"Ideas, implemented",image:"/projects/navox.jpg",caption:"AI assistants, learning engines & reliable systems",kind:"screen"},
+  {name:"Work",href:"/work",note:"Ideas, implemented",image:"/projects/navox-current-workspace.png",caption:"AI assistants, learning engines & reliable systems",kind:"screen"},
   {name:"Research",href:"/research",note:"Questions, tested",image:"/logos/toolret.png",caption:"ToolRet · conditional tool reranking",kind:"brand"},
   {name:"About",href:"/about",note:"Engineer. Cadet. Creator.",image:"/personal/michael-landing-atrium.webp",caption:"Cornell Engineering · Class of 2028",kind:"portrait"},
   {name:"Impact",href:"/about/impact",note:"Robotics, leadership & service",image:"/personal/michael-landing-atrium.webp",caption:"Engineering research · Opoku Ware School · Community service",kind:"portrait"},
@@ -21,6 +21,15 @@ const pages = [
 
 export function InteractiveNavigation(){
  const pathname=usePathname();
+ const [workVisible,setWorkVisible]=useState(false);
+ useEffect(()=>{
+  if(pathname!=="/"){setWorkVisible(false);return;}
+  const work=document.getElementById("selected-work");
+  if(!work)return;
+  const observer=new IntersectionObserver(([entry])=>setWorkVisible(entry.isIntersecting),{rootMargin:"-20% 0px -45% 0px"});
+  observer.observe(work);
+  return()=>observer.disconnect();
+ },[pathname]);
  const [scrolled,setScrolled]=useState(false);
  useEffect(()=>{const update=()=>setScrolled(window.scrollY>16);update();window.addEventListener("scroll",update,{passive:true});return()=>window.removeEventListener("scroll",update);},[]);
  const [open,setOpen]=useState(false);
@@ -28,7 +37,7 @@ export function InteractiveNavigation(){
  const reduced=useReducedMotion();
  const current=pages[preview];
  const active=(href:string)=>pathname===href || (href==="/about"&&pathname.startsWith("/about/")) || (href==="/work"&&pathname.startsWith("/projects/")&&pathname!=="/projects/toolret") || (href==="/research"&&pathname==="/projects/toolret");
- return <header className="site-nav" data-scrolled={scrolled}>
+ return <header className="site-nav" data-scrolled={scrolled} data-work-visible={pathname==="/"&&workVisible}>
   <div className="nav-brand"><Link href="/" className="wordmark" aria-label="MBA~Steins — Michael Baffour Awuah home"><img src="/brand/mba-steins.png" alt="MBA~Steins" width={440} height={62} fetchPriority="high"/></Link><Link className="nav-home" href="/" aria-current={pathname==="/"?"page":undefined}>Home</Link></div>
   <nav aria-label="Main navigation" className="desktop-nav">{pages.filter(p=>["Work","Research","About","Contact"].includes(p.name)).map(p=><a key={p.name} href={p.href} aria-current={active(p.href)?"page":undefined}>{p.name}</a>)}</nav>
   <a className="nav-github" href={person.github} target="_blank" rel="noopener noreferrer"><Code2 size={18}/><span>GitHub</span></a>
