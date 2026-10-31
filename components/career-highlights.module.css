@@ -1,0 +1,41 @@
+.section { position: relative; isolation: isolate; margin: 34px 0 92px; padding-top: 42px; border-top: 1px solid var(--glass-line); }
+.section::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at 0 45%,color-mix(in srgb,var(--glass-teal) 15%,transparent),transparent 55%),radial-gradient(ellipse at 100% 50%,color-mix(in srgb,var(--glass-amber) 14%,transparent),transparent 55%),radial-gradient(ellipse at 50% 100%,color-mix(in srgb,var(--glass-indigo) 14%,transparent),transparent 60%); }
+.heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 28px; margin-bottom: 28px; }
+.heading :global(.mono) { color: var(--primary); font-size: .72rem; letter-spacing: .06em; }
+.heading h2 { margin: 15px 0 0; font-size: clamp(1.9rem, 3.4vw, 3rem); line-height: 1.18; letter-spacing: -.045em; }
+.heading > a { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.card {
+  --tone: var(--glass-teal);
+  --light: 8, 184, 161;
+  --edge: var(--glass-indigo);
+  display: flex; flex-direction: column; padding: 30px;
+  transition: border-color .3s, transform .4s, box-shadow .4s;
+}
+.card[data-tone="amber"] { --tone: var(--glass-amber); --light: 238, 157, 53; --edge: var(--glass-teal); }
+.card[data-tone="indigo"] { --tone: var(--glass-indigo); --light: 91, 112, 225; --edge: var(--glass-teal); }
+.card[data-tone="rose"] { --tone: #b84365; --light: 224, 149, 64; --edge: var(--glass-indigo); }
+:global(.dark) .card[data-tone="rose"] { --tone: #ff8caa; }
+.card:global(.glass-experience-card) {
+  border: 1px solid var(--glass-line); border-radius: 26px;
+  background-color: var(--glass-surface);
+  background-image: radial-gradient(ellipse at 0 0,rgba(var(--light),.16),transparent 72%),radial-gradient(ellipse at 100% 100%,color-mix(in srgb,var(--edge) 10%,transparent),transparent 65%),linear-gradient(125deg,#ffffff35,transparent 42%);
+  box-shadow: var(--glass-shadow);
+}
+:global(.dark) .card:global(.glass-experience-card) {
+  background-image: radial-gradient(ellipse at 0 0,rgba(var(--light),.32),transparent 80%),radial-gradient(ellipse at 100% 100%,color-mix(in srgb,var(--edge) 19%,transparent),transparent 70%),linear-gradient(125deg,#ffffff19,transparent 45%);
+}
+@supports (backdrop-filter: blur(1px)) { .card:global(.glass-experience-card) { background-color: var(--glass-translucent); } }
+.card:global(.glass-experience-card):hover { border-color: color-mix(in srgb,var(--tone) 65%,transparent); transform: translateY(-5px); box-shadow: 0 24px 60px -34px rgba(var(--light),.42),var(--glass-shadow); }
+.card:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; }
+.organization { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--foreground); font-size: 1.35rem; letter-spacing: -.035em; font-weight: 600; }
+.organization svg { color: var(--tone); }
+.card h3 { margin: 19px 0 12px; font-size: 1.25rem; line-height: 1.45; letter-spacing: -.025em; }
+.date { color: var(--glass-muted); font-family: var(--mono); font-size: .68rem; line-height: 1.7; }
+.card p { margin: 19px 0 25px; color: var(--glass-muted); font-size: .94rem; line-height: 1.85; }
+.metric { align-self: flex-start; margin-top: auto; padding: 8px 13px; border: 1px solid color-mix(in srgb,var(--tone) 42%,transparent); border-radius: 999px; background: color-mix(in srgb,var(--tone) 10%,transparent); font-size: .77rem; font-family: var(--mono); color: var(--tone); }
+.programs { margin: 22px 0 0; font-size: .82rem; line-height: 1.9; color: var(--muted-foreground); max-width: 880px; }
+@media (max-width: 850px) { .grid { grid-template-columns: 1fr; } .heading { align-items: flex-start; flex-direction: column; gap: 20px; } .card { padding: 24px; } .section { margin-bottom: 60px; } }
+@supports (background-clip: text) or (-webkit-background-clip: text) { .heading h2 > span { color: transparent; background-image: var(--glass-gradient); background-clip: text; -webkit-background-clip: text; } }
+@media (prefers-reduced-motion: reduce) { .card { transition: none; } .card:global(.glass-experience-card):hover { transform: none; } }
+@media (forced-colors: active) { .section::before { display: none; } .heading h2 > span { color: CanvasText; background: none; } .metric { border-color: CanvasText; } }

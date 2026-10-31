@@ -7,15 +7,15 @@ import type { CarouselProject } from "./project-carousel";
 import styles from "./project-carousel.module.css";
 
 const palettes: Record<string, readonly [string, string]> = {
-  navox: ["#a7a5ff", "#68e9d2"],
-  fluxion: ["#ce9cff", "#ff91ca"],
-  gatehaven: ["#ffe0a1", "#8be3c3"],
-  ledger: ["#80e4c6", "#81b7ff"],
-  modelforge: ["#ffc491", "#f38b96"],
-  marketlab: ["#97e9be", "#6fcbef"],
-  toolret: ["#a7bdff", "#d5a6f1"],
-  slopechat: ["#ffabc9", "#ffc991"],
-  "pro-competitive-programming": ["#96bcff", "#b8a0ff"],
+  navox: ["#43dec5", "#ffb64e"],
+  fluxion: ["#9caaff", "#49ddc5"],
+  gatehaven: ["#ffbf63", "#63dcc4"],
+  ledger: ["#50dfbd", "#ffba56"],
+  modelforge: ["#ffbd67", "#93a3ff"],
+  marketlab: ["#79e6bf", "#ffca75"],
+  toolret: ["#a4b1ff", "#64e0ce"],
+  slopechat: ["#ffd094", "#70e0c7"],
+  "pro-competitive-programming": ["#a8b3ff", "#ffd18b"],
 };
 export const projectPalette = (slug: string) => palettes[slug] || palettes.navox;
 export const projectImage = (project: CarouselProject) => project.image || `/logos/${project.slug}.png`;

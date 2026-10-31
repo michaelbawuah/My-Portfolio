@@ -1,35 +1,55 @@
 /* Glass is a surface system, not a text effect. Opaque fallbacks come first. */
 :root {
-  --glass-surface: #f5f8ff;
-  --glass-translucent: rgba(249, 251, 255, .84);
-  --glass-raised: rgba(255, 255, 255, .9);
-  --glass-inset: rgba(225, 233, 253, .65);
-  --glass-line: rgba(93, 122, 174, .25);
+  --primary: #08796f;
+  --primary-foreground: #fff;
+  --ring: #08796f;
+  --glass-teal: #008577;
+  --glass-amber: #a6670c;
+  --glass-indigo: #5264cd;
+  --glass-gradient: linear-gradient(105deg, #087b70 5%, #81742a 66%, #a46713);
+  --glass-surface: #f1f7f7;
+  --glass-translucent: rgba(247, 251, 251, .78);
+  --glass-raised: rgba(255, 255, 255, .84);
+  --glass-inset: rgba(212, 233, 232, .55);
+  --glass-line: rgba(62, 113, 122, .24);
   --glass-shine: rgba(255, 255, 255, .95);
-  --glass-muted: #4d6282;
-  --glass-accent: #2454d6;
-  --glass-shadow: 0 20px 65px -30px #234c8d35, inset 0 1px 0 var(--glass-shine);
-  --liquid-fill: #2550dc;
+  --glass-muted: #485e6b;
+  --glass-accent: #08796f;
+  --glass-shadow: 0 20px 65px -30px #164f5738, inset 0 1px 0 var(--glass-shine);
+  --liquid-fill: #08796f;
   --liquid-ink: #fff;
-  --liquid-glow: #6695ff;
+  --liquid-glow: #5ae6c6;
 }
 .dark {
-  --glass-surface: #101b2d;
-  --glass-translucent: rgba(16, 27, 45, .85);
-  --glass-raised: rgba(27, 43, 67, .85);
-  --glass-inset: rgba(7, 17, 32, .62);
-  --glass-line: rgba(149, 178, 227, .2);
-  --glass-shine: rgba(211, 230, 255, .13);
-  --glass-muted: #a9bbd5;
-  --glass-accent: #a8cbff;
-  --glass-shadow: 0 24px 70px -30px #000a, inset 0 1px 0 var(--glass-shine);
-  --liquid-fill: #b5d5ff;
-  --liquid-ink: #091a36;
-  --liquid-glow: #e4f5ff;
+  --background: #080d16;
+  --foreground: #edf3fa;
+  --primary: #39d9c2;
+  --primary-foreground: #062722;
+  --ring: #65ead4;
+  --scene-haze: #080d16;
+  --glass-teal: #39d9c2;
+  --glass-amber: #ffb64e;
+  --glass-indigo: #8192ff;
+  --glass-gradient: linear-gradient(105deg, #39d9c2 5%, #99cea0 48%, #ffb64e 95%);
+  --glass-surface: #111c29;
+  --glass-translucent: rgba(20, 31, 43, .64);
+  --glass-raised: rgba(55, 73, 83, .55);
+  --glass-inset: rgba(5, 17, 24, .56);
+  --glass-line: rgba(179, 212, 214, .25);
+  --glass-shine: rgba(230, 250, 246, .24);
+  --glass-muted: #aebdce;
+  --glass-accent: #55e2ca;
+  --glass-shadow: 0 24px 70px -30px #000a, inset 0 1px 0 var(--glass-shine), inset 0 -1px 0 #b7d7ff0a;
+  --liquid-fill: #40dcc0;
+  --liquid-ink: #072923;
+  --liquid-glow: #f8df9c;
 }
 body {
-  background-image: radial-gradient(ellipse at 9% 5%, #6d92ee16, transparent 40%), radial-gradient(ellipse at 90% 28%, #38b8cd12, transparent 45%);
+  background-image: radial-gradient(ellipse at 0% 20%, #17bbaa19, transparent 44%), radial-gradient(ellipse at 100% 40%, #eea53319, transparent 46%), radial-gradient(ellipse at 50% 110%, #7180ee17, transparent 50%);
   background-attachment: fixed;
+}
+.dark body {
+  background-image: radial-gradient(ellipse at -5% 18%, #19cbb332, transparent 46%), radial-gradient(ellipse at 105% 42%, #ed9a3229, transparent 44%), radial-gradient(ellipse at 50% 115%, #5267df32, transparent 52%);
 }
 .global-keyboard-scene[data-scene-framed="false"] { opacity: .24; }
 .global-keyboard-scene[data-scene-framed="false"] .global-scene-poster {
@@ -110,7 +130,7 @@ body {
 .liquid-button:focus-visible { outline: 3px solid var(--primary); outline-offset: 5px; }
 .liquid-button:disabled { opacity: .38; cursor: not-allowed; box-shadow: none; }
 .liquid-button--secondary { background: var(--glass-raised); border-color: var(--glass-line); color: var(--foreground); box-shadow: inset 0 1px 0 var(--glass-shine); }
-.liquid-button--secondary .liquid-button__fluid { --liquid-glow: #87acfa; opacity: .08; }
+.liquid-button--secondary .liquid-button__fluid { --liquid-glow: var(--glass-teal); opacity: .08; }
 .liquid-button--secondary:hover .liquid-button__fluid { opacity: .2; }
 .liquid-button--quiet { color: var(--glass-accent); background: transparent; box-shadow: none; border-color: var(--glass-line); }
 .liquid-button--quiet .liquid-button__fluid { opacity: .08; }
@@ -130,7 +150,7 @@ body {
 .glass-hero-footnote { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 39px; color: var(--glass-muted); font: .59rem/1.7 var(--mono); letter-spacing: .05em; }
 .home-shell > main > .mobile-keyboard-stage, .work-showcase-shell > main > .mobile-keyboard-stage { display: none; }
 
-.engineering-dashboard { position: relative; min-width: 0; padding: 22px; border-radius: 26px; background-image: linear-gradient(135deg,#a7caff0c,transparent 40%); }
+.engineering-dashboard { position: relative; min-width: 0; padding: 22px; border-radius: 26px; background-image: radial-gradient(ellipse at 0 0, color-mix(in srgb,var(--glass-teal) 19%,transparent),transparent 62%),radial-gradient(ellipse at 100% 100%,color-mix(in srgb,var(--glass-amber) 15%,transparent),transparent 60%),linear-gradient(135deg,#ffffff0f,transparent 45%); }
 .engineering-dashboard::before { content: ""; position: absolute; width: 45%; height: 2px; top: -1px; left: 18%; background: linear-gradient(90deg,transparent,var(--glass-accent),transparent); opacity: .7; }
 .dashboard-topline { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--glass-muted); font: .61rem/1.6 var(--mono); letter-spacing: .07em; }
 .dashboard-topline > span:first-child { display: inline-flex; align-items: center; gap: 8px; }
@@ -215,10 +235,34 @@ body {
 .glass-experience-card { border-radius: 20px; }
 .glass-experience-card:hover { border-color: var(--glass-accent); }
 .home-shell .cp-home-feature { border: 1px solid var(--glass-line); border-radius: 26px; background: var(--glass-translucent); backdrop-filter: blur(20px); padding: 38px; margin: 40px 0; }
-.glass-contact-banner { text-align: center; padding: 62px 26px; margin: 68px 0; background-image: radial-gradient(ellipse at 50% 100%,#8cbdff18,transparent 70%); }
+.glass-contact-banner { text-align: center; padding: 62px 26px; margin: 68px 0; background-image: radial-gradient(ellipse at 0% 30%,color-mix(in srgb,var(--glass-teal) 22%,transparent),transparent 62%),radial-gradient(ellipse at 100% 70%,color-mix(in srgb,var(--glass-amber) 19%,transparent),transparent 62%); }
 .glass-contact-banner > .mono { font-size: .68rem; letter-spacing: .12em; color: var(--glass-accent); }
 .glass-contact-banner h2 { font-size: clamp(2.3rem,4.7vw,4.5rem); line-height: 1.12; letter-spacing: -.055em; margin: 21px 0 30px; }
 .glass-contact-banner h2 > em { color: var(--glass-muted); }
+
+/* Teal, amber and indigo refract through the shared glass surfaces. */
+.home-shell .glass-hero .immersive-hero-copy { background: transparent; backdrop-filter: none; }
+.portfolio-shell .site-nav { background-image: linear-gradient(110deg,#29d8c00b,transparent 48%,#ffb64e0a); }
+.portfolio-shell .glass-feature { background-color: var(--glass-translucent); background-image: radial-gradient(ellipse at 0 0,color-mix(in srgb,var(--glass-teal) 19%,transparent),transparent 65%),radial-gradient(ellipse at 100% 100%,color-mix(in srgb,var(--glass-indigo) 17%,transparent),transparent 62%); }
+.home-shell .cp-home-feature { background-image: radial-gradient(ellipse at 100% 0,color-mix(in srgb,var(--glass-amber) 18%,transparent),transparent 62%),radial-gradient(ellipse at 0 100%,color-mix(in srgb,var(--glass-indigo) 15%,transparent),transparent 60%); }
+.dashboard-tabs button[aria-selected="true"] { color: var(--glass-accent); border-color: color-mix(in srgb,var(--glass-teal) 40%,transparent); background-image: linear-gradient(120deg,color-mix(in srgb,var(--glass-teal) 13%,transparent),transparent); }
+.dashboard-flow > span:nth-child(2) > svg:first-child { color: var(--glass-amber); }
+.dashboard-flow > span:nth-child(3) > svg:first-child { color: var(--glass-indigo); }
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .home-shell .glass-hero .kinetic-heading em,
+  .glass-section-heading h2 em,
+  .glass-contact-banner h2 > em {
+    background-image: var(--glass-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+}
+@media (forced-colors: active) {
+  .home-shell .glass-hero .kinetic-heading em,
+  .glass-section-heading h2 em,
+  .glass-contact-banner h2 > em { background: none; color: CanvasText; }
+}
 
 /* Work collection: search, category filters and two useful viewing modes. */
 .work-showcase-shell .showcase-heading { padding: 52px 0 36px; }
