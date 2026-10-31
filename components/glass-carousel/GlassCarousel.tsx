@@ -18,6 +18,7 @@ const wrap = (n: number, count: number) => count ? ((n % count) + count) % count
 export default function GlassCarousel({ items, interval = 6000, label = "Selected project carousel", onPreview }: Props) {
   const id = useId();
   const root = useRef<HTMLElement>(null);
+  const pointerFocus = useRef(false);
   const pourAnimations = useRef<Animation[]>([]);
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
   const n = items.length;
@@ -32,24 +33,27 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
   const active = items[activeIndex];
   const duration = Math.max(3000, interval);
 
-  const select = useCallback((next: number) => { setPaused(true); setIndex(wrap(next, n)); }, [n]);
-  const step = useCallback((direction: number) => { setPaused(true); setIndex(current => wrap(current + direction, n)); }, [n]);
+  const select = useCallback((next: number) => { setIndex(wrap(next, n)); }, [n]);
+  const step = useCallback((direction: number) => { setIndex(current => wrap(current + direction, n)); }, [n]);
   const stepPx = useCallback(() => {
     if (!root.current) return 320;
     const size = Math.max(150, Math.min(330, window.innerWidth * .3));
     return Number.isFinite(size) && size > 0 ? size : 320;
   }, []);
   const swipe = useSwipe({ stepPx, onStep: step, disabled: n < 2 || focused, reduced });
-  const running = !paused && !hovered && !swipe.dragging && !reduced && !focused && pageVisible && visible && n > 1;
+  const running = !paused && !hovered && !swipe.dragging && !reduced && !focused && expandedSlug !== active?.slug && pageVisible && visible && n > 1;
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     const updateMotion = () => { setReduced(media.matches); if (media.matches) setPaused(true); };
     const updateVisibility = () => setPageVisible(!document.hidden);
+    const keyboardInput = () => { pointerFocus.current = false; };
     updateMotion(); updateVisibility();
     media.addEventListener("change", updateMotion);
     document.addEventListener("visibilitychange", updateVisibility);
-    return () => { media.removeEventListener("change", updateMotion); document.removeEventListener("visibilitychange", updateVisibility); };
+    // Tab can enter from outside the carousel, so track keyboard input at the document.
+    document.addEventListener("keydown", keyboardInput, true);
+    return () => { media.removeEventListener("change", updateMotion); document.removeEventListener("visibilitychange", updateVisibility); document.removeEventListener("keydown", keyboardInput, true); };
   }, []);
 
   useEffect(() => {
@@ -96,6 +100,7 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
     else if (event.key === "Home") select(0);
     else if (event.key === "End") select(n - 1);
     else return;
+    setPaused(true);
     event.preventDefault();
     swipe.ref.current?.focus({ preventScroll: true });
   };
@@ -118,13 +123,16 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
     style={{ "--gc-accent": activeOrb.color, "--gc-dur": `${duration}ms` } as CSSProperties}
     onPointerEnter={e => { if (e.pointerType === "mouse") setHovered(true); }}
     onPointerLeave={e => { if (e.pointerType === "mouse") setHovered(false); }}
-    onFocusCapture={e => { if (!(e.target as HTMLElement).closest("[data-rotation-control]")) setPaused(true); }}
+    onPointerDownCapture={e => { pointerFocus.current = true; if (e.pointerType !== "mouse") setHovered(false); }}
+    onFocusCapture={e => { if (!pointerFocus.current && !(e.target as HTMLElement).closest("[data-rotation-control]")) setPaused(true); }}
+    onKeyDownCapture={e => { if (!(e.target as HTMLElement).closest("[data-rotation-control]")) setPaused(true); }}
     onKeyDown={e => { if (e.key === "Escape" && focused) { setFocused(false); e.preventDefault(); swipe.ref.current?.focus({ preventScroll: true }); } }}>
 
     <div className="gc-viewport">
       <div className="gc-atmosphere" aria-hidden="true"><i /><i /><i /></div>
       <div {...swipe.bind} ref={swipe.ref} id={id} className={`gc-stage ${swipe.dragging ? "is-dragging" : ""}`} tabIndex={0}
         role="group" aria-label="Project stage. Drag horizontally, or use left and right arrow keys to browse."
+        onDragStart={event => event.preventDefault()}
         onKeyDown={keyboard} onPointerMove={move} onPointerLeave={e => { e.currentTarget.style.setProperty("--px", "0"); e.currentTarget.style.setProperty("--py", "0"); }}>
         {items.map((project, k) => {
           const distance = circularDistance(k, activeIndex + swipe.offset, n);
@@ -139,7 +147,7 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
               <div className="gc-visual">
                 <button type="button" className="gc-frame" tabIndex={isActive ? 0 : -1}
                   aria-label={isActive ? focused ? `Return ${project.name} to the project deck` : `Enlarge ${project.name} project visual` : `Bring ${project.name} forward`}
-                  onClick={() => { setPaused(true); if (isActive) setFocused(current => !current); else select(k); swipe.ref.current?.focus({ preventScroll: true }); }}>
+                  onClick={() => { if (isActive) setFocused(current => !current); else select(k); swipe.ref.current?.focus({ preventScroll: true }); }}>
                   <span className="gc-shot"><img src={project.image} alt={project.imageAlt} width={1200} height={800} draggable={false} loading={absolute < 1.5 ? "eager" : "lazy"} decoding="async" /></span>
                   <span className="gc-image-hint" aria-hidden="true"><Maximize2 size={14} />A closer look</span>
                 </button>
@@ -150,7 +158,7 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
                 <h3 className="gc-title">{project.name}<span className="gc-title__dot">.</span></h3>
                 <p className="gc-tagline">{project.tagline}</p>
                 <p id={`${id}-${project.slug}-description`} className={`gc-description ${isActive && expandedSlug === project.slug ? "is-expanded" : ""}`}>{project.description}</p>
-                <button type="button" className="gc-more" aria-controls={`${id}-${project.slug}-description`} aria-expanded={isActive && expandedSlug === project.slug} tabIndex={isActive ? 0 : -1} onClick={() => { setPaused(true); setExpandedSlug(current => current === project.slug ? null : project.slug); }}>{isActive && expandedSlug === project.slug ? "Show less" : "Read more"}</button>
+                <button type="button" className="gc-more" aria-controls={`${id}-${project.slug}-description`} aria-expanded={isActive && expandedSlug === project.slug} tabIndex={isActive ? 0 : -1} onClick={() => { setExpandedSlug(current => current === project.slug ? null : project.slug); }}>{isActive && expandedSlug === project.slug ? "Show less" : "Read more"}</button>
                 <ul className="gc-stack" aria-label="Technologies">{project.stack.map(tech => <li key={tech}>{tech}</li>)}</ul>
                 <div className="gc-actions" onPointerEnter={event => { if (event.pointerType === "mouse" && isActive) pour(event.currentTarget); }} onFocusCapture={event => { if (isActive) pour(event.currentTarget); }}><LiquidButton href={project.href} arrow color={orb.color} tabIndex={isActive ? 0 : -1} aria-label={`Explore ${project.name}`}>Open case study</LiquidButton>{onPreview && <LiquidButton variant="ghost" tabIndex={isActive ? 0 : -1} onClick={event => onPreview(project.slug, event.currentTarget)}>Quick preview</LiquidButton>}</div>
               </div>
@@ -171,7 +179,7 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
       <span className="gc-deck-count" aria-hidden="true">{pad(activeIndex + 1)} <span>/ {pad(n)} projects</span></span>
       <div className="gc-mode-controls">
         <LiquidButton variant="ghost" size="sm" data-rotation-control aria-label={paused ? "Play project tour" : "Pause project tour"} aria-pressed={!paused} disabled={reduced || n < 2} onClick={() => { setFocused(false); setPaused(current => !current); }} icon={paused ? <Play size={14} /> : <Pause size={14} />}><span>{paused ? "Play" : "Pause"}</span></LiquidButton>
-        <LiquidButton variant="ghost" size="sm" aria-label={focused ? "Exit focus view" : "Enlarge project visual"} aria-pressed={focused} onClick={() => { setPaused(true); setFocused(current => !current); }} icon={focused ? <Minimize2 size={14} /> : <Maximize2 size={14} />}><span>{focused ? "Back to deck" : "Focus view"}</span></LiquidButton>
+        <LiquidButton variant="ghost" size="sm" aria-label={focused ? "Exit focus view" : "Enlarge project visual"} aria-pressed={focused} onClick={() => { setFocused(current => !current); }} icon={focused ? <Minimize2 size={14} /> : <Maximize2 size={14} />}><span>{focused ? "Back to deck" : "Focus view"}</span></LiquidButton>
       </div>
     </div>
   </section>;

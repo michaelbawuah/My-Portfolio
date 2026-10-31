@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import { circularDistance, createWheelGesture, swipeSteps } from '../components/glass-carousel/swipe-math.ts';
 
 test('a 50px flick advances exactly one card at desktop, tablet and phone spacing', () => {
-  for (const spacing of [520, 380, 250]) {
+  for (const spacing of [150, 234, 330, 520, 380, 250]) {
     for (const velocity of [0, .5, 1.8]) {
       assert.equal(swipeSteps(-50, -velocity, spacing), 1);
       assert.equal(swipeSteps(50, velocity, spacing), -1);
@@ -17,9 +17,12 @@ test('a short slow drag settles back, while a quick flick advances', () => {
   assert.equal(swipeSteps(0, 0, 0), 0);
 });
 test('a long fast release carries momentum but remains bounded', () => {
-  assert.equal(swipeSteps(-520, -1.2, 520), 2);
-  assert.equal(swipeSteps(520, 1.2, 520), -2);
-  assert.equal(swipeSteps(-10000, -3, 250), 3);
+  for (const spacing of [150, 234, 330, 520]) {
+    assert.equal(swipeSteps(-spacing, -1.2, spacing), 2);
+    assert.equal(swipeSteps(spacing, 1.2, spacing), -2);
+    assert.equal(swipeSteps(-10000, -3, spacing), 2);
+    assert.equal(swipeSteps(10000, 3, spacing), -2);
+  }
 });
 test('circular positions put the last card beside the first and handle empty or single collections', () => {
   assert.equal(circularDistance(8, 0, 9), -1);

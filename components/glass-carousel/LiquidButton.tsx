@@ -43,7 +43,7 @@ export default function LiquidButton({ href, variant = "primary", size = "md", a
   </>;
   if (href !== undefined) {
     const external = /^https?:\/\//.test(href);
-    return <a href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} {...props as AnchorHTMLAttributes<HTMLAnchorElement>} {...shared}>{content}</a>;
+    return <a href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} {...props as AnchorHTMLAttributes<HTMLAnchorElement>} {...shared} draggable={false}>{content}</a>;
   }
   return <button type="button" {...props as ButtonHTMLAttributes<HTMLButtonElement>} {...shared}>{content}</button>;
 }

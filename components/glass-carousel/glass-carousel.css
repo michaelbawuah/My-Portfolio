@@ -36,6 +36,7 @@
   padding: 36px 0 34px;
   min-height: clamp(520px,64vw,560px);
   perspective: 1500px;
+  overflow: hidden;
   touch-action: pan-y pinch-zoom;
   user-select: none;
   -webkit-user-select: none;
@@ -43,6 +44,8 @@
   outline: none;
 }
 .gc-stage.is-dragging { cursor: grabbing; }
+.gc-stage img { pointer-events: none; -webkit-user-drag: none; }
+.gc-stage a { -webkit-user-drag: none; }
 .gc-stage:focus-visible .gc-card.is-active .gc-card-surface { outline: 2px solid var(--gc-accent); outline-offset: 6px; }
 .gc-card {
   position: relative;
