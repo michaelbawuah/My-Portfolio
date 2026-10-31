@@ -9,6 +9,12 @@ import "./competitive-programming.css";
 import "lenis/dist/lenis.css";
 import "./motion.css";
 import "./glass.css";
+import "@/components/glass-carousel/fonts.css";
+import "@/components/glass-carousel/tokens.css";
+import "@/components/glass-carousel/orb.css";
+import "@/components/glass-carousel/liquid-button.css";
+import "@/components/glass-carousel/glass-carousel.css";
+import GooFilter from "@/components/glass-carousel/GooFilter";
 import {PortfolioTheme} from "@/components/portfolio-theme";
 import {GlobalKeyboardScene} from "@/components/global-keyboard-scene";
 
@@ -33,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased"><PortfolioTheme><GlobalKeyboardScene/>{children}</PortfolioTheme></body>
+      <body className="antialiased"><GooFilter /><PortfolioTheme><GlobalKeyboardScene/>{children}</PortfolioTheme></body>
     </html>
   );
 }

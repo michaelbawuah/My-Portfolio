@@ -1,5 +1,7 @@
 # Interactive portfolio source credit
 
+The October 31 glass carousel is adapted from Michael's supplied `glass-carousel.zip` and accompanying Glass Carousel Build Guide. Its five CSS orb families, glass layers and liquid-fill buttons retain that design. Integration adds typed components, existing project-data adapters, native focus handling, canceled-pointer handling, trackpad momentum gating, visibility-aware autoplay, and reduced-motion fallbacks. Syne, Manrope and JetBrains Mono are self-hosted Latin WOFF2 fonts obtained from Google Fonts; each font's SIL Open Font License is retained in `public/fonts/`.
+
 The Spline keyboard at `public/interactive/skills-keyboard.spline` comes from Sylvester Kpei's public portfolio, https://github.com/kpeis695/personal-website, snapshot `0a1aa0516b6c4f448e2b4008122a5898e1059882` retrieved October 4, 2026. Its upstream Git blob is `a8295c1f2a7279177dd7b1fc27a14b4ca365b374`.
 
 The upstream README declares the project available under the MIT License, but the inspected snapshot contains no LICENSE file. The original README is retained as `INTERACTION-UPSTREAM-README.md`; this note does not invent missing copyright terms or independently license third-party logos embedded in the scene.
