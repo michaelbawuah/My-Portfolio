@@ -1,0 +1,164 @@
+/* ---------- Orb base ---------- */
+.gc-orb {
+  --s: var(--orb-size, 84px);
+  position: relative;
+  display: inline-block;
+  width: var(--s);
+  height: var(--s);
+  flex: none;
+  animation: gc-orb-float 5.5s ease-in-out infinite alternate;
+}
+@keyframes gc-orb-float { to { translate: 0 -8%; } }
+
+/* Shared glossy sphere shading */
+.gc-orb__body {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 32% 28%,
+    #fff 0 4%,
+    color-mix(in srgb, var(--orb) 70%, #fff) 12%,
+    var(--orb) 40%,
+    color-mix(in srgb, var(--orb) 32%, #000) 100%
+  );
+  box-shadow:
+    0 0 calc(var(--s) * 0.55) color-mix(in srgb, var(--orb) 55%, transparent),
+    inset calc(var(--s) * -0.1) calc(var(--s) * -0.12) calc(var(--s) * 0.22) rgba(0, 0, 0, 0.35),
+    inset calc(var(--s) * 0.05) calc(var(--s) * 0.07) calc(var(--s) * 0.14) rgba(255, 255, 255, 0.28);
+}
+.gc-orb__sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 60%, rgba(255, 255, 255, 0.35) 70%, transparent 80%);
+  mix-blend-mode: overlay;
+  animation: gc-orb-spin 7s linear infinite;
+}
+
+/* 3D space for orbiting variants (ring, twin). Never put a filter or overflow:hidden on these. */
+.gc-orb__space { position: absolute; inset: 0; transform-style: preserve-3d; perspective: 600px; }
+.gc-orb__space .gc-orb__body { transform: translateZ(0); }
+.gc-orb__plane {
+  position: absolute;
+  inset: -34%;
+  transform-style: preserve-3d;
+  transform: rotate(-18deg) rotateX(72deg);
+}
+.gc-orb__spin { position: absolute; inset: 0; transform-style: preserve-3d; animation: gc-orb-spin 6s linear infinite; }
+.gc-orb__spin--slow { animation-duration: 9s; }
+@keyframes gc-orb-spin { to { transform: rotate(360deg); } }
+
+/* ---------- core (AI & ML): a pulsing inner light ---------- */
+.gc-orb--core .gc-orb__core {
+  position: absolute;
+  inset: 30%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0 18%, color-mix(in srgb, var(--orb) 60%, #fff) 40%, transparent 72%);
+  filter: blur(calc(var(--s) * 0.03));
+  mix-blend-mode: screen;
+  animation: gc-orb-pulse 2.4s ease-in-out infinite;
+}
+@keyframes gc-orb-pulse { 50% { transform: scale(1.35); opacity: 0.55; } }
+
+/* ---------- ring (Systems): a planet with an orbit and a moon ---------- */
+.gc-orb--ring .gc-orb__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: calc(var(--s) * 0.035) solid color-mix(in srgb, var(--orb) 70%, #fff);
+  box-shadow: 0 0 calc(var(--s) * 0.12) color-mix(in srgb, var(--orb) 60%, transparent);
+
+}
+.gc-orb--ring .gc-orb__moon {
+  position: absolute;
+  top: calc(var(--s) * -0.06);
+  left: calc(50% - var(--s) * 0.08);
+  width: calc(var(--s) * 0.16);
+  height: calc(var(--s) * 0.16);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, color-mix(in srgb, var(--orb) 50%, #fff) 45%, color-mix(in srgb, var(--orb) 40%, #000));
+  /* counter-rotates against the spin so the moon always faces the viewer */
+  animation: gc-orb-moon 6s linear infinite;
+}
+@keyframes gc-orb-moon {
+  from { transform: rotate(0deg) rotateX(-72deg); }
+  to   { transform: rotate(-360deg) rotateX(-72deg); }
+}
+
+/* ---------- twin (Research): two bodies compared, orbiting a shared center ---------- */
+.gc-orb--twin .gc-orb__plane--twin { inset: 0; transform: rotateX(62deg); }
+.gc-orb--twin .gc-orb__body {
+  inset: auto;
+  top: 50%;
+  animation: gc-orb-counter 9s linear infinite;
+}
+.gc-orb--twin .gc-orb__body--a { width: 62%; height: 62%; left: -6%; margin-top: -31%; }
+.gc-orb--twin .gc-orb__body--b {
+  background: radial-gradient(circle at 32% 28%, #fff, color-mix(in srgb, var(--orb) 35%, #fff) 42%, var(--orb));
+  width: 38%; height: 38%; right: -4%; margin-top: -19%;
+}
+@keyframes gc-orb-counter {
+  from { transform: rotate(0deg) rotateX(-62deg); }
+  to   { transform: rotate(-360deg) rotateX(-62deg); }
+}
+
+/* ---------- liquid (Collaboration): a blob that sheds and reabsorbs a drop ---------- */
+.gc-orb--liquid .gc-orb__goo { position: absolute; inset: -12%; filter: url(#gc-goo); }
+.gc-orb--liquid .gc-orb__blob,
+.gc-orb--liquid .gc-orb__drop {
+  position: absolute;
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--orb) 55%, #fff), var(--orb) 45%, color-mix(in srgb, var(--orb) 40%, #000));
+}
+.gc-orb--liquid .gc-orb__blob {
+  inset: 12%;
+  border-radius: 42% 58% 63% 37% / 45% 40% 60% 55%;
+  animation: gc-orb-morph 7s ease-in-out infinite alternate, gc-orb-spin 18s linear infinite;
+}
+.gc-orb--liquid .gc-orb__drop {
+  width: 26%; height: 26%; border-radius: 50%;
+  left: 62%; top: 8%;
+  animation: gc-orb-drip 4.5s ease-in-out infinite;
+}
+.gc-orb--liquid { filter: drop-shadow(0 0 calc(var(--orb-size, 84px) * 0.25) color-mix(in srgb, var(--orb) 55%, transparent)); }
+@keyframes gc-orb-morph {
+  33%  { border-radius: 60% 40% 35% 65% / 55% 62% 38% 45%; }
+  66%  { border-radius: 38% 62% 55% 45% / 35% 48% 52% 65%; }
+  100% { border-radius: 52% 48% 40% 60% / 62% 35% 65% 38%; }
+}
+@keyframes gc-orb-drip {
+  0%, 100% { transform: translate(-40%, 60%) scale(0.6); }
+  50%      { transform: translate(40%, -30%) scale(1); }
+}
+
+/* ---------- lattice (Algorithms): a turning wireframe globe with graph nodes ---------- */
+.gc-orb--lattice .gc-orb__grid {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 calc(var(--s) * 0.115), rgba(255, 255, 255, 0.45) calc(var(--s) * 0.115) calc(var(--s) * 0.125)),
+    repeating-linear-gradient(0deg, transparent 0 calc(var(--s) * 0.155), rgba(255, 255, 255, 0.3) calc(var(--s) * 0.155) calc(var(--s) * 0.165));
+  -webkit-mask: radial-gradient(circle at 45% 45%, #000 30%, transparent 70%);
+  mask: radial-gradient(circle at 45% 45%, #000 30%, transparent 70%);
+  animation: gc-orb-turn 6s linear infinite;
+}
+@keyframes gc-orb-turn { to { background-position: calc(var(--s) * 1.25) 0, 0 0; } }
+.gc-orb--lattice .gc-orb__node {
+  position: absolute;
+  width: 11%; height: 11%;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 calc(var(--s) * 0.1) #fff, 0 0 calc(var(--s) * 0.2) var(--orb);
+  animation: gc-orb-blink 3s ease-in-out infinite;
+}
+.gc-orb--lattice .gc-orb__node--1 { left: 26%; top: 34%; }
+.gc-orb--lattice .gc-orb__node--2 { left: 58%; top: 22%; animation-delay: -1s; }
+.gc-orb--lattice .gc-orb__node--3 { left: 52%; top: 60%; animation-delay: -2s; }
+@keyframes gc-orb-blink { 50% { opacity: 0.35; transform: scale(0.7); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .gc-orb, .gc-orb * { animation: none !important; }
+}
+
+.gc-card.is-side .gc-orb, .gc-card.is-side .gc-orb *, .gc[data-visible="false"] .gc-orb, .gc[data-visible="false"] .gc-orb *, .gc[data-page-visible="false"] .gc-orb, .gc[data-page-visible="false"] .gc-orb *, .gc.is-user-paused .gc-orb, .gc.is-user-paused .gc-orb * { animation-play-state: paused; }

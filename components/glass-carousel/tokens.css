@@ -1,0 +1,78 @@
+/* Glass carousel — design tokens + glass surface.
+   Import once, globally (e.g. app/layout.tsx or _app.tsx). */
+:root {
+  --gc-bg: #060a12;
+  --gc-fg: #edf1f7;
+  --gc-muted: #93a0b6;
+  --gc-line: rgba(255, 255, 255, 0.14);
+
+  /* Category colors — one per orb family */
+  --gc-teal: #2fe0c4;   /* AI & ML        → core orb    */
+  --gc-amber: #ffb24a;  /* Systems        → ring orb    */
+  --gc-cobalt: #5b7cff; /* Research       → twin orb    */
+  --gc-coral: #ff7a85;  /* Collaboration  → liquid orb  */
+  --gc-lime: #c4f25a;   /* Algorithms     → lattice orb */
+
+  --gc-front-base: rgba(8, 12, 22, .94);
+  --gc-shot-bg: #0b1220;
+  --gc-blur: 18px;
+  --gc-tint: 0.05;
+  --gc-radius: 26px;
+
+  --gc-ease-out: cubic-bezier(0.2, 0.85, 0.25, 1);
+  --gc-ease-spring: cubic-bezier(0.3, 1.4, 0.4, 1);
+
+  --gc-display: "Syne", "Avenir Next", "Segoe UI", sans-serif;
+  --gc-body: "Manrope", "Segoe UI", system-ui, sans-serif;
+  --gc-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+
+/* The one glass surface. Every panel uses this class. */
+.gc-glass {
+  position: relative;
+  background: linear-gradient(
+    140deg,
+    rgba(255 255 255 / calc(var(--gc-tint) + 0.07)),
+    rgba(255 255 255 / var(--gc-tint)) 55%,
+    rgba(255 255 255 / calc(var(--gc-tint) + 0.02))
+  );
+  border: 1px solid var(--gc-line);
+  backdrop-filter: blur(var(--gc-blur)) saturate(170%);
+  -webkit-backdrop-filter: blur(var(--gc-blur)) saturate(170%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+    0 30px 70px -30px rgba(0, 0, 0, 0.75);
+}
+
+/* Edge light: a gradient border that follows the pointer angle (--gc-angle). */
+.gc-glass::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--gc-angle, 220deg),
+    rgba(255, 255, 255, 0.55),
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.04) 60%,
+    rgba(255, 255, 255, 0.35) 85%,
+    rgba(255, 255, 255, 0.55)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+/* Specular sheen across the surface. */
+.gc-glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.14), transparent 28%, transparent 72%, rgba(255, 255, 255, 0.05));
+  mix-blend-mode: overlay;
+}
