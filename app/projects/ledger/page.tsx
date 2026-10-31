@@ -123,7 +123,7 @@ export default function LedgerPage() {
       <div className={styles.scope}><h3>Current project boundary</h3><p>Ledger is an offline, bounded, single-instrument system. It has no live exchange connection. Stop orders, multi-instrument routing, ITCH, UDP publication, Python bindings, and durable recovery remain outside this version. The optional risk helper checks integer quantity, notional, and exposure limits; callers own reservations and admission sequencing.</p></div>
     </section>
 
-    <section id="compilerpilot" className={styles.chapter}>
+    <section id="compilerpilot" className={`${styles.chapter} ${styles.compilerChapter}`}>
       <Chapter number="06" label="COMPILERPILOT / LLVM 18" title="A compiler pass inside the matching engine."><p>I extended Ledger with CompilerPilot, then wrote a C++ LLVM 18 pass that uses MemorySSA to prove when an integer reload can reuse an earlier value. I compared baseline, early and late pass pipelines against the same matching-engine oracle.</p></Chapter>
       <div className={styles.compilerGrid}>
         <article className={styles.compilerStory}>
