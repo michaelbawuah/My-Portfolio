@@ -32,6 +32,10 @@ body {
   background-attachment: fixed;
 }
 .global-keyboard-scene[data-scene-framed="false"] { opacity: .24; }
+.global-keyboard-scene[data-scene-framed="false"] .global-scene-poster {
+  mask-image: radial-gradient(ellipse at center, #000 22%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 22%, transparent 72%);
+}
 .global-keyboard-scene[data-scene-framed="true"] { opacity: 1; }
 .glass-panel, .glass-project, .glass-feature, .glass-experience-card, .glass-contact-banner {
   border: 1px solid var(--glass-line);
@@ -192,13 +196,13 @@ body {
 .glass-project-media:hover img { transform: scale(1.025); }
 .glass-project-media--logo img { width: 48%; height: 75%; }
 .glass-media-caption { padding: 12px 15px; font-size: .61rem; line-height: 1.7; color: var(--glass-muted); border-top: 1px solid var(--glass-line); }
-.glass-carousel-controls { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 3px; }
+.glass-carousel-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 3px; }
 .glass-swipe-hint { display: inline-flex; align-items: center; gap: 8px; color: var(--glass-muted); font-size: .7rem; }
-.glass-carousel-dots { display: flex; align-items: center; gap: 1px; }
+.glass-carousel-dots { display: flex; flex-shrink: 0; align-items: center; gap: 1px; }
 .glass-carousel-dots button { display: grid; place-items: center; background: transparent; border: 0; width: 26px; min-height: 44px; padding: 0; }
 .glass-carousel-dots button > span { width: 5px; height: 5px; border-radius: 9px; background: var(--glass-muted); opacity: .45; transition: width .25s,opacity .25s; }
 .glass-carousel-dots button[aria-current="true"] > span { width: 21px; background: var(--glass-accent); opacity: 1; }
-.glass-carousel-arrows { display: flex; gap: 8px; align-items: center; }
+.glass-carousel-arrows { display: flex; gap: 8px; align-items: center; margin-left: auto; }
 .glass-carousel-arrows .liquid-button { min-height: 44px; width: 44px; padding: 10px; }
 .glass-slide-count { color: var(--foreground); font: .7rem/1.6 var(--mono); margin-right: 10px; white-space: nowrap; }
 .glass-slide-count > span { color: var(--glass-muted); }
