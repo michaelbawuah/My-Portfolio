@@ -2,14 +2,14 @@ import { ArrowDown, ArrowUpRight, Check, Code2, Cpu, GitBranch, Layers3, ShieldC
 import { PageFrame } from "@/components/portfolio-layout";
 import { LedgerMatchingDemo } from "@/components/ledger-matching-demo";
 import { LedgerBenchmarkCompare, LedgerEvidenceGallery } from "@/components/ledger-evidence-gallery";
-import { ledgerProject as project, ledgerRepo, ledgerSource, ledgerCI, ledgerStudy } from "@/lib/ledger";
+import { ledgerProject as project, ledgerRepo, ledgerSource, ledgerCI, ledgerStudy, compilerPilotReadme, compilerPilotPass, compilerPilotReview, compilerPilotDiff, compilerPilotCI } from "@/lib/ledger";
 import { pageMetadata } from "@/lib/seo";
 import styles from "./ledger.module.css";
 
 export const metadata = {
-  ...pageMetadata("Ledger — C++23 Order Book & Matching Engine", project.description, "/projects/ledger"),
+  ...pageMetadata("Ledger — Matching Engine & LLVM Compiler Work", project.description, "/projects/ledger"),
   openGraph: {
-    title: "Ledger — Inside a low-latency matching engine",
+    title: "Ledger — Matching engine and LLVM compiler pass",
     description: project.description,
     url: "https://michaelbaffourawuah.com/projects/ledger",
     type: "website" as const,
@@ -20,7 +20,8 @@ export const metadata = {
 const sections = [
   ["matching", "01", "Matching"], ["architecture", "02", "Architecture"],
   ["performance", "03", "Performance"], ["verification", "04", "Verification"],
-  ["pipeline", "05", "Feed & strategy"], ["figures", "06", "All figures"], ["source", "07", "Source"],
+  ["pipeline", "05", "Feed & strategy"], ["compilerpilot", "06", "CompilerPilot"],
+  ["figures", "07", "All figures"], ["source", "08", "Source"],
 ] as const;
 
 function Chapter({ number, label, title, children }: { number: string; label: string; title: string; children: React.ReactNode }) {
@@ -30,7 +31,7 @@ function Chapter({ number, label, title, children }: { number: string; label: st
 export default function LedgerPage() {
   const schema = {
     "@context": "https://schema.org", "@type": "SoftwareSourceCode", name: "Ledger",
-    description: project.description, codeRepository: ledgerRepo, programmingLanguage: "C++23",
+    description: project.description, codeRepository: ledgerRepo, programmingLanguage: ["C++23", "Python", "LLVM IR"],
     url: "https://michaelbaffourawuah.com/projects/ledger",
     author: { "@type": "Person", name: "Michael Baffour Awuah", url: "https://michaelbaffourawuah.com" },
     runtimePlatform: "Bounded single-instrument matching core and synthetic replay tools",
@@ -43,8 +44,8 @@ export default function LedgerPage() {
         <div className="case-brandline"><img className="project-mark" src={project.logo} alt="" width={64} height={64} /><span className="mono">LIMIT ORDER BOOK / MATCHING ENGINE</span></div>
         <h1>Ledger<span>.</span></h1>
         <h2>Inside a low-latency<br />matching engine.</h2>
-        <p>Orders arrive. Prices change. Priority must hold. I built Ledger to explore the C++ data structures, correctness checks, and measurements behind that process.</p>
-        <div className={styles.tags}><span>C++23</span><span>Price-time priority</span><span>Allocation-free processing</span></div>
+        <p>Orders arrive. Prices change. Priority must hold. I built Ledger to explore that execution core, then extended it with CompilerPilot and an authored LLVM optimization pass.</p>
+        <div className={styles.tags}><span>C++23</span><span>Price-time priority</span><span>Allocation-free processing</span><span>LLVM 18 / MemorySSA</span></div>
         <div className="hero-actions"><a className="button-primary" href="#matching">Explore the engine <ArrowDown size={17} /></a><a className="button-secondary" href={ledgerRepo} target="_blank" rel="noopener noreferrer"><Code2 size={17} /> GitHub source</a></div>
       </div>
       <figure className={`case-hero-visual ${styles.heroVisual}`}>
@@ -122,13 +123,40 @@ export default function LedgerPage() {
       <div className={styles.scope}><h3>Current project boundary</h3><p>Ledger is an offline, bounded, single-instrument system. It has no live exchange connection. Stop orders, multi-instrument routing, ITCH, UDP publication, Python bindings, and durable recovery remain outside this version. The optional risk helper checks integer quantity, notional, and exposure limits; callers own reservations and admission sequencing.</p></div>
     </section>
 
+    <section id="compilerpilot" className={styles.chapter}>
+      <Chapter number="06" label="COMPILERPILOT / LLVM 18" title="A compiler pass inside the matching engine."><p>I extended Ledger with CompilerPilot, then wrote a C++ LLVM 18 pass that uses MemorySSA to prove when an integer reload can reuse an earlier value. I compared baseline, early and late pass pipelines against the same matching-engine oracle.</p></Chapter>
+      <div className={styles.compilerGrid}>
+        <article className={styles.compilerStory}>
+          <span className="mono">FROM BUILD FLAGS TO LLVM IR</span>
+          <h3>The engine is also my compiler test bed.</h3>
+          <p>CompilerPilot lives in Ledger’s repository. Its typed GCC/Clang builds cover PGO and ThinLTO, with reproducible inputs and correctness gates. The authored LLVM plugin goes one layer deeper: it changes the compiler’s intermediate representation.</p>
+          <p>MemorySSA tracks memory dependencies. My pass reuses a read only when the pointer, integer type and last possible write agree. It handles aliasing conservatively and skips calls, atomics, volatile reads and metadata contracts.</p>
+          <a href={compilerPilotReadme} target="_blank" rel="noopener noreferrer">Explore CompilerPilot <ArrowUpRight size={16} /></a>
+        </article>
+        <figure className={styles.irProof} aria-labelledby="llvm-proof-title">
+          <div className={styles.irProofHeader}><span className="mono">REAL IR / FastBook::process</span><strong id="llvm-proof-title">One redundant read removed.</strong></div>
+          <div className={styles.irVersion}><span className="mono">BEFORE / READ AGAIN</span><pre><code>{`%73 = load i32, ptr %remaining107, align 4
+store i32 %73, ptr %remaining192, align 4`}</code></pre></div>
+          <div className={`${styles.irVersion} ${styles.irAfter}`}><span className="mono">AFTER / REUSE THE PROVEN VALUE</span><pre><code>{`store i32 %67, ptr %remaining192, align 4`}</code></pre></div>
+          <figcaption>81 → 80 load instructions in this function before O2. The pass removes one read when placed early; it removes none after LLVM’s standard pipeline. <a href={compilerPilotDiff} target="_blank" rel="noopener noreferrer">Inspect the exact diff <ArrowUpRight size={13} /></a></figcaption>
+        </figure>
+      </div>
+      <div className={styles.compilerEvidence} aria-label="LLVM pass correctness evidence">
+        <article><strong>25</strong><span>Structural IR cases</span><small>Aliasing, barriers and analysis safety</small></article>
+        <article><strong>4,096</strong><span>Execution values</span><small>Four checks each, before and after</small></article>
+        <article><strong>100M</strong><span>Commands per pipeline</span><small>The same differential stream in all three</small></article>
+        <article><strong>15</strong><span>CTest cases per pipeline</span><small>All passed on baseline, early and late</small></article>
+      </div>
+      <div className={styles.protocol}><span className="mono">IMPLEMENTATION & CORRECTNESS EVIDENCE</span><p>The transformed object is checked inside the linked library, then validated against the oracle. These compiler experiments have not established a runtime speedup or an agent-versus-search advantage. The core benchmark figures above remain a separate study.</p><div className={styles.compilerLinks}><a href={compilerPilotPass} target="_blank" rel="noopener noreferrer">Read the pass <ArrowUpRight size={15} /></a><a href={compilerPilotReview} target="_blank" rel="noopener noreferrer">Audit the experiment <ArrowUpRight size={15} /></a><a href={compilerPilotCI} target="_blank" rel="noopener noreferrer">Open LLVM CI <ArrowUpRight size={15} /></a></div></div>
+    </section>
+
     <section id="figures" className={styles.chapter}>
-      <Chapter number="06" label="THE COMPLETE FIGURE EXPLORER" title="Look closer. Follow the evidence."><p>Explore all 16 measured figures and both implementation diagrams. Filter by topic, open a figure at full size, and follow its source. Plotted data comes from retained packets with a hash manifest and an independent numerical audit.</p></Chapter>
+      <Chapter number="07" label="THE COMPLETE FIGURE EXPLORER" title="Look closer. Follow the evidence."><p>Explore all 16 measured figures and both implementation diagrams. Filter by topic, open a figure at full size, and follow its source. Plotted data comes from retained packets with a hash manifest and an independent numerical audit.</p></Chapter>
       <LedgerEvidenceGallery />
     </section>
 
     <section id="source" className={styles.chapter}>
-      <Chapter number="07" label="OPEN THE WORK" title="Read it. Run it. Reproduce it."><p>The code, semantic contract, measurement method, raw results, and audits are public. Evidence links on this page pin the source revision used for this case study.</p></Chapter>
+      <Chapter number="08" label="OPEN THE WORK" title="Read it. Run it. Reproduce it."><p>The code, semantic contract, measurement method, raw results, and audits are public. Core-study and CompilerPilot evidence links each pin their own source revision.</p></Chapter>
       <div className="resource-grid">{project.resources.map(resource => <a key={resource.href} href={resource.href} target="_blank" rel="noopener noreferrer"><span className="mono">{resource.kind}</span><strong>{resource.label}</strong><ArrowUpRight size={19} /></a>)}</div>
       <details className={styles.build}><summary>Build and run a synthetic replay</summary><p>Requires C++23, CMake 3.21+, and Ninja. GoogleTest is optional.</p><pre><code>{`cmake --preset release
 cmake --build --preset release --parallel
