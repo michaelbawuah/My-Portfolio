@@ -92,6 +92,7 @@
 .scope { padding: 24px 28px; border: 1px dashed var(--border); border-radius: 12px; }
 .scope h3 { font-size: 1.1rem; margin: 0 0 13px; }
 .scope p { font-size: .85rem; line-height: 1.85; color: var(--muted-foreground); margin: 0; }
+.compilerChapter { margin-top: 32px; padding: 32px; border: 1px solid var(--border); border-radius: 16px; background: var(--background); }
 .compilerGrid { display: grid; grid-template-columns: 1fr 1.05fr; gap: 24px; align-items: start; }
 .compilerStory { padding: 28px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); }
 .compilerStory > span { color: var(--ledger-cyan); font-size: .67rem; letter-spacing: .04em; }
@@ -124,5 +125,5 @@
 @media (max-width: 760px) { .hero { grid-template-columns: 1fr; } .heroVisual { transform: none; } .metrics { grid-template-columns: 1fr 1fr; } .metrics > div:nth-child(2) { border-right: 0; } .metrics > div:nth-child(-n+2) { border-bottom: 1px solid var(--border); } .rules, .decisionGrid, .findings, .storageGrid { grid-template-columns: 1fr; } .architecture { padding: 18px; } .chapter { padding-top: 48px; } .chapterNav { gap: 2px; padding: 8px; } .chapterNav a { flex: 0 0 auto; font-size: .73rem; padding: 10px 8px; } .pipeline { grid-template-columns: 1fr; } .queue { padding: 23px; border: 0; } .queue > div { gap: 7px; } .strategy { grid-template-columns: 1fr; padding: 25px; gap: 24px; } .checks { grid-template-columns: 1fr; } .ci > span:last-child { margin-left: 0; } .verificationBranches { gap: 12px; } .verificationBranches article { padding: 20px 12px; } .testStats { grid-template-columns: 1fr; gap: 0; } .testStats article { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 20px; padding: 18px 0; } .testStats span { margin-top: 0; } }
 @media (max-width: 400px) { .metrics > div { padding: 18px 13px; } .metrics strong { font-size: 1.7rem; } .metrics p { font-size: .74rem; } .metrics small { font-size: .65rem; } .verificationBranches { grid-template-columns: 1fr; } .chapterNav span { display: none; } .hero :global(.case-brandline .mono) { font-size: .65rem; line-height: 1.65; } .scope { padding: 22px; } .pnl { padding: 20px; } }
 @media (prefers-reduced-motion: reduce) { .chapterNav a { transition: none; } }
-@media (max-width: 760px) { .compilerGrid { grid-template-columns: 1fr; } .compilerEvidence { grid-template-columns: 1fr 1fr; gap: 12px; } .compilerStory { padding: 24px; } }
+@media (max-width: 760px) { .compilerChapter { padding: 24px 18px; } .compilerGrid { grid-template-columns: 1fr; } .compilerEvidence { grid-template-columns: 1fr 1fr; gap: 12px; } .compilerStory { padding: 24px; } }
 @media (max-width: 400px) { .compilerEvidence article { padding: 19px 14px; } .irVersion, .irProofHeader, .irProof figcaption { padding-inline: 18px; } }
