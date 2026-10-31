@@ -21,7 +21,7 @@
 /* ---------- Stage ---------- */
 .gc-stage {
   position: relative;
-  height: calc(var(--gc-card-w) * 0.72 + 110px);
+  height: calc(var(--gc-card-w) * 0.72 + 126px);
   perspective: 1600px;
 
   touch-action: pan-y pinch-zoom;        /* vertical scroll stays native, horizontal goes to the swipe */

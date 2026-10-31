@@ -13,7 +13,7 @@
   --gc-coral: #ff7a85;  /* Collaboration  → liquid orb  */
   --gc-lime: #c4f25a;   /* Algorithms     → lattice orb */
 
-  --gc-front-base: rgba(8, 12, 22, .94);
+  --gc-front-base: #080c16;
   --gc-shot-bg: #0b1220;
   --gc-blur: 18px;
   --gc-tint: 0.05;
