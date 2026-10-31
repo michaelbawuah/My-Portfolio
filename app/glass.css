@@ -3,9 +3,9 @@
   --primary: #08796f;
   --primary-foreground: #fff;
   --ring: #08796f;
-  --glass-teal: #008577;
-  --glass-amber: #a6670c;
-  --glass-indigo: #5264cd;
+  --glass-teal: #006e62;
+  --glass-amber: #8b570b;
+  --glass-indigo: #4659b9;
   --glass-gradient: linear-gradient(105deg, #087b70 5%, #81742a 66%, #a46713);
   --glass-surface: #f1f7f7;
   --glass-translucent: rgba(247, 251, 251, .78);
@@ -18,7 +18,7 @@
   --glass-shadow: 0 20px 65px -30px #164f5738, inset 0 1px 0 var(--glass-shine);
   --liquid-fill: #08796f;
   --liquid-ink: #fff;
-  --liquid-glow: #5ae6c6;
+  --liquid-glow: #198072;
 }
 .dark {
   --background: #080d16;
@@ -51,7 +51,7 @@ body {
 .dark body {
   background-image: radial-gradient(ellipse at -5% 18%, #19cbb332, transparent 46%), radial-gradient(ellipse at 105% 42%, #ed9a3229, transparent 44%), radial-gradient(ellipse at 50% 115%, #5267df32, transparent 52%);
 }
-.global-keyboard-scene[data-scene-framed="false"] { opacity: .24; }
+.global-keyboard-scene[data-scene-framed="false"] { opacity: .08; }
 .global-keyboard-scene[data-scene-framed="false"] .global-scene-poster {
   mask-image: radial-gradient(ellipse at center, #000 22%, transparent 72%);
   -webkit-mask-image: radial-gradient(ellipse at center, #000 22%, transparent 72%);
