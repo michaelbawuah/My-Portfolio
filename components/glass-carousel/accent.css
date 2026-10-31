@@ -1,0 +1,18 @@
+/* Supplied accent system, adapted to the portfolio's day/night surfaces. */
+@property --acc { syntax: "<color>"; inherits: true; initial-value: #2fe0c4; }
+@property --acc-on { syntax: "<color>"; inherits: true; initial-value: #04130f; }
+:root { --acc: #2fe0c4; --acc-on: #04130f; transition: --acc .8s ease, --acc-on .8s ease; }
+body { isolation: isolate; }
+body,.dark body { background-image: none; }
+.page-aurora {
+  position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background: radial-gradient(55vw 60vh at 8% 20%,color-mix(in srgb,var(--acc) 14%,transparent),transparent 74%),radial-gradient(50vw 55vh at 100% 45%,#ffb24a13,transparent 72%),radial-gradient(50vw 45vh at 60% 100%,#5b7cff16,transparent 72%);
+}
+.dark .page-aurora { background: radial-gradient(55vw 65vh at 8% 20%,color-mix(in srgb,var(--acc) 26%,transparent),transparent 74%),radial-gradient(50vw 55vh at 100% 45%,#ffb24a22,transparent 72%),radial-gradient(50vw 45vh at 60% 100%,#5b7cff26,transparent 72%); }
+::selection { background: color-mix(in srgb,var(--acc) 35%,var(--background)); color: var(--foreground); }
+:focus-visible { outline-color: color-mix(in srgb,var(--acc) 65%,#14233b); }
+.dark :focus-visible { outline-color: var(--acc); }
+.portfolio-shell .site-nav .desktop-nav>a::after,.portfolio-shell .site-nav .nav-home::after { background: var(--acc); box-shadow: 0 0 15px color-mix(in srgb,var(--acc) 55%,transparent); }
+.portfolio-reading-progress { background: var(--acc); }
+@media (prefers-reduced-motion: reduce) { :root { transition: none; } }
+@media (forced-colors: active) { .page-aurora { display: none; } :focus-visible { outline-color: Highlight; } }
