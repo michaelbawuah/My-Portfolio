@@ -18,7 +18,6 @@ const wrap = (n: number, count: number) => count ? ((n % count) + count) % count
 export default function GlassCarousel({ items, interval = 6000, label = "Selected project carousel", onPreview }: Props) {
   const id = useId();
   const root = useRef<HTMLElement>(null);
-  const thumbs = useRef<HTMLDivElement>(null);
   const n = items.length;
   const [index, setIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
@@ -35,7 +34,8 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
   const step = useCallback((direction: number) => { setPaused(true); setIndex(current => wrap(current + direction, n)); }, [n]);
   const stepPx = useCallback(() => {
     if (!root.current) return 320;
-    const size = Number.parseFloat(getComputedStyle(root.current).getPropertyValue("--gc-step-px"));
+    const card = root.current.querySelector<HTMLElement>(".gc-card");
+    const size = (card?.offsetWidth || 460) * .76;
     return Number.isFinite(size) && size > 0 ? size : 320;
   }, []);
   const swipe = useSwipe({ stepPx, onStep: step, disabled: n < 2 || focused, reduced });
@@ -65,13 +65,6 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
     return () => window.clearTimeout(timer);
   }, [running, index, n, duration]);
 
-  useEffect(() => {
-    const dock = thumbs.current;
-    const button = dock?.children[activeIndex] as HTMLElement | undefined;
-    if (!dock || !button) return;
-    // Move only the strip, so carousel changes never scroll the page.
-    dock.scrollTo({ left: button.offsetLeft - dock.offsetLeft - (dock.clientWidth - button.clientWidth) / 2, behavior: reduced ? "instant" : "smooth" });
-  }, [activeIndex, reduced]);
 
   const keyboard = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
@@ -104,10 +97,7 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
     onPointerLeave={e => { if (e.pointerType === "mouse") setHovered(false); }}
     onFocusCapture={e => { if (!(e.target as HTMLElement).closest("[data-rotation-control]")) setPaused(true); }}
     onKeyDown={e => { if (e.key === "Escape" && focused) { setFocused(false); e.preventDefault(); swipe.ref.current?.focus({ preventScroll: true }); } }}>
-    <div className="gc-topbar"><span>THE PROJECT ATLAS <span>/ {pad(n)} BUILDS</span></span><div className="gc-mode-controls">
-      <LiquidButton variant="ghost" size="sm" data-rotation-control aria-label={paused ? "Play project tour" : "Pause project tour"} aria-pressed={!paused} disabled={reduced || n < 2} onClick={() => { setFocused(false); setPaused(current => !current); }} icon={paused ? <Play size={14} /> : <Pause size={14} />}><span>{paused ? "Play" : "Pause"}</span></LiquidButton>
-      <LiquidButton variant="ghost" size="sm" aria-label={focused ? "Exit focus view" : "Enlarge project visual"} aria-pressed={focused} onClick={() => { setPaused(true); setFocused(current => !current); }} icon={focused ? <Minimize2 size={14} /> : <Maximize2 size={14} />}><span>{focused ? "Back to deck" : "Focus view"}</span></LiquidButton>
-    </div></div>
+
     <div className="gc-viewport">
       <div className="gc-atmosphere" aria-hidden="true"><i /><i /><i /></div>
       <div {...swipe.bind} ref={swipe.ref} id={id} className={`gc-stage ${swipe.dragging ? "is-dragging" : ""}`} tabIndex={0}
@@ -121,28 +111,43 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
           const orb = orbFor(project);
           return <article key={project.slug} className={`gc-card ${isActive ? "is-active" : "is-side"}`} aria-hidden={!isActive} inert={hidden}
             data-logo={project.logo} data-portrait={project.slug === "navox"}
-            style={{ "--d": distance.toFixed(3), "--a": absolute.toFixed(3), zIndex: 100 - Math.round(absolute * 10), visibility: hidden ? "hidden" : "visible", pointerEvents: hidden ? "none" : "auto" } as CSSProperties}>
-            <button type="button" className="gc-frame gc-glass" tabIndex={isActive ? 0 : -1}
-              aria-label={isActive ? focused ? `Return ${project.name} to the project deck` : `Enlarge ${project.name} project visual` : `Bring ${project.name} forward`}
-              onClick={() => { setPaused(true); if (isActive) setFocused(current => !current); else select(k); swipe.ref.current?.focus({ preventScroll: true }); }}>
-              <span className="gc-chrome"><span className="gc-dots" aria-hidden="true"><i /><i /><i /></span><span className="gc-path">{project.slug} / project view</span></span>
-              <span className="gc-shot"><img src={project.image} alt={project.imageAlt} width={1200} height={800} draggable={false} loading={absolute < 1.5 ? "eager" : "lazy"} decoding="async" /></span>
-              <span className="gc-caption"><span className="gc-caption__name">{project.name}</span><span className="gc-caption__idx">{pad(k + 1)} / {pad(n)}</span></span>
-            </button>
-            <span className="gc-orb-anchor"><Orb variant={orb.variant} color={orb.color} size="var(--gc-orb-size)" /></span>
+            style={{ "--card-accent": orb.color, "--d": distance.toFixed(3), "--a": absolute.toFixed(3), zIndex: 100 - Math.round(absolute * 10), visibility: hidden ? "hidden" : "visible", pointerEvents: hidden ? "none" : "auto" } as CSSProperties}>
+            <div className="gc-card-surface gc-glass">
+              <div className="gc-visual">
+                <button type="button" className="gc-frame" tabIndex={isActive ? 0 : -1}
+                  aria-label={isActive ? focused ? `Return ${project.name} to the project deck` : `Enlarge ${project.name} project visual` : `Bring ${project.name} forward`}
+                  onClick={() => { setPaused(true); if (isActive) setFocused(current => !current); else select(k); swipe.ref.current?.focus({ preventScroll: true }); }}>
+                  <span className="gc-shot"><img src={project.image} alt={project.imageAlt} width={1200} height={800} draggable={false} loading={absolute < 1.5 ? "eager" : "lazy"} decoding="async" /></span>
+                  <span className="gc-image-hint" aria-hidden="true"><Maximize2 size={14} />A closer look</span>
+                </button>
+                <span className="gc-orb-anchor"><Orb variant={orb.variant} color={orb.color} size="var(--gc-orb-size)" /></span>
+              </div>
+              <div className="gc-card-copy">
+                <div className="gc-eyebrow"><span>{project.category}</span><span className="gc-card-count">{pad(k + 1)} / {pad(n)}</span></div>
+                <h3 className="gc-title">{project.name}<span className="gc-title__dot">.</span></h3>
+                <p className="gc-tagline">{project.tagline}</p>
+                <p className="gc-description">{project.description}</p>
+                <ul className="gc-stack" aria-label="Technologies">{project.stack.map(tech => <li key={tech}>{tech}</li>)}</ul>
+                <div className="gc-actions"><LiquidButton href={project.href} arrow color={orb.color} tabIndex={isActive ? 0 : -1} aria-label={`Explore ${project.name}`}>Open case study</LiquidButton>{onPreview && <LiquidButton variant="ghost" tabIndex={isActive ? 0 : -1} onClick={event => onPreview(project.slug, event.currentTarget)}>Quick preview</LiquidButton>}</div>
+              </div>
+            </div>
+            {!isActive && !hidden && <button className="gc-bring-forward" type="button" tabIndex={-1} aria-label={`Bring ${project.name} forward`} onClick={() => { select(k); swipe.ref.current?.focus({ preventScroll: true }); }} />}
           </article>;
         })}
       </div>
     </div>
     <p className="gc-hint">{focused ? "A closer look · Escape returns to the deck" : "Swipe, drag, or use ← → to explore"}</p>
     <span className="sr-only" aria-live={running ? "off" : "polite"} aria-atomic="true">{active.name}, project {activeIndex + 1} of {n}</span>
-    <div className="gc-detail">
-      <div className="gc-detail__head" key={`head-${active.slug}`}><span className="gc-eyebrow"><Orb variant={activeOrb.variant} color={activeOrb.color} size={22} className="gc-eyebrow__orb" />{active.category}<span className="gc-rule" />{pad(activeIndex + 1)} / {pad(n)}</span><h3 className="gc-title">{active.name}<span className="gc-title__dot">.</span></h3><p className="gc-tagline">{active.tagline}</p><ul className="gc-stack" aria-label="Technologies">{active.stack.map(tech => <li key={tech}>{tech}</li>)}</ul></div>
-      <div className="gc-detail__body" key={`body-${active.slug}`}><p>{active.description}</p><div className="gc-actions"><LiquidButton href={active.href} arrow color={activeOrb.color} size="lg">Explore {active.name === "Pro Competitive Programming" ? "the collection" : active.name}</LiquidButton>{onPreview && <LiquidButton variant="ghost" onClick={event => onPreview(active.slug, event.currentTarget)}>Quick preview</LiquidButton>}</div></div>
-    </div>
-    <div className="gc-strip"><LiquidButton variant="ghost" className="gc-round" aria-label="Previous project" disabled={n < 2} onClick={() => step(-1)}><ArrowLeft aria-hidden="true" /></LiquidButton>
-      <div className="gc-thumbs" ref={thumbs} role="group" aria-label="Choose a project">{items.map((project, k) => <button type="button" key={project.slug} aria-label={`Show ${project.name}`} aria-pressed={k === activeIndex} aria-controls={id} className={`gc-thumb gc-glass ${k === activeIndex ? "is-on" : ""}`} style={{ "--orb": orbFor(project).color } as CSSProperties} onClick={() => select(k)}><span className="gc-thumb__img"><img src={project.thumb || project.image} alt="" width={160} height={100} draggable={false} loading="lazy" /></span><span className="gc-thumb__name"><i aria-hidden="true" /><span>{project.name}</span></span>{k === activeIndex && <span key={`${active.slug}-${running}`} className="gc-thumb__bar" aria-hidden="true" />}</button>)}</div>
-      <LiquidButton variant="ghost" className="gc-round" aria-label="Next project" disabled={n < 2} onClick={() => step(1)}><ArrowRight aria-hidden="true" /></LiquidButton>
+    <div className="gc-controls">
+      <div className="gc-pagination"><LiquidButton variant="ghost" className="gc-round" aria-label="Previous project" disabled={n < 2} onClick={() => step(-1)}><ArrowLeft aria-hidden="true" /></LiquidButton>
+        <div className="gc-dots" role="group" aria-label="Choose a project">{items.map((project, k) => <button type="button" key={project.slug} aria-label={`Show ${project.name}`} aria-pressed={k === activeIndex} aria-controls={id} className={k === activeIndex ? "is-on" : ""} style={{ "--dot-color": orbFor(project).color } as CSSProperties} onClick={() => select(k)}><span><i key={`${active.slug}-${running}`} /></span></button>)}</div>
+        <LiquidButton variant="ghost" className="gc-round" aria-label="Next project" disabled={n < 2} onClick={() => step(1)}><ArrowRight aria-hidden="true" /></LiquidButton>
+      </div>
+      <span className="gc-deck-count" aria-hidden="true">{pad(activeIndex + 1)} <span>/ {pad(n)} projects</span></span>
+      <div className="gc-mode-controls">
+        <LiquidButton variant="ghost" size="sm" data-rotation-control aria-label={paused ? "Play project tour" : "Pause project tour"} aria-pressed={!paused} disabled={reduced || n < 2} onClick={() => { setFocused(false); setPaused(current => !current); }} icon={paused ? <Play size={14} /> : <Pause size={14} />}><span>{paused ? "Play" : "Pause"}</span></LiquidButton>
+        <LiquidButton variant="ghost" size="sm" aria-label={focused ? "Exit focus view" : "Enlarge project visual"} aria-pressed={focused} onClick={() => { setPaused(true); setFocused(current => !current); }} icon={focused ? <Minimize2 size={14} /> : <Maximize2 size={14} />}><span>{focused ? "Back to deck" : "Focus view"}</span></LiquidButton>
+      </div>
     </div>
   </section>;
 }
