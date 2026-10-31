@@ -18,6 +18,8 @@ const wrap = (n: number, count: number) => count ? ((n % count) + count) % count
 export default function GlassCarousel({ items, interval = 6000, label = "Selected project carousel", onPreview }: Props) {
   const id = useId();
   const root = useRef<HTMLElement>(null);
+  const pourAnimations = useRef<Animation[]>([]);
+  const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
   const n = items.length;
   const [index, setIndex] = useState(0);
   const [hovered, setHovered] = useState(false);
@@ -34,8 +36,7 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
   const step = useCallback((direction: number) => { setPaused(true); setIndex(current => wrap(current + direction, n)); }, [n]);
   const stepPx = useCallback(() => {
     if (!root.current) return 320;
-    const card = root.current.querySelector<HTMLElement>(".gc-card");
-    const size = (card?.offsetWidth || 460) * .76;
+    const size = Math.max(150, Math.min(330, window.innerWidth * .3));
     return Number.isFinite(size) && size > 0 ? size : 320;
   }, []);
   const swipe = useSwipe({ stepPx, onStep: step, disabled: n < 2 || focused, reduced });
@@ -65,6 +66,28 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
     return () => window.clearTimeout(timer);
   }, [running, index, n, duration]);
 
+
+  useEffect(() => () => { pourAnimations.current.forEach(animation => animation.cancel()); }, [activeIndex]);
+
+  const pour = (target: HTMLElement) => {
+    if (reduced) return;
+    const card = target.closest<HTMLElement>(".gc-card.is-active");
+    const surface = card?.querySelector<HTMLElement>(".gc-card-surface");
+    const orb = card?.querySelector<HTMLElement>(".gc-orb");
+    const drop = card?.querySelector<HTMLElement>(".gc-pour-drop");
+    const button = target.querySelector<HTMLElement>(".lb");
+    if (!surface || !orb || !drop || !button) return;
+    pourAnimations.current.forEach(animation => animation.cancel());
+    const bounds = surface.getBoundingClientRect(), start = orb.getBoundingClientRect(), end = button.getBoundingClientRect();
+    const x = start.left + start.width * .72 - bounds.left;
+    const y = start.top + start.height * .72 - bounds.top;
+    drop.style.left = `${x}px`; drop.style.top = `${y}px`;
+    const dx = end.right - bounds.left - 16 - x, dy = end.top + end.height * .5 - bounds.top - y;
+    pourAnimations.current = [
+      orb.animate([{ scale: "1", rotate: "0deg" }, { scale: ".86 1.14", rotate: "-12deg", offset: .3 }, { scale: "1", rotate: "0deg" }], { duration: 800, easing: "cubic-bezier(.2,.85,.25,1)" }),
+      drop.animate([{ opacity: 0, transform: "translate(0,0) scale(.3)" }, { opacity: .9, transform: `translate(${dx * .1}px,${dy * .05}px) scale(.8,1.4)`, offset: .22 }, { opacity: .85, transform: `translate(${dx}px,${dy}px) scale(.65,1.5)`, offset: .82 }, { opacity: 0, transform: `translate(${dx}px,${dy}px) scale(2.2,.2)` }], { duration: 800, easing: "cubic-bezier(.35,0,.65,1)" }),
+    ];
+  };
 
   const keyboard = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
@@ -107,7 +130,7 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
           const distance = circularDistance(k, activeIndex + swipe.offset, n);
           const absolute = Math.abs(distance);
           const isActive = k === activeIndex;
-          const hidden = absolute > 2.4 || (focused && !isActive);
+          const hidden = absolute > 2.6 || (focused && !isActive);
           const orb = orbFor(project);
           return <article key={project.slug} className={`gc-card ${isActive ? "is-active" : "is-side"}`} aria-hidden={!isActive} inert={hidden}
             data-logo={project.logo} data-portrait={project.slug === "navox"}
@@ -126,10 +149,12 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
                 <div className="gc-eyebrow"><span>{project.category}</span><span className="gc-card-count">{pad(k + 1)} / {pad(n)}</span></div>
                 <h3 className="gc-title">{project.name}<span className="gc-title__dot">.</span></h3>
                 <p className="gc-tagline">{project.tagline}</p>
-                <p className="gc-description">{project.description}</p>
+                <p id={`${id}-${project.slug}-description`} className={`gc-description ${isActive && expandedSlug === project.slug ? "is-expanded" : ""}`}>{project.description}</p>
+                <button type="button" className="gc-more" aria-controls={`${id}-${project.slug}-description`} aria-expanded={isActive && expandedSlug === project.slug} tabIndex={isActive ? 0 : -1} onClick={() => { setPaused(true); setExpandedSlug(current => current === project.slug ? null : project.slug); }}>{isActive && expandedSlug === project.slug ? "Show less" : "Read more"}</button>
                 <ul className="gc-stack" aria-label="Technologies">{project.stack.map(tech => <li key={tech}>{tech}</li>)}</ul>
-                <div className="gc-actions"><LiquidButton href={project.href} arrow color={orb.color} tabIndex={isActive ? 0 : -1} aria-label={`Explore ${project.name}`}>Open case study</LiquidButton>{onPreview && <LiquidButton variant="ghost" tabIndex={isActive ? 0 : -1} onClick={event => onPreview(project.slug, event.currentTarget)}>Quick preview</LiquidButton>}</div>
+                <div className="gc-actions" onPointerEnter={event => { if (event.pointerType === "mouse" && isActive) pour(event.currentTarget); }} onFocusCapture={event => { if (isActive) pour(event.currentTarget); }}><LiquidButton href={project.href} arrow color={orb.color} tabIndex={isActive ? 0 : -1} aria-label={`Explore ${project.name}`}>Open case study</LiquidButton>{onPreview && <LiquidButton variant="ghost" tabIndex={isActive ? 0 : -1} onClick={event => onPreview(project.slug, event.currentTarget)}>Quick preview</LiquidButton>}</div>
               </div>
+              <span className="gc-pour-drop" aria-hidden="true" />
             </div>
             {!isActive && !hidden && <button className="gc-bring-forward" type="button" tabIndex={-1} aria-label={`Bring ${project.name} forward`} onClick={() => { select(k); swipe.ref.current?.focus({ preventScroll: true }); }} />}
           </article>;
