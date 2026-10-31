@@ -27,11 +27,11 @@ const wrap = (index: number, length: number) => ((index % length) + length) % le
 export function ProjectCarousel({ projects, label = "Selected project carousel", onPreview }: Props) {
   const id = useId();
   const root = useRef<HTMLDivElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
   const dock = useRef<HTMLDivElement>(null);
   const gesture = useRef<Gesture | null>(null);
   const dragged = useRef(false);
   const [selected, setSelected] = useState(0);
-  const [direction, setDirection] = useState(1);
   const [focused, setFocused] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -46,7 +46,6 @@ export function ProjectCarousel({ projects, label = "Selected project carousel",
   function select(index: number, automatic = false) {
     if (!projects.length) return;
     if (!automatic) setPlaying(false);
-    setDirection(index >= selected ? 1 : -1);
     setSelected(wrap(index, projects.length));
     drag.set(0);
   }
@@ -61,7 +60,6 @@ export function ProjectCarousel({ projects, label = "Selected project carousel",
   useEffect(() => {
     if (!running || projects.length < 2) return;
     const timer = window.setTimeout(() => {
-      setDirection(1);
       setSelected(index => wrap(index + 1, projects.length));
     }, TOUR_INTERVAL);
     return () => window.clearTimeout(timer);
@@ -87,6 +85,7 @@ export function ProjectCarousel({ projects, label = "Selected project carousel",
     else if (event.key === "Escape" && focused) setFocused(false);
     else return;
     event.preventDefault();
+    if (stage.current?.contains(event.target as Node)) stage.current.focus({ preventScroll: true });
   }
 
   function pointerDown(event: PointerEvent<HTMLDivElement>) {
@@ -135,6 +134,7 @@ export function ProjectCarousel({ projects, label = "Selected project carousel",
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
     const velocity = current.distance / Math.max(performance.now() - current.time, 1);
     if (!cancelled && current.dragging && (Math.abs(current.distance) > 45 || Math.abs(velocity) > 0.4)) {
+      event.currentTarget.focus({ preventScroll: true });
       select(selected + (current.distance < 0 ? 1 : -1));
     }
     drag.set(0);
@@ -174,6 +174,7 @@ export function ProjectCarousel({ projects, label = "Selected project carousel",
       </div>
 
       <div
+        ref={stage}
         id={id}
         className={styles.stage}
         tabIndex={0}
@@ -228,10 +229,9 @@ export function ProjectCarousel({ projects, label = "Selected project carousel",
       <div className={styles.story}>
         <div className={styles.storyCopy}>
           <div className={styles.chapter}><span>{active.category}</span><span className={styles.chapterLine} /><span aria-live="polite" aria-atomic="true">{String(selected + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}</span></div>
-          <AnimatePresence mode="wait" initial={false} custom={direction}>
+          <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={active.slug}
-              custom={direction}
               initial={reduced ? false : { opacity: 0, y: 18, filter: "blur(6px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               exit={reduced ? { opacity: 0 } : { opacity: 0, y: -12, filter: "blur(4px)" }}

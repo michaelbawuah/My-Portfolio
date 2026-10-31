@@ -55,7 +55,7 @@ export function CarouselStageCard({ project, index, offset, total, entered, focu
       }}
       transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 125, damping: 23, mass: 0.9 }}
       data-active={active}
-      aria-hidden={!active}
+      aria-hidden={!visible || distance > 1}
       inert={!visible || distance > 1}
     >
       <button
@@ -64,6 +64,7 @@ export function CarouselStageCard({ project, index, offset, total, entered, focu
         style={colors}
         data-active={active}
         data-logo={!project.image}
+        data-portrait={project.slug === "navox"}
         aria-label={active ? focused ? `Return ${project.name} to the project deck` : `Enlarge ${project.name} project visual` : `Bring ${project.name} forward`}
         tabIndex={active ? 0 : -1}
         onClick={onSelect}

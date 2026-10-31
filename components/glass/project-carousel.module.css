@@ -47,6 +47,8 @@
 .cardVisual > img { position: relative; display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; padding: 9px; pointer-events: none; transform: scale(.96); transition: transform .7s cubic-bezier(.2,.8,.2,1); filter: drop-shadow(0 14px 24px #0005); }
 .card[data-active=true]:hover .cardVisual > img { transform: scale(1.015); }
 .card[data-logo=true] .cardVisual > img { width: 47%; height: 72%; padding: 0; filter: drop-shadow(0 15px 25px #0005); }
+.card[data-portrait=true] .cardVisual > img { object-fit: cover; object-position: center top; padding: 0; }
+.carousel[data-focused=true] .card[data-portrait=true] .cardVisual > img { object-fit: contain; }
 .visualHalo { position: absolute; width: 70%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(ellipse,color-mix(in srgb,var(--card-accent) 25%,transparent),transparent 65%); }
 .cardLens { position: absolute; left: 16px; bottom: 16px; display: flex; align-items: center; gap: 8px; border: 1px solid #e1eaff66; border-radius: 12px; padding: 10px 12px; background: #101b30bf; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 8px 24px #0005,inset 0 1px 0 #ffffff38; color: #e6edff; font: .66rem/1.3 var(--display); transform: translateZ(36px); }
 .cardLens svg { color: var(--card-accent); }
