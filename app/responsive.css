@@ -1,0 +1,122 @@
+/* Phone layouts share one set of gutters and keep every control in reach. */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+@media (max-width: 680px) {
+  .portfolio-shell {
+    --phone-gutter: clamp(16px, 4vw, 24px);
+    padding-left: max(var(--phone-gutter), env(safe-area-inset-left));
+    padding-right: max(var(--phone-gutter), env(safe-area-inset-right));
+  }
+  .portfolio-shell main, .portfolio-shell main > section,
+  .portfolio-shell main > div, .case-hero-copy, .contact-studio-panel {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .portfolio-shell :is(p, li, figcaption, .mono, .resource-grid strong, .contact-method) {
+    overflow-wrap: anywhere;
+  }
+  .portfolio-shell .site-nav { top: max(9px, env(safe-area-inset-top)); }
+  .portfolio-shell .site-nav .nav-brand { min-width: 0; flex: 1 1 auto; gap: 8px; }
+  .portfolio-shell .site-nav :is(.theme-switch, .explore-menu-button) {
+    width: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 8px;
+    flex-shrink: 0;
+  }
+  .portfolio-shell .site-nav :is(.theme-switch, .explore-menu-button) > span:last-child { display: none; }
+  .portfolio-shell .site-nav .explore-menu-button > span { display: none; }
+  .portfolio-shell .site-nav .nav-brand .wordmark {
+    width: clamp(108px, 31vw, 165px);
+    max-width: 100%;
+    min-height: 44px;
+  }
+  .portfolio-shell :is(.page-heading h1, .case-hero h1, .slopechat-hero h1,
+    .personal-hero h1, .chapter-hero h1, .work-showcase-shell .showcase-heading h1) {
+    font-size: clamp(2.4rem, 10.5vw, 3.5rem);
+    line-height: 1.1;
+  }
+  .home-shell .glass-hero .kinetic-heading { font-size: clamp(2.65rem, 11.5vw, 4rem); }
+  .portfolio-shell .section-heading h2 { font-size: clamp(1.75rem, 7.3vw, 2.25rem); }
+  .hero-actions { align-items: stretch; }
+  .hero-actions :is(.button-primary, .button-secondary, .liquid-button) {
+    flex: 1 1 180px;
+    max-width: 100%;
+    min-height: 48px;
+    white-space: normal;
+    text-align: center;
+  }
+  .visual-toolbar, .visual-bottomline { flex-wrap: wrap; gap: 8px; }
+
+  /* All chapters are visible without a sideways swipe. The page keeps scrolling. */
+  .chapter-tabs {
+    position: relative;
+    top: auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    overflow: visible;
+  }
+  .chapter-tabs > a, .project-detail-tabs .chapter-tabs > a {
+    min-width: 0;
+    min-height: 48px;
+    padding: 10px 8px;
+    font-size: .8rem;
+    line-height: 1.4;
+    white-space: normal;
+    text-align: center;
+  }
+  .chapter-tabs > a:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+  .pipeline-figure { padding: 10px; overflow: visible; }
+  .pipeline-figure img { min-width: 0; max-width: 100%; width: 100%; height: auto; }
+  .pipeline-figure figcaption { min-width: 0; text-align: left; }
+  .pipeline-figure figcaption .text-link { display: inline-flex; align-items: center; min-height: 44px; }
+  .portfolio-shell pre { max-width: 100%; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .portfolio-shell pre code { white-space: inherit; overflow-wrap: inherit; }
+
+  .contact-composer input:not([type=radio]), .contact-composer textarea,
+  .glass-project-search input { font-size: 16px; }
+  .composer-topics span { display: flex; align-items: center; min-height: 44px; }
+  .composer-submit { flex-direction: column; align-items: stretch; gap: 10px; }
+  .composer-submit > p { max-width: none; margin: 0; font-size: .75rem; }
+  .contact-direct { padding-left: 20px; padding-right: 20px; }
+  .portfolio-shell .site-footer { align-items: flex-start; overflow-wrap: anywhere; }
+  .radial-launch {
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+  }
+
+  .explore-menu {
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    padding: max(16px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)) !important;
+    overscroll-behavior: contain;
+  }
+  .explore-menu-top { position: sticky; top: -16px; z-index: 2; background: var(--background); padding-top: 12px; }
+  .explore-menu-grid { flex: 1 0 auto; }
+  .explore-menu-close, .preview-navigation > button { min-width: 44px; min-height: 44px; }
+  .explore-menu-links > a { min-height: 58px; }
+  .menu-label { font-size: clamp(1.9rem, 8vw, 2.7rem); }
+  .explore-menu-bottom a { min-height: 44px; display: inline-flex; align-items: center; }
+
+  .gc { --gc-card-w: min(390px, calc(100vw - 40px)); }
+  .gc-viewport { -webkit-mask-image: linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent); mask-image: linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent); }
+  .gc-card-surface { padding: 16px; }
+  .gc-stack li { max-width: 100%; overflow-wrap: anywhere; }
+  .gc-controls { gap: 12px; }
+  .gc-pagination { width: 100%; min-width: 0; }
+  .gc-dots { width: 100%; flex-wrap: nowrap; }
+  .gc-dots button { flex: 1 1 0; width: auto; min-width: 24px; max-width: 44px; }
+  .gc-dots button.is-on > span { width: 24px; }
+  .gc-mode-controls { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); width: 100%; max-width: 320px; }
+  .gc-mode-controls .lb { min-height: 44px; font-size: .72rem; }
+  .gc-deck-count { font-size: .7rem; }
+}
+
+@media (max-width: 360px) {
+  .portfolio-shell .nav-home { display: none; }
+  .portfolio-shell .site-nav .nav-brand .wordmark { width: 136px; }
+  .engineering-dashboard { padding: 15px; }
+  .dashboard-bottomline { flex-wrap: wrap; gap: 12px; }
+}

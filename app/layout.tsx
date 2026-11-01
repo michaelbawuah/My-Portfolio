@@ -16,11 +16,12 @@ import "@/components/glass-carousel/liquid-button.css";
 import "@/components/glass-carousel/glass-carousel.css";
 import "@/components/glass-carousel/accent.css";
 import "@/components/glass-carousel/pour.css";
+import "./responsive.css";
 import GooFilter from "@/components/glass-carousel/GooFilter";
 import {PortfolioTheme} from "@/components/portfolio-theme";
 import {GlobalKeyboardScene} from "@/components/global-keyboard-scene";
 
-export const viewport: Viewport = { themeColor: "#060a12" };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#060a12" };
 
 export const metadata: Metadata = {
   title: { default: "Michael Baffour Awuah | Software Engineer & AI Systems", template: "%s | Michael Baffour Awuah" },
