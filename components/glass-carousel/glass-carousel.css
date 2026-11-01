@@ -62,6 +62,12 @@
 }
 .gc-stage.is-dragging .gc-card { transition: none; }
 .gc-card.is-side { filter: brightness(calc(1 - min(var(--a),2) * .28)) saturate(.7) blur(calc(min(var(--a),2) * 1.2px)); opacity: calc(1 - min(var(--a),3) * .16); }
+/* A continuous trajectory owns the transforms; a second CSS tween would make it lag. */
+.gc[data-motion="orbit"] .gc-card {
+  transition: none;
+  filter: brightness(calc(1 - min(var(--a),2) * .28)) saturate(calc(1 - min(var(--a),1) * .3)) blur(calc(min(var(--a),2) * 1.2px));
+  opacity: calc((1 - min(var(--a),3) * .16) * var(--presence,1));
+}
 .gc-card-surface {
   display: flex;
   flex-direction: column;
@@ -142,8 +148,12 @@
 .gc-dots button.is-on i { display: block; height: 100%; width: 100%; background: var(--dot-color); transform-origin: left; animation: gc-progress var(--gc-dur,6000ms) linear both; }
 .gc.is-paused .gc-dots button.is-on i { animation: none; }
 @keyframes gc-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.gc[data-motion="orbit"] .gc-dots button.is-on i { animation: none; transform: scaleX(var(--gc-progress,.5)); }
 .gc-deck-count { color: var(--foreground); font: 500 .62rem var(--gc-mono); white-space: nowrap; }
 .gc-deck-count > span { color: var(--glass-muted); }
+.gc-orbit-status { display: inline-flex; align-items: center; gap: 6px; margin-left: 14px; font-size: .58rem; }
+.gc-orbit-status i { width: 5px; height: 5px; border-radius: 50%; background: var(--glass-muted); }
+.gc[data-running="true"] .gc-orbit-status i { background: var(--gc-accent); box-shadow: 0 0 9px var(--gc-accent); }
 .gc-mode-controls { display: flex; gap: 7px; }
 .gc-mode-controls .lb { font-size: .63rem; padding: 10px 12px; }
 .gc-mode-controls .lb__label { flex-direction: row-reverse; }
