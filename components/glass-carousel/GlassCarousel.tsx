@@ -14,11 +14,11 @@ export type CarouselItem = {
   stack: readonly string[]; image: string; imageAlt: string; href: string; thumb?: string;
   orb?: Partial<OrbStyle>; logo?: boolean;
 };
-type Props = { items: readonly CarouselItem[]; interval?: number; label?: string; onPreview?: (slug: string, trigger: HTMLButtonElement) => void };
+type Props = { items: readonly CarouselItem[]; interval?: number; label?: string; syncAccent?: boolean; onPreview?: (slug: string, trigger: HTMLButtonElement) => void };
 const pad = (n: number) => String(n).padStart(2, "0");
 const wrap = (n: number, count: number) => count ? ((n % count) + count) % count : 0;
 
-export default function GlassCarousel({ items, interval = 6000, label = "Selected project carousel", onPreview }: Props) {
+export default function GlassCarousel({ items, interval = 6000, label = "Selected project carousel", syncAccent = true, onPreview }: Props) {
   const id = useId();
   const root = useRef<HTMLElement>(null);
   const pointerFocus = useRef(false);
@@ -46,7 +46,7 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
   }, []);
   const swipe = useSwipe({ stepPx, onStep: step, disabled: n < 2 || focused, reduced });
   const activeOrb = orbFor(active || { category: "AI & ML" });
-  useAccent(active ? activeOrb.color : undefined, activeOrb.on);
+  useAccent(active && syncAccent ? activeOrb.color : undefined, activeOrb.on);
   const pour = usePour({ rootRef: root, sourceRef: activeOrbRef, ctaRef, resetKey: `${active?.slug}-${focused}-${expandedSlug}`, disabled: swipe.dragging || !pageVisible, reduced });
   const running = !pour.busy && !paused && !hovered && !swipe.dragging && !reduced && !focused && expandedSlug !== active?.slug && pageVisible && visible && n > 1;
 
@@ -144,7 +144,7 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
                 <p id={`${id}-${project.slug}-description`} className={`gc-description ${isActive && expandedSlug === project.slug ? "is-expanded" : ""}`}>{project.description}</p>
                 <button type="button" className="gc-more" aria-controls={`${id}-${project.slug}-description`} aria-expanded={isActive && expandedSlug === project.slug} tabIndex={isActive ? 0 : -1} onClick={() => { setExpandedSlug(current => current === project.slug ? null : project.slug); }}>{isActive && expandedSlug === project.slug ? "Show less" : "Read more"}</button>
                 <ul className="gc-stack" aria-label="Technologies">{project.stack.map(tech => <li key={tech}>{tech}</li>)}</ul>
-                <div className="gc-actions"><PourButton ref={isActive ? ctaRef : undefined} href={project.href} {...(isActive ? pour.handlers : {})} style={{ "--pour-color": isActive ? "var(--acc)" : orb.color, "--pour-on": orb.on } as CSSProperties} tabIndex={isActive ? 0 : -1} aria-label={`Explore ${project.name}`} aria-describedby={isActive ? `${id}-pour-hint` : undefined}>Open case study</PourButton>{onPreview && <LiquidButton variant="ghost" tabIndex={isActive ? 0 : -1} onClick={event => onPreview(project.slug, event.currentTarget)}>Quick preview</LiquidButton>}</div>
+                <div className="gc-actions"><PourButton ref={isActive ? ctaRef : undefined} href={project.href} {...(isActive ? pour.handlers : {})} style={{ "--pour-color": isActive && syncAccent ? "var(--acc)" : orb.color, "--pour-on": orb.on } as CSSProperties} tabIndex={isActive ? 0 : -1} aria-label={`Explore ${project.name}`} aria-describedby={isActive ? `${id}-pour-hint` : undefined}>Open case study</PourButton>{onPreview && <LiquidButton variant="ghost" tabIndex={isActive ? 0 : -1} onClick={event => onPreview(project.slug, event.currentTarget)}>Quick preview</LiquidButton>}</div>
               </div>
             </div>
             {!isActive && !hidden && <button className="gc-bring-forward" type="button" tabIndex={-1} aria-label={`Bring ${project.name} forward`} onClick={() => { select(k); swipe.ref.current?.focus({ preventScroll: true }); }} />}

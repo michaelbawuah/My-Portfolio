@@ -1,3 +1,5 @@
+import LiquidButton from "@/components/glass-carousel/LiquidButton";
+import { CaseVisual } from "@/components/case-visual";
 import { Code2, Download, ExternalLink, Play } from "lucide-react";
 import { PageFrame } from "@/components/portfolio-layout";
 import { CaseNotebook, PipelineExplorer } from "@/components/portfolio-interactions";
@@ -78,7 +80,7 @@ export default function GatehavenPage() {
     <div className="notebook-heading"><span className="mono">OPEN THE WORK</span><h2>Try it, then look inside.</h2><p>Download the desktop preview for your platform, follow the circuit editor manual, or read through the engine and its tests.</p></div>
     <div className={styles.release}>
       <img src={project.logo} alt="" width={88} height={88} loading="lazy" />
-      <div><h3>Gatehaven 0.5 Preview 1</h3><p>macOS, Linux, and Windows · Native x64 and ARM64 packages</p><a href={gatehavenRelease} className="button-primary" target="_blank" rel="noopener noreferrer"><Download size={17} />Choose your download</a><p className={styles.releaseNote}>The release page includes installation steps, checksums, and preview limitations.</p></div>
+      <div><h3>Gatehaven 0.5 Preview 1</h3><p>macOS, Linux, and Windows · Native x64 and ARM64 packages</p><LiquidButton href={gatehavenRelease} target="_blank" rel="noopener noreferrer"><Download size={17} />Choose your download</LiquidButton><p className={styles.releaseNote}>The release page includes installation steps, checksums, and preview limitations.</p></div>
     </div>
     <div className="resource-grid">{project.resources.map(resource => <a key={resource.href} href={resource.href} target="_blank" rel="noopener noreferrer"><span className="mono">{resource.kind}</span><strong>{resource.label}</strong><ExternalLink size={19} /></a>)}</div>
   </>;
@@ -91,13 +93,9 @@ export default function GatehavenPage() {
         <h1>Gatehaven<span>.</span></h1>
         <ProjectPlatforms platforms={project.platforms} />
         <h2>{project.summary}</h2><p>{project.description}</p>
-        <div className="hero-actions"><a className="button-primary" href={gatehavenRelease} target="_blank" rel="noopener noreferrer"><Download size={17} />Download preview</a><a className="button-secondary" href="#gatehaven-demo"><Play size={17} />Watch gameplay</a><a className="text-link" href={project.repo} target="_blank" rel="noopener noreferrer"><Code2 size={17} /> GitHub source</a></div>
+        <div className="hero-actions"><LiquidButton href={gatehavenRelease} target="_blank" rel="noopener noreferrer"><Download size={17} />Download preview</LiquidButton><LiquidButton href="#gatehaven-demo" variant="ghost"><Play size={17} />Watch gameplay</LiquidButton><a className="text-link" href={project.repo} target="_blank" rel="noopener noreferrer"><Code2 size={17} /> GitHub source</a></div>
       </div>
-      <div className="case-hero-visual">
-        <div className="visual-toolbar"><span className="mono">GATEHAVEN / CIRCUIT EDITOR</span><span className="window-controls" aria-hidden="true"><i /><i /><i /></span></div>
-        <a href={project.image} target="_blank" rel="noopener noreferrer" className={styles.heroImage} aria-label="Open the full-size Gatehaven circuit editor screenshot"><img src={project.image} alt={project.imageAlt} width={1280} height={800} fetchPriority="high" /></a>
-        <div className="visual-bottomline"><span>macOS · Linux · Windows</span><span>x64 / ARM64 PREVIEW</span></div>
-      </div>
+      <CaseVisual label="GATEHAVEN / CIRCUIT EDITOR" src={project.image} alt={project.imageAlt} width={1280} height={800} caption={<><span>macOS · Linux · Windows</span><span>x64 / ARM64 PREVIEW</span></>}/>
     </section>
     <CaseNotebook overview={overview} system={system} evidence={evidence} resources={resources} labels={["Overview", "How it works", "Evidence", "Code & downloads"]} />
     <nav className="case-next" aria-label="More projects"><a href="/work">All projects</a><a href="/projects/fluxion"><img className="project-mark" src="/logos/fluxion.png" width={38} height={38} alt="" loading="lazy" /><span>Explore another build<strong>Fluxion</strong></span></a></nav>

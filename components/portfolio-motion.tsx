@@ -9,6 +9,7 @@ const introSelector = [
   '.immersive-description', '.hero-actions', '.hero-social-links',
   '.showcase-heading h1', '.showcase-heading p', '.page-heading > *',
   '.personal-hero-copy > *', '.case-hero-copy > *',
+  '.inner-about-copy > *', '.inner-research-copy > *', '.inner-contact-copy > .inner-eyebrow', '.inner-contact-copy > h1', '.inner-contact-copy > p',
 ].join(',');
 
 const revealSelector = [
@@ -18,6 +19,8 @@ const revealSelector = [
   '.activity-highlights-copy', '.activity-highlight-metrics > div',
   '.work-together-heading', '.work-together-panel', '.project-filter-row',
   '.reading-section > h2', '.reading-section > h3', '[data-motion-reveal]',
+  '.inner-profile-strip', '.research-method > article', '.inner-journey-card',
+  '.study-console', '.inner-contact-form', '.inner-biography',
 ].join(',');
 
 /** GSAP and Lenis share a ticker. HTML remains visible if enhancement cannot load. */
