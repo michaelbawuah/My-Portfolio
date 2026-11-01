@@ -347,13 +347,14 @@
 .interior-shell .impact-index a { border-radius: 14px; min-height: 44px; background: transparent; }
 .interior-shell .impact-index a:hover { background: var(--inner-soft); }
 .interior-shell .impact-entry { padding: 28px; }
+.interior-shell .impact-chapter-heading > div { min-width: 0; }
 .interior-shell .impact-metrics { padding: 20px; background: var(--glass-inset); }
 .interior-shell .impact-details { border-color: var(--inner-edge); }
 .interior-shell .impact-details summary { min-height: 48px; }
 .interior-shell .impact-details[open] { border-radius: 15px; background: var(--inner-soft); padding-inline: 15px; }
 .interior-shell .impact-technologies li,.interior-shell .chapter-topics span,.interior-shell .brand-history span { border-color: var(--inner-edge); border-radius: 999px; background: var(--glass-inset); }
 .interior-shell .chapter-tabs > a { display: flex; align-items: center; justify-content: center; gap: 9px; }
-@media(max-width:680px) { .interior-shell .impact-entry { padding: 22px; } .interior-shell .impact-metrics { padding: 16px; } }
+@media(max-width:680px) { .interior-shell .impact-entry { padding: 22px; } .interior-shell .impact-metrics { padding: 16px; } .interior-shell .impact-chapter-heading h2 { font-size: clamp(1.45rem,6.8vw,2.2rem); overflow-wrap: anywhere; } }
 
 @media(max-width:680px) { .journey-orb { --journey-orb-size: 48px; width: 86px; height: 90px; flex-basis: 86px; } }
 
