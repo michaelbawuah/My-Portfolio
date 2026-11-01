@@ -74,5 +74,17 @@
 @media (max-width: 850px) { .grid { gap: 18px; } .heading { align-items: flex-start; flex-direction: column; gap: 20px; } .body { padding: 20px; } .visualFooter { left: 18px; right: 18px; } .caption { display: none; } .impact { flex-wrap: wrap; } .readMore { flex-basis: 100%; margin: 2px 0 0; } .section { margin-bottom: 60px; } }
 @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } .visual { height: 225px; } .organization { font-size: 1.4rem; } .caption { display: block; max-width: 135px; font-size: .53rem; } .readMore { flex-basis: auto; margin: 0 0 0 auto; } .impact > span:not(.readMore) { max-width: 115px; } }
 @media (max-width: 370px) { .caption { display: none; } .readMore { display: none; } }
+@media (max-width: 680px) {
+  .agentFlow { inset: 60px 18px auto; gap: 12px; }
+  .agentNode { padding: 10px 8px; }
+  .agentNode:not(:last-child)::after { width: 12px; }
+  .date { font-size: .68rem; }
+  .stack li { font-size: .64rem; }
+  .body p { font-size: .9rem; line-height: 1.75; }
+}
+@media (max-width: 380px) {
+  .agentNode > small { display: none; }
+  .agentNode { min-height: 76px; justify-content: center; }
+}
 @media (prefers-reduced-motion: reduce) { .card,.card * { transition: none !important; } .card:hover,.card:focus-visible { translate: none !important; } .card:hover .photo,.card:hover .agentNode,.card:focus-visible .agentNode,.card:hover .productTile,.card:hover .arrow { transform: none; } }
 @media (forced-colors: active) { .section::before,.card::after { display: none; } .heading h2 > span { color: CanvasText; background: none; } .card,.impact,.stack li,.arrow { border-color: CanvasText; } }

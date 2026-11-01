@@ -22,14 +22,15 @@ export function SectionNavigator({ sections, label = "Page sections", id, classN
     const header = root?.querySelector<HTMLElement>(".preview-dialog-header") ?? document.querySelector<HTMLElement>(".site-nav");
     const panels = Array.from(element.querySelectorAll<HTMLElement>(":scope > [data-scroll-section]"));
     let frame = 0;
+    const stickyNavHeight = () => getComputedStyle(nav).position === "sticky" ? nav.offsetHeight : 0;
     const measure = () => {
       element.style.setProperty("--chapter-top", `${(header?.offsetHeight ?? 0) + 8}px`);
-      element.style.setProperty("--chapter-offset", `${(header?.offsetHeight ?? 0) + nav.offsetHeight + 24}px`);
+      element.style.setProperty("--chapter-offset", `${(header?.offsetHeight ?? 0) + stickyNavHeight() + 24}px`);
     };
     const update = () => {
       frame = 0;
       const scrollPadding = parseFloat(getComputedStyle(root ?? document.documentElement).scrollPaddingTop) || 0;
-      const line = (root?.getBoundingClientRect().top ?? 0) + (header?.offsetHeight ?? 0) + nav.offsetHeight + scrollPadding + 40;
+      const line = (root?.getBoundingClientRect().top ?? 0) + (header?.offsetHeight ?? 0) + stickyNavHeight() + scrollPadding + 40;
       let current: string | undefined = panels[0]?.id;
       for (const panel of panels) if (panel.getBoundingClientRect().top <= line) current = panel.id;
       const atBottom = root
