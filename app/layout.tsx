@@ -16,6 +16,7 @@ import "@/components/glass-carousel/liquid-button.css";
 import "@/components/glass-carousel/glass-carousel.css";
 import "@/components/glass-carousel/accent.css";
 import "@/components/glass-carousel/pour.css";
+import "./interiors.css";
 import "./responsive.css";
 import GooFilter from "@/components/glass-carousel/GooFilter";
 import {PortfolioTheme} from "@/components/portfolio-theme";

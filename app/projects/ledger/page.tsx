@@ -1,3 +1,5 @@
+import LiquidButton from "@/components/glass-carousel/LiquidButton";
+import { CaseVisual } from "@/components/case-visual";
 import { ArrowDown, ArrowUpRight, Check, Code2, Cpu, GitBranch, Layers3, ShieldCheck } from "lucide-react";
 import { PageFrame } from "@/components/portfolio-layout";
 import { LedgerMatchingDemo } from "@/components/ledger-matching-demo";
@@ -46,13 +48,9 @@ export default function LedgerPage() {
         <h2>Inside a low-latency<br />matching engine.</h2>
         <p>Orders arrive. Prices change. Priority must hold. I built Ledger to explore that execution core, then extended it with CompilerPilot and an authored LLVM optimization pass.</p>
         <div className={styles.tags}><span>C++23</span><span>Price-time priority</span><span>Allocation-free processing</span><span>LLVM 18 / MemorySSA</span></div>
-        <div className="hero-actions"><a className="button-primary" href="#matching">Explore the engine <ArrowDown size={17} /></a><a className="button-secondary" href={ledgerRepo} target="_blank" rel="noopener noreferrer"><Code2 size={17} /> GitHub source</a></div>
+        <div className="hero-actions"><LiquidButton href="#matching">Explore the engine <ArrowDown size={17} /></LiquidButton><LiquidButton href={ledgerRepo} target="_blank" rel="noopener noreferrer" variant="ghost"><Code2 size={17} /> GitHub source</LiquidButton></div>
       </div>
-      <figure className={`case-hero-visual ${styles.heroVisual}`}>
-        <div className="visual-toolbar"><span className="mono">LEDGER / ENGINEERING MAP</span><span className="window-controls" aria-hidden="true"><i /><i /><i /></span></div>
-        <img src={project.image} width={1200} height={800} alt={project.imageAlt} fetchPriority="high" />
-        <figcaption>Single instrument · Integer ticks · Explicit execution reports<br /><span>Explanatory illustration of the system.</span></figcaption>
-      </figure>
+      <CaseVisual label="LEDGER / ENGINEERING MAP" src={project.image} alt={project.imageAlt} width={1200} height={800} caption={<span>Single instrument · Integer ticks · Explicit execution reports<br/>Explanatory illustration of the system.</span>}/>
     </section>
     <div className={styles.metrics} aria-label="Recorded Ledger results">
       <div><strong>18.74<span>M/s</span></strong><p>Synthetic core throughput</p><small>2.27× the STL reference</small></div>
