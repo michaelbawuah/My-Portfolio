@@ -83,8 +83,8 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   .contact-direct { padding-left: 20px; padding-right: 20px; }
   .portfolio-shell .site-footer { align-items: flex-start; overflow-wrap: anywhere; }
   .radial-launch {
-    right: max(16px, env(safe-area-inset-right));
-    bottom: max(16px, env(safe-area-inset-bottom));
+    /* The sticky header already exposes these links; keep page content clear. */
+    display: none;
   }
 
   .explore-menu {
