@@ -29,25 +29,22 @@
 .brandPlate img { width: 38px; height: 38px; object-fit: contain; }
 .brandPlate[data-brand="hrt"] { padding: 9px 20px; }
 .brandPlate[data-brand="hrt"] img { width: 70px; height: 42px; }
-.brandPlate[data-brand="navox"] { color: #edf1f7; background: #102332dc; }
+.brandPlate[data-brand="neuralseek"] { padding: 12px 14px; background: #131320e8; border-color: #b7afff50; }
+.brandPlate[data-brand="neuralseek"] img { width: 155px; height: auto; }
 .caption { max-width: 175px; color: #dee9f6; font: 500 .61rem/1.5 var(--gc-mono),monospace; text-align: right; text-wrap: balance; }
-.navoxArt,.sivoxiArt { position: absolute; inset: 0; overflow: hidden; }
-.navoxArt { background: radial-gradient(ellipse at 25% 45%,#00c2b44d,transparent 55%),radial-gradient(ellipse at 80% 65%,#246dff38,transparent 60%); }
-.navoxMark { position: absolute; left: 16%; top: 17%; width: 115px; height: 115px; z-index: 2; filter: drop-shadow(0 12px 22px #18bbc65c); transform: rotate(-8deg); transition: transform .8s var(--gc-ease-out); }
-.navoxMark img { width: 100%; height: 100%; object-fit: contain; }
-.card:hover .navoxMark { transform: rotate(2deg) translateY(-5px); }
-.orbitRing { position: absolute; left: 12%; top: 9%; width: 160px; height: 160px; border: 1px solid #31e1ce38; border-radius: 50%; transform: rotateX(40deg) rotate(-25deg); }
-.orbitRing + .orbitRing { left: 8%; top: 0; width: 210px; height: 210px; border-color: #31e1ce1a; }
-.workspace { position: absolute; width: 58%; top: 44px; right: -18px; padding: 6px; border-radius: 13px; background: #0e2039ce; border: 1px solid #9fcfff47; box-shadow: 0 20px 50px #0007; transform: perspective(650px) rotateY(-12deg) rotateZ(5deg); transition: transform .8s var(--gc-ease-out); }
-.workspace > div { display: flex; gap: 4px; align-items: center; padding: 3px 4px 7px; }
-.workspace i { width: 4px; height: 4px; border-radius: 50%; background: #93a0b677; }
-.workspace > div > span { margin-left: 6px; color: #c1d7ec; font: 500 .44rem var(--gc-mono),monospace; }
-.workspace > img { width: 100%; display: block; border-radius: 7px; }
-.card:hover .workspace { transform: perspective(650px) rotateY(-5deg) rotateZ(2deg) translateY(-5px); }
-.artChip { position: absolute; z-index: 3; display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border: 1px solid #77e2cd4d; border-radius: 99px; color: #bbfff1; background: #102d38d9; font: 600 .58rem var(--gc-body),sans-serif; box-shadow: 0 8px 18px #0003; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-.artChip:nth-last-child(3) { top: 57px; left: 5%; rotate: -8deg; }
-.artChip:nth-last-child(2) { top: 44px; left: 42%; rotate: 6deg; }
-.artChip:last-child { top: 137px; left: 33%; rotate: -5deg; }
+/* An original workflow illustration, not a screenshot of the platform. */
+.neuralseekArt,.sivoxiArt { position: absolute; inset: 0; overflow: hidden; }
+.neuralseekArt { background: radial-gradient(ellipse at 12% 50%,#27afca40,transparent 60%),radial-gradient(ellipse at 74% 36%,#7038bd60,transparent 63%),linear-gradient(130deg,#101323,#171126); }
+.visual[data-visual="neuralseek"] .visualGrid { display: none; }
+.agentFlow { position: absolute; inset: 62px 28px auto; z-index: 1; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(16px,2vw,30px); perspective: 700px; }
+.flowLabel { position: absolute; top: -18px; left: 2px; color: #c7c9e4; font: 500 .48rem var(--gc-mono),monospace; letter-spacing: .08em; }
+.agentNode { position: relative; display: flex; align-items: flex-start; flex-direction: column; gap: 6px; padding: 12px; min-width: 0; color: #83eddf; border: 1px solid #b0c7ff44; border-radius: 13px; background: linear-gradient(135deg,#c8d9ff20,#162337d9); box-shadow: inset 0 1px 0 #fff2,0 12px 25px #0004; transform: rotateY(-8deg) rotateX(5deg); transition: transform .65s var(--gc-ease-out),border-color .5s; }
+.agentNode:nth-of-type(2) { color: #bab1ff; background: linear-gradient(135deg,#baa7ff28,#29203ed9); transition-delay: .045s; }
+.agentNode:nth-of-type(3) { color: #f2a7dd; background: linear-gradient(135deg,#eab6ff24,#31203ed9); transition-delay: .09s; }
+.agentNode:not(:last-child)::after { content: ""; position: absolute; top: 45%; left: calc(100% + 1px); width: clamp(16px,2vw,30px); height: 1px; background: linear-gradient(90deg,currentColor,#c6b9ff80); box-shadow: 0 0 9px currentColor; }
+.agentNode > span { color: #f0f2ff; font: 650 .7rem var(--gc-body),sans-serif; }
+.agentNode > small { color: #c1c5d8; font: 500 .44rem var(--gc-mono),monospace; white-space: nowrap; }
+.card:hover .agentNode,.card:focus-visible .agentNode { transform: rotateY(0) rotateX(0) translateY(-4px); border-color: #c5beff88; }
 .sivoxiArt { background: radial-gradient(ellipse at 50% 60%,#6b6cff52,transparent 65%),linear-gradient(135deg,#0a1838,#0c1b2b); perspective: 800px; }
 .productTile { position: absolute; top: 52px; left: 12%; display: flex; flex-direction: column; align-items: flex-start; width: 110px; height: 133px; padding: 13px; border: 1px solid #b4c5ff40; border-radius: 13px; background: linear-gradient(130deg,#bed4ff16,#223758c7); transform: rotateY(15deg) rotateZ(-10deg); box-shadow: 0 10px 25px #0005; color: #93d0ff; transition: transform .8s var(--gc-ease-out); }
 .productTile:nth-child(2) { left: 43%; top: 38px; width: 86px; height: 148px; transform: rotateY(-10deg) rotateZ(8deg); color: #b7bbff; }
@@ -77,5 +74,5 @@
 @media (max-width: 850px) { .grid { gap: 18px; } .heading { align-items: flex-start; flex-direction: column; gap: 20px; } .body { padding: 20px; } .visualFooter { left: 18px; right: 18px; } .caption { display: none; } .impact { flex-wrap: wrap; } .readMore { flex-basis: 100%; margin: 2px 0 0; } .section { margin-bottom: 60px; } }
 @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } .visual { height: 225px; } .organization { font-size: 1.4rem; } .caption { display: block; max-width: 135px; font-size: .53rem; } .readMore { flex-basis: auto; margin: 0 0 0 auto; } .impact > span:not(.readMore) { max-width: 115px; } }
 @media (max-width: 370px) { .caption { display: none; } .readMore { display: none; } }
-@media (prefers-reduced-motion: reduce) { .card,.card * { transition: none !important; } .card:hover,.card:focus-visible { translate: none !important; } .card:hover .photo,.card:hover .navoxMark,.card:hover .workspace,.card:hover .productTile,.card:hover .arrow { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .card,.card * { transition: none !important; } .card:hover,.card:focus-visible { translate: none !important; } .card:hover .photo,.card:hover .agentNode,.card:focus-visible .agentNode,.card:hover .productTile,.card:hover .arrow { transform: none; } }
 @media (forced-colors: active) { .section::before,.card::after { display: none; } .heading h2 > span { color: CanvasText; background: none; } .card,.impact,.stack li,.arrow { border-color: CanvasText; } }

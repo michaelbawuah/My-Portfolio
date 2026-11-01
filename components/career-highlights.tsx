@@ -1,4 +1,4 @@
-import { ArrowUpRight, AudioLines, CalendarDays, Check, Code2, Layers3, Smartphone } from "lucide-react";
+import { ArrowUpRight, Code2, Database, Layers3, ListFilter, Smartphone, Sparkles } from "lucide-react";
 import styles from "./career-highlights.module.css";
 
 type Highlight = {
@@ -9,12 +9,12 @@ type Highlight = {
 
 const highlights: readonly Highlight[] = [
   {
-    id: "navox", organization: "NavoX", role: "Founder & Product Lead",
-    date: "2026 – Present · Student AI assistant",
-    description: "Leading product and engineering across student planning, coursework, voice interactions, and reviewable actions.",
-    href: "/about#navox-founder", metric: "Founder", metricDetail: "Product & engineering",
-    tone: "teal", discipline: "AI PRODUCTS", logo: "/logos/navox.png", caption: "A student’s day, connected.",
-    stack: ["FastAPI", "Next.js", "Temporal", "LiveKit"],
+    id: "neuralseek", organization: "NeuralSeek", role: "AI Agent Builder Intern",
+    date: "Oct – Nov 2025 · Remote",
+    description: "Built multi-model Python workflows processing 50,000+ records daily and a multi-step RAG agent for query classification, source ranking, and grounded generation.",
+    href: "/about#neuralseek-internship", metric: "−35%", metricDetail: "Token costs · prompt caching & batch inference",
+    tone: "teal", discipline: "AGENTIC AI", logo: "/experience/neuralseek-logo.svg", caption: "From retrieval to grounded answers.",
+    stack: ["Python", "mAIstro", "RAG", "IBM watsonx"],
   },
   {
     id: "cuair", organization: "CUAir", role: "Imaging Systems Software Engineer",
@@ -49,11 +49,13 @@ function ExperienceVisual({ item, index }: { item: Highlight; index: number }) {
     {item.photo && <img className={styles.photo} src={item.photo} alt={item.photoAlt} width={1200} height={800} loading="lazy" decoding="async" draggable={false} />}
     <div className={styles.visualGrid} aria-hidden="true" />
     <span className={styles.discipline}><i />{item.discipline}</span><span className={styles.index} aria-hidden="true">0{index + 1}</span>
-    {item.id === "navox" && <div className={styles.navoxArt} aria-hidden="true">
-      <div className={styles.orbitRing} /><div className={styles.orbitRing} />
-      <div className={styles.navoxMark}><img src={item.logo} alt="" width={140} height={140} loading="lazy" draggable={false} /></div>
-      <div className={styles.workspace}><div><i /><i /><i /><span>NavoX / Today</span></div><img src="/projects/navox-current-workspace.png" alt="" width={1200} height={800} loading="lazy" draggable={false} /></div>
-      <span className={styles.artChip}><AudioLines size={14}/> Vox</span><span className={styles.artChip}><CalendarDays size={14}/> Plan</span><span className={styles.artChip}><Check size={14}/> Review</span>
+    {item.id === "neuralseek" && <div className={styles.neuralseekArt} aria-hidden="true">
+      <div className={styles.agentFlow}>
+        <span className={styles.flowLabel}>mAIstro / retrieval agent</span>
+        <div className={styles.agentNode}><ListFilter size={20}/><span>Classify</span><small>01 / query</small></div>
+        <div className={styles.agentNode}><Database size={20}/><span>Rank</span><small>02 / sources</small></div>
+        <div className={styles.agentNode}><Sparkles size={20}/><span>Generate</span><small>03 / grounded</small></div>
+      </div>
     </div>}
     {item.id === "sivoxi" && <div className={styles.sivoxiArt} aria-hidden="true">
       <div className={styles.productTile}><Code2 size={20}/><span>Web</span><i /><i /><i /></div>
@@ -62,7 +64,7 @@ function ExperienceVisual({ item, index }: { item: Highlight; index: number }) {
       <span className={styles.brandCore}><img src={item.logo} alt="" width={76} height={76} loading="lazy" draggable={false}/></span>
     </div>}
     <div className={styles.visualFooter}>
-      <span className={styles.brandPlate} data-brand={item.id}><img src={item.logo} alt={`${item.organization} logo`} width={54} height={54} loading="lazy" draggable={false}/>{item.id !== "hrt" && <span>{item.organization}</span>}</span>
+      <span className={styles.brandPlate} data-brand={item.id}><img src={item.logo} alt={`${item.organization} logo`} width={item.id === "neuralseek" ? 1711 : 54} height={item.id === "neuralseek" ? 299 : 54} loading="lazy" draggable={false}/>{item.id !== "hrt" && item.id !== "neuralseek" && <span>{item.organization}</span>}</span>
       <span className={styles.caption}>{item.caption}</span>
     </div>
   </div>;

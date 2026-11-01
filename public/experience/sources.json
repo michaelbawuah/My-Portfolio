@@ -1,12 +1,47 @@
 {
   "retrieved": "2026-10-31",
   "assets": [
-    { "file": "cuair-logo.png", "organization": "CUAir", "source_page": "https://cuair.org/aircraft.html", "source_asset": "https://cuair.org/ba69dd19583653c3826f7d6d80562066.png" },
-    { "file": "cuair-atlas.jpg", "organization": "CUAir", "source_page": "https://cuair.org/aircraft.html", "source_asset": "https://cuair.org/29d3839cd524d4b70a2afffc15e11383.jpg", "description": "Atlas aircraft photo; Atlas.jpg in the official site's aircraft bundle." },
-    { "file": "sivoxi-logo.svg", "organization": "SIVOXI", "source_page": "https://www.sivoxi.com/about-us/", "source_asset": "https://www.sivoxi.com/images/sivoxi-logo.svg" },
-    { "file": "hrt-logo.svg", "organization": "Hudson River Trading", "source_page": "https://www.hudsonrivertrading.com/offices/", "source_asset": "https://www.hudsonrivertrading.com/wp-content/uploads/2024/04/01-HRT-Primary-Logo-with-®-Q2-2024.svg" },
-    { "file": "hrt-new-york.webp", "organization": "Hudson River Trading", "source_page": "https://www.hudsonrivertrading.com/offices/", "source_asset": "https://www.hudsonrivertrading.com/wp-content/uploads/2023/12/Office-NYC-3-jpg.webp", "description": "New York office terrace view supplied by HRT." }
+    {
+      "file": "neuralseek-logo.svg",
+      "organization": "NeuralSeek",
+      "source_page": "https://neuralseek.com/",
+      "source_asset": "https://github.com/CerebralBlue-LOV/neuralseek-brain/blob/main/2026_images/NeuralSeek%20Logos/color_logo_white_text.svg",
+      "source_blob": "d26360c8a649d2ae0db4cc18910fa7a0279e6b42",
+      "description": "Official full-color NeuralSeek mark with white wordmark, unchanged."
+    },
+    {
+      "file": "cuair-logo.png",
+      "organization": "CUAir",
+      "source_page": "https://cuair.org/aircraft.html",
+      "source_asset": "https://cuair.org/ba69dd19583653c3826f7d6d80562066.png"
+    },
+    {
+      "file": "cuair-atlas.jpg",
+      "organization": "CUAir",
+      "source_page": "https://cuair.org/aircraft.html",
+      "source_asset": "https://cuair.org/29d3839cd524d4b70a2afffc15e11383.jpg",
+      "description": "Atlas aircraft photo; Atlas.jpg in the official site's aircraft bundle."
+    },
+    {
+      "file": "sivoxi-logo.svg",
+      "organization": "SIVOXI",
+      "source_page": "https://www.sivoxi.com/about-us/",
+      "source_asset": "https://www.sivoxi.com/images/sivoxi-logo.svg"
+    },
+    {
+      "file": "hrt-logo.svg",
+      "organization": "Hudson River Trading",
+      "source_page": "https://www.hudsonrivertrading.com/offices/",
+      "source_asset": "https://www.hudsonrivertrading.com/wp-content/uploads/2024/04/01-HRT-Primary-Logo-with-\u00ae-Q2-2024.svg"
+    },
+    {
+      "file": "hrt-new-york.webp",
+      "organization": "Hudson River Trading",
+      "source_page": "https://www.hudsonrivertrading.com/offices/",
+      "source_asset": "https://www.hudsonrivertrading.com/wp-content/uploads/2023/12/Office-NYC-3-jpg.webp",
+      "description": "New York office terrace view supplied by HRT."
+    }
   ],
-  "original_art": "NavoX uses the portfolio's existing NavoX logo and development workspace image in a custom CSS composition. SIVOXI's web/mobile/data panels are decorative CSS artwork around its official brand mark, not screenshots of client products.",
+  "original_art": "NeuralSeek's three-step agent workflow is a decorative CSS illustration of Michael's documented classification, source-ranking, and grounded-generation work, not a platform screenshot. SIVOXI's web/mobile/data panels are decorative CSS artwork around its official brand mark, not screenshots of client products.",
   "rights": "Third-party photographs and logos remain the property of their respective owners. They identify the organizations in Michael's experience; no endorsement or new asset license is asserted."
 }
