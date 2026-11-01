@@ -3,9 +3,9 @@ import { useCallback, useEffect, useRef, useState, type MouseEvent, type Pointer
 import { createWheelGesture, swipeSteps } from "./swipe-math";
 
 type Gesture = { id: number; x: number; y: number; dx: number; lastX: number; time: number; velocity: number; spacing: number; axis: "x" | "y" | null };
-type Options = { stepPx: () => number; onStep: (step: number) => void; disabled?: boolean; reduced?: boolean };
+type Options = { stepPx: () => number; onStep: (step: number) => void; disabled?: boolean; reduced?: boolean; onGrab?: () => void; onOffset?: (offset: number) => void; onRelease?: (steps: number, cancelled: boolean) => void };
 
-export default function useSwipe({ stepPx, onStep, disabled = false, reduced = false }: Options) {
+export default function useSwipe({ stepPx, onStep, disabled = false, reduced = false, onGrab, onOffset, onRelease }: Options) {
   const ref = useRef<HTMLDivElement>(null);
   const gesture = useRef<Gesture | null>(null);
   const frame = useRef<number | null>(null);
@@ -26,6 +26,7 @@ export default function useSwipe({ stepPx, onStep, disabled = false, reduced = f
     dragged.current = false;
     if (disabled) return;
     gesture.current = { id: event.pointerId, x: event.clientX, y: event.clientY, dx: 0, lastX: event.clientX, time: performance.now(), velocity: 0, spacing: stepPx(), axis: null };
+    onGrab?.();
   };
 
   const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
@@ -35,7 +36,7 @@ export default function useSwipe({ stepPx, onStep, disabled = false, reduced = f
     const dy = event.clientY - current.y;
     if (current.axis === null && Math.max(Math.abs(dx), Math.abs(dy)) > 6) {
       current.axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
-      if (current.axis === "y") { gesture.current = null; return; }
+      if (current.axis === "y") { gesture.current = null; onRelease?.(0, true); return; }
       event.currentTarget.setPointerCapture(event.pointerId);
       dragged.current = true;
       setDragging(true);
@@ -49,7 +50,7 @@ export default function useSwipe({ stepPx, onStep, disabled = false, reduced = f
     pending.current = reduced ? 0 : -dx / current.spacing;
     if (frame.current === null) frame.current = requestAnimationFrame(() => {
       frame.current = null;
-      setOffset(pending.current);
+      if (onOffset) onOffset(pending.current); else setOffset(pending.current);
     });
   };
 
@@ -58,14 +59,16 @@ export default function useSwipe({ stepPx, onStep, disabled = false, reduced = f
     if (!current || current.id !== event.pointerId) return;
     gesture.current = null;
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
+    let steps = 0;
     if (current.axis === "x") {
       if (!cancelled) {
         const velocity = performance.now() - current.time < 100 ? current.velocity : 0;
-        const steps = swipeSteps(current.dx, velocity, current.spacing);
+        steps = swipeSteps(current.dx, velocity, current.spacing);
         event.currentTarget.focus({ preventScroll: true });
-        if (steps) onStep(steps);
+        if (steps && !onRelease) onStep(steps);
       }
     }
+    onRelease?.(steps, cancelled);
     reset();
   };
 

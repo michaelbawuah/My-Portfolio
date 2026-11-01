@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useId, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from "react";
 import { ArrowLeft, ArrowRight, Maximize2, Minimize2, Pause, Play } from "lucide-react";
 import Orb, { orbFor, type OrbStyle } from "./Orb";
 import LiquidButton from "./LiquidButton";
@@ -8,6 +8,8 @@ import PourButton from "./PourButton";
 import usePour from "./usePour";
 import useAccent from "./useAccent";
 import { circularDistance } from "./swipe-math";
+import { createOrbitMotion } from "./orbit-motion";
+import useOrbitMotion from "./useOrbitMotion";
 
 export type CarouselItem = {
   slug: string; name: string; category: string; tagline: string; description: string;
@@ -16,7 +18,6 @@ export type CarouselItem = {
 };
 type Props = { items: readonly CarouselItem[]; interval?: number; label?: string; syncAccent?: boolean; onPreview?: (slug: string, trigger: HTMLButtonElement) => void };
 const pad = (n: number) => String(n).padStart(2, "0");
-const wrap = (n: number, count: number) => count ? ((n % count) + count) % count : 0;
 
 export default function GlassCarousel({ items, interval = 6000, label = "Selected project carousel", syncAccent = true, onPreview }: Props) {
   const id = useId();
@@ -36,19 +37,21 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
   const activeIndex = Math.min(index, Math.max(0, n - 1));
   const active = items[activeIndex];
   const duration = Math.max(3000, interval);
+  const motion = useMemo(() => createOrbitMotion(n, duration), [n, duration]);
 
-  const select = useCallback((next: number) => { setIndex(wrap(next, n)); }, [n]);
-  const step = useCallback((direction: number) => { setIndex(current => wrap(current + direction, n)); }, [n]);
+  const select = useCallback((next: number) => motion.select(next), [motion]);
+  const step = useCallback((direction: number) => motion.step(direction), [motion]);
   const stepPx = useCallback(() => {
     if (!root.current) return 320;
     const size = Math.max(150, Math.min(330, window.innerWidth * .3));
     return Number.isFinite(size) && size > 0 ? size : 320;
   }, []);
-  const swipe = useSwipe({ stepPx, onStep: step, disabled: n < 2 || focused, reduced });
+  const swipe = useSwipe({ stepPx, onStep: step, disabled: n < 2 || focused, reduced, onGrab: motion.grab, onOffset: motion.drag, onRelease: motion.release });
   const activeOrb = orbFor(active || { category: "AI & ML" });
   useAccent(active && syncAccent ? activeOrb.color : undefined, activeOrb.on);
   const pour = usePour({ rootRef: root, sourceRef: activeOrbRef, ctaRef, resetKey: `${active?.slug}-${focused}-${expandedSlug}`, disabled: swipe.dragging || !pageVisible, reduced });
   const running = !pour.busy && !paused && !hovered && !swipe.dragging && !reduced && !focused && expandedSlug !== active?.slug && pageVisible && visible && n > 1;
+  useOrbitMotion({ root, motion, count: n, running, enabled: pageVisible && visible, reduced, focused, onIndex: setIndex });
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -66,17 +69,10 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
   useEffect(() => {
     const el = root.current;
     if (!el) return;
-    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: .15 });
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting && entry.intersectionRatio >= .15), { threshold: [0, .15] });
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
-
-  useEffect(() => {
-    if (!running) return;
-    const timer = window.setTimeout(() => setIndex(current => wrap(current + 1, n)), duration);
-    return () => window.clearTimeout(timer);
-  }, [running, index, n, duration]);
-
 
   const keyboard = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
@@ -92,6 +88,9 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
 
   const move = (event: PointerEvent<HTMLDivElement>) => {
     swipe.bind.onPointerMove(event);
+    // A parked cursor or a hover over the surrounding space must not stall the tour.
+    // Deliberate movement over the front card gives the reader a stable, centered card.
+    if (event.pointerType === "mouse" && !event.buttons) setHovered(Boolean((event.target as HTMLElement).closest(".gc-card.is-active")));
     if (event.pointerType !== "mouse" || reduced || focused) return;
     const rect = event.currentTarget.getBoundingClientRect();
     const x = (event.clientX - rect.left) / rect.width - .5;
@@ -103,9 +102,8 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
 
   if (!active) return null;
   return <section ref={root} className={`gc ${running ? "" : "is-paused"} ${paused ? "is-user-paused" : ""}`} aria-roledescription="carousel" aria-label={label}
-    data-focused={focused} data-visible={visible} data-page-visible={pageVisible} data-pour-state={pour.phase}
+    data-focused={focused} data-visible={visible} data-page-visible={pageVisible} data-pour-state={pour.phase} data-motion="orbit" data-running={running}
     style={{ "--gc-dur": `${duration}ms` } as CSSProperties}
-    onPointerEnter={e => { if (e.pointerType === "mouse") setHovered(true); }}
     onPointerLeave={e => { if (e.pointerType === "mouse") setHovered(false); }}
     onPointerDownCapture={e => { pointerFocus.current = true; if (e.pointerType !== "mouse") setHovered(false); }}
     onFocusCapture={e => { if (!pointerFocus.current && !(e.target as HTMLElement).closest("[data-rotation-control]")) setPaused(true); }}
@@ -117,9 +115,9 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
       <div {...swipe.bind} ref={swipe.ref} id={id} className={`gc-stage ${swipe.dragging ? "is-dragging" : ""}`} tabIndex={0}
         role="group" aria-label="Project stage. Drag horizontally, or use left and right arrow keys to browse."
         onDragStart={event => event.preventDefault()}
-        onKeyDown={keyboard} onPointerMove={move} onPointerLeave={e => { e.currentTarget.style.setProperty("--px", "0"); e.currentTarget.style.setProperty("--py", "0"); }}>
+        onKeyDown={keyboard} onPointerMove={move} onPointerLeave={e => { setHovered(false); e.currentTarget.style.setProperty("--px", "0"); e.currentTarget.style.setProperty("--py", "0"); }}>
         {items.map((project, k) => {
-          const distance = circularDistance(k, activeIndex + swipe.offset, n);
+          const distance = circularDistance(k, activeIndex, n);
           const absolute = Math.abs(distance);
           const isActive = k === activeIndex;
           const hidden = absolute > 2.6 || (focused && !isActive);
@@ -157,10 +155,10 @@ export default function GlassCarousel({ items, interval = 6000, label = "Selecte
     <span className="sr-only" aria-live={running ? "off" : "polite"} aria-atomic="true">{active.name}, project {activeIndex + 1} of {n}</span>
     <div className="gc-controls">
       <div className="gc-pagination"><LiquidButton variant="ghost" className="gc-round" aria-label="Previous project" disabled={n < 2} onClick={() => step(-1)}><ArrowLeft aria-hidden="true" /></LiquidButton>
-        <div className="gc-dots" role="group" aria-label="Choose a project">{items.map((project, k) => <button type="button" key={project.slug} aria-label={`Show ${project.name}`} aria-pressed={k === activeIndex} aria-controls={id} className={k === activeIndex ? "is-on" : ""} style={{ "--dot-color": orbFor(project).color } as CSSProperties} onClick={() => select(k)}><span><i key={`${active.slug}-${running}`} /></span></button>)}</div>
+        <div className="gc-dots" role="group" aria-label="Choose a project">{items.map((project, k) => <button type="button" key={project.slug} aria-label={`Show ${project.name}`} aria-pressed={k === activeIndex} aria-controls={id} className={k === activeIndex ? "is-on" : ""} style={{ "--dot-color": orbFor(project).color } as CSSProperties} onClick={() => select(k)}><span><i /></span></button>)}</div>
         <LiquidButton variant="ghost" className="gc-round" aria-label="Next project" disabled={n < 2} onClick={() => step(1)}><ArrowRight aria-hidden="true" /></LiquidButton>
       </div>
-      <span className="gc-deck-count" aria-hidden="true">{pad(activeIndex + 1)} <span>/ {pad(n)} projects</span></span>
+      <span className="gc-deck-count" aria-hidden="true">{pad(activeIndex + 1)} <span>/ {pad(n)} projects</span><span className="gc-orbit-status"><i />{reduced ? "Motion off" : paused ? "Paused" : running ? "Live orbit" : "Reading"}</span></span>
       <div className="gc-mode-controls">
         <LiquidButton variant="ghost" size="sm" data-rotation-control aria-label={paused ? "Play project tour" : "Pause project tour"} aria-pressed={!paused} disabled={reduced || n < 2} onClick={() => { setFocused(false); setPaused(current => !current); }} icon={paused ? <Play size={14} /> : <Pause size={14} />}><span>{paused ? "Play" : "Pause"}</span></LiquidButton>
         <LiquidButton variant="ghost" size="sm" aria-label={focused ? "Exit focus view" : "Enlarge project visual"} aria-pressed={focused} onClick={() => { setFocused(current => !current); }} icon={focused ? <Minimize2 size={14} /> : <Maximize2 size={14} />}><span>{focused ? "Back to deck" : "Focus view"}</span></LiquidButton>
